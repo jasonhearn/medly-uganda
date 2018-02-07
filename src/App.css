@@ -1,0 +1,60 @@
+h1 {
+  font-size: 1.5em;
+}
+
+.App {
+  text-align: center;
+  background: #e0e0e0;
+  height: 100vh;
+  padding-top: 50%;
+}
+
+.Login {
+  border: 1px solid #B20E0A;
+  border-radius: 20px;
+  background: #ffffff;
+  padding-top: 10px; 
+  width: 300px;
+  margin: 0 auto;
+}
+
+.Login {
+
+}
+
+.Login form input {
+  border: 1px solid #B20E0A;
+  border-radius: 5px;
+
+  font-size: 11px;
+  font-family: inherit;
+  font-weight: inherit;
+
+  margin-left: 10px;
+  padding-left: 5px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.Button {
+  border-bottom-left-radius: 17px;
+  border-bottom-right-radius: 17px;
+  border: 1px solid #B20E0A;
+
+  background: #B20E0A;
+  color: #ffffff;
+
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+
+  width: 100%;
+
+  margin-top: 10px;
+  margin-bottom: 0px;
+}
+
+.UHI {
+  height: 50px;
+  padding-top: 10px;
+}
