@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
-import { Button, FormGroup, FormControl, ControlLabel } from "../node_modules/react-bootstrap";
-import uhi_logo from "./pictures/uhi-logo.png";
-import './App.css';
+import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { Link } from "react-router-dom"
+import uhi_logo from "../pictures/uhi-logo.png";
+import PatSearch from "./PatSearch"
+import '../styles/main.css';
 
-class App extends Component {
+class Login extends Component {
   render() {
     return (
-      <div className="App">
+      <div className="Middle">
         <h1>Welcome to the Medly Dashboard.</h1>
 
-        <div className="Login">
+        <div className="Block">
           <form>
             <FormGroup controlId="username" bsSize="large">
               <ControlLabel>Username:</ControlLabel>
@@ -30,17 +32,19 @@ class App extends Component {
               />
             </FormGroup>
 
-            <Button className="Button" type="submit">Login</Button>
+            <Link to='/patsearch'>
+              <Button className="Button" type="submit">Login</Button>
+            </Link>
 
           </form>
 
         </div>
 
-        <img className="UHI" src={uhi_logo}/>
+        <img className="UHI" src={uhi_logo} />
 
       </div>
     );
   }
 }
 
-export default App;
+export default Login;

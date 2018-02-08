@@ -1,0 +1,79 @@
+/* Hierarchy of CSS: 
+      1. Positioning (dimensions, padding, margins)
+      2. Sizing 
+      3. Aesthetics (background, borders)
+      4. Font (size, type, color)
+*/
+
+h1 {
+  font-size: 1.5em;
+}
+
+body {
+  min-width: 500px; 
+  background: #e0e0e0;
+}
+
+.Middle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+
+  width: 500px;
+  
+  text-align: center;
+}
+
+.Block {
+  padding-top: 10px; 
+  margin: 0 auto;
+
+  width: 350px;
+
+  border: 1px solid #B20E0A;
+  border-radius: 20px;
+  background: #ffffff;
+}
+
+
+.Block form input {
+  padding-left: 5px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  margin-left: 10px;
+  margin-bottom: 5px;
+
+  border: 1px solid #B20E0A;
+  border-radius: 5px;
+
+  font-size: 11px;
+  font-family: inherit;
+  font-weight: inherit;
+}
+
+::placeholder {
+  color: #d3d3d3;
+}
+
+.Button {
+  margin-top: 5px;
+  margin-bottom: 0px;
+
+  width: 100%;  
+
+  background: #B20E0A;
+  border: 1px solid #B20E0A;
+  border-bottom-left-radius: 17px;
+  border-bottom-right-radius: 17px;
+
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  color: #ffffff;
+}
+
+.UHI {
+  height: 50px;
+  padding-top: 10px;
+}
