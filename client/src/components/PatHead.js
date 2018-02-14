@@ -10,16 +10,21 @@ class PatHead extends Component {
 	}
 
 	componentDidMount() {
-		fetch("https://api.textit.in/api/v2/runs.json", {
-			method: "GET",
-			headers: { "Authorization": "Token f3cfe4509225eea931254f4368cb3ebb003c618e" },
-		})
-		.then(results => results.json())
-		.then(results => {
-			this.setState({
-				data: results
-			})
-		})
+		var invocation = new XMLHttpRequest();
+		var url = 'https://api.textit.in/api/v2/contacts.json';
+		var header = { "Authorization": "Token f3cfe4509225eea931254f4368cb3ebb003c618e" }
+
+		function callOtherDomain() {
+			if(invocation) {
+				invocation.open(
+					'GET', 
+					url, 
+					header = header
+					);
+				invocation.onreadystatechange = handler;
+				invocation.send();
+			}
+		}
 	}
 
 	render() {
