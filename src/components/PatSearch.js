@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { Link } from "react-router-dom"
 import uhi_logo from "../pictures/uhi-logo.png";
 import '../styles/main.css';
 
@@ -22,7 +23,9 @@ class PatSearch extends Component {
               />
             </FormGroup>
 
-            <Button className="Button" type="submit">OK</Button>
+            <Link to='/patient'>
+              <Button className="Button" type="submit">OK</Button>
+            </Link>
 
           </form>
 
