@@ -1,29 +1,35 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
 import '../styles/main.css';
 
 class PatHead extends Component {
 
-	constructor() {
-		super();
-		this.state = {data: {} };
-	}
+	state = { name: '',
+			  fname: '',
+			  lname: '',	
+			  age: '',
+			  sex: '',
+			  lang: '',
+			  phone: '',
+			}
 
 	componentDidMount() {
-		var invocation = new XMLHttpRequest();
-		var url = 'https://api.textit.in/api/v2/contacts.json';
-		var header = { "Authorization": "Token f3cfe4509225eea931254f4368cb3ebb003c618e" }
+		var url = '/proxy/api/v2/contacts.json';
+		var area = '+1647'
+		var phone = '3257822'
 
-		function callOtherDomain() {
-			if(invocation) {
-				invocation.open(
-					'GET', 
-					url, 
-					header = header
-					);
-				invocation.onreadystatechange = handler;
-				invocation.send();
-			}
+		fetch(url + '?urn=tel:' + area + phone)
+  			.then(res => res.json())
+  			.then(data => this.setState({ name : data.results["0"].name,
+  										  age : data.results["0"].fields.age,
+  										  sex : data.results["0"].fields.sex,
+  										  phone : data.results["0"].urns["0"].substr(4),
+  										  lang : data.results["0"].language }));
+	}
+
+	componentDidUpdate(prevProps,prevState) {
+		if (prevState.name !== this.state.name) {
+			this.setState({ fname: this.state.name.split(' ')[0] })
+			this.setState({ lname: this.state.name.split(' ')[1].toUpperCase() })
 		}
 	}
 
@@ -31,8 +37,8 @@ class PatHead extends Component {
 		return(
 			<header>
 			  {/* We will eventually call API to get actual values here */}
-			  <h1> {'Bakabulindi'.toUpperCase()}, Jason </h1>
-			  <h2> Age: 48 | Sex: M | Language: Runyankore | Phone: +256-751-491858 </h2>
+			  <h1> {this.state.lname}, {this.state.fname} </h1>
+			  <h2> Age: {this.state.age} | Sex: {this.state.sex} | Language: {this.state.lang} | Phone: {this.state.phone} </h2>
 			</header>
 		)
 	}

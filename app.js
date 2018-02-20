@@ -7,6 +7,8 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var runs = require('./routes/runs');
+var proxy = require('express-http-proxy');
 
 var app = express();
 
@@ -22,8 +24,26 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// app.use(function(req, res, next) {
+// 	res.header('Access-Control-Allow-Origin: *');
+// 	res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+// 	res.header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
+// })
+
+// set routing for certain entries
 app.use('/', index);
 app.use('/users', users);
+app.use('/runs', runs)
+
+// proxy to textit.in api
+app.use('/proxy',proxy('https://api.textit.in', {
+  proxyReqOptDecorator: function(proxyReqOpts, srcReq) {
+    proxyReqOpts.headers['Authorization'] = 'Token f3cfe4509225eea931254f4368cb3ebb003c618e';
+    proxyReqOpts.headers['Cache-Control'] = 'no-cache';
+    proxyReqOpts.method = 'GET';
+    return proxyReqOpts;
+  }
+}));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
