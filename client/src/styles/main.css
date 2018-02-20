@@ -7,6 +7,7 @@
 
 h1 {
   font-size: 1.5em;
+  color: #484848;
 }
 
 h2 {
@@ -15,12 +16,17 @@ h2 {
 }
 
 body {
-  min-width: 500px; 
+  min-width: 700px; 
   background: #e0e0e0;
 }
 
 header {
   padding-left: 20px;
+  line-height: 20px;
+}
+
+::placeholder {
+  color: #d3d3d3;
 }
 
 .Middle {
@@ -34,35 +40,151 @@ header {
   text-align: center;
 }
 
-.Block {
+.Middle h2 {
+  color: #484848;
+  padding-bottom: 10px;
+}
+
+.LoginBlock {
   padding-top: 10px; 
   margin: 0 auto;
+  margin-top: 25px;
+  margin-bottom: 25px;
 
   width: 350px;
 
-  border: 1px solid #B20E0A;
+  color: #000000;
+
+  border: 1px solid #000000;
   border-radius: 20px;
   background: #ffffff;
 }
 
 
-.Block form input {
+.LoginBlock form input {
   padding-left: 5px;
   padding-top: 2px;
   padding-bottom: 2px;
   margin-left: 10px;
   margin-bottom: 5px;
 
-  border: 1px solid #B20E0A;
+  width: 200px;
+
+  border: 1px solid #000000;
   border-radius: 5px;
 
-  font-size: 11px;
+  font-size: 12px;
   font-family: inherit;
   font-weight: inherit;
 }
 
-::placeholder {
-  color: #d3d3d3;
+.MiddleTop {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+  width: 700px;
+}
+
+.TableBlock {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+
+  padding-top: 0px; 
+  padding-bottom: 20px;
+  margin-top: 20px;
+
+  width: 700px;
+
+  text-align: center;
+  border: 2.5px solid #000000;
+  border-radius: 20px;
+}
+
+.Table {
+  margin: 0 auto;
+  border: 2px solid #000000;
+  width: 650px;
+  display: flex;
+  flex-direction: row;
+}
+
+.TableSymp {
+  display: flex;
+  flex-direction: row;
+  overflow-x: scroll;
+  direction: rtl;
+}
+
+.DateBlock, .TitleBlock, .SqNo, .SqYes, .SqCri, .SqUrg, .SqUWF, .SqFlu, .SqTir, .SqNor, .SqUnd {
+  border: 1px solid #A9A9A9;
+  height: 40px;
+}
+
+.SympBlock, .DateBlock, .TitleBlock {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+
+  text-align: center;
+  font-size: 0.7em;
+  color: #000000;
+  font-weight: 700;
+} 
+
+.SqNo, .SqYes, .SqCri, .SqUrg, .SqUWF, .SqFlu, .SqTir, .SqNor, .SqUnd {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+
+  text-align: center;
+  font-size: 2em;
+  color: #000000;
+  font-weight: 700;
+}
+
+.SympBlock, .DateBlock {
+  height: 20px;
+}
+
+.SympBlock, .TitleBlock {
+  width: 100px;
+}
+
+.SympBlock {
+  border: 1px solid #A9A9A9;
+}
+
+.SqNo, .SqYes, .SqCri, .SqUrg, .SqUWF, .SqFlu, .SqTir, .SqNor, .SqUnd {
+  width: 60px; 
+}
+
+.SqNo {
+  background: #ffffff; 
+}
+
+.SqYes {
+  background: #3FB0F1;
+}
+
+.SqCri, .SqUrg, .SqUWF {
+  background: #FF1D00;
+}
+
+.SqFlu, .SqTir {
+  background: #FFFE06;
+}
+
+.SqNor  {
+  background: #91D150;
+}
+
+.SqUnd {
+  background: rgba(0, 0, 0, 0);
 }
 
 .Button {
@@ -71,8 +193,8 @@ header {
 
   width: 100%;  
 
-  background: #B20E0A;
-  border: 1px solid #B20E0A;
+  background: #000000;
+  border: 1px solid #000000;
   border-bottom-left-radius: 17px;
   border-bottom-right-radius: 17px;
 
@@ -83,8 +205,7 @@ header {
 }
 
 .UHI {
-  height: 50px;
-  padding-top: 10px;
+  height: 40px;
 }
 
 .grid-container {

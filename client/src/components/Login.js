@@ -11,7 +11,7 @@ class Login extends Component {
       <div className="Middle">
         <h1>Welcome to the Medly Dashboard.</h1>
 
-        <div className="Block">
+        <div className="LoginBlock">
           <form>
             <FormGroup controlId="username" bsSize="large">
               <ControlLabel>Username:</ControlLabel>

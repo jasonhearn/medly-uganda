@@ -10,10 +10,10 @@ class PatSearch extends Component {
       <div className="Middle">
         <h1>Enter your patient&#39;s phone number.</h1>
 
-        <div className="Block">
+        <div className="LoginBlock">
           <form>
             <FormGroup controlId="patient" bsSize="large">
-              <ControlLabel>Patient phone #:</ControlLabel>
+              <ControlLabel>Phone:</ControlLabel>
               <FormControl
                 autoFocus
                 type="textnum"
@@ -31,6 +31,7 @@ class PatSearch extends Component {
 
         </div>
 
+        <h2>Don't know the phone number? <Link to='/'>Browse your patients</Link>.</h2>
         <img className="UHI" src={uhi_logo} />
 
       </div>
