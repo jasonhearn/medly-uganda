@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var runs = require('./routes/runs');
+var contacts = require('./routes/contacts');
 var proxy = require('express-http-proxy');
 
 var app = express();
@@ -33,7 +34,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 // set routing for certain entries
 app.use('/', index);
 app.use('/users', users);
-app.use('/runs', runs)
+app.use('/runs', runs);
+app.use('/contacts', contacts);
 
 // proxy to textit.in api
 app.use('/proxy',proxy('https://api.textit.in', {

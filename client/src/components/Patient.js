@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import { Link } from "react-router-dom"
 import PatHead from './PatHead'
+import Logos from './Logos'
 import '../styles/main.css';
+import '../styles/patient.css'
 
 class HeadBlock extends Component {
 	render() {
@@ -101,9 +103,7 @@ class PatBody extends Component {
 			var columns = [];
 			for (var i=Object.keys(this.props.values).length-1; i>-1; i--) {
 				columns.push(
-					<div>
-						<GridColumn values={this.props.values[i]} />
-					</div>
+					<GridColumn values={this.props.values[i]} />
 				);
 			}
 
@@ -118,7 +118,7 @@ class PatBody extends Component {
 				);
 			} else {
 				return(
-					<div className='Middle'> Loading... </div>
+					<div className='Middle'> </div>
 				)
 			}
 		}
@@ -159,12 +159,19 @@ class Patient extends Component {
 	}
 
 	render() {
-		return (
+		if (typeof(this.state.values[0]) != 'undefined') {
+			return (
 			<div className="MiddleTop">
-				<PatHead />
+				<PatHead phone={this.props.match.params.phone}/>
 				<PatBody values={this.state.values}/>
+				<Logos />
 			</div>
 			);
+		} else {
+			return(
+					<div className='Middle'> </div>
+			)	
+		}
 	}
 }
 

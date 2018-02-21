@@ -21,12 +21,48 @@ body {
 }
 
 header {
+  padding-top: 30px;
   padding-left: 20px;
-  line-height: 20px;
+  line-height: 10px;
 }
 
 ::placeholder {
   color: #d3d3d3;
+  font-weight: 400;
+}
+
+table {
+  margin: 0 auto;
+  border: 2px solid #000000;
+  width: 90%;
+  text-align: left;
+  border-collapse: collapse;
+}
+
+th, tr {
+  line-height: 20px;
+}
+
+th {
+  border-bottom: 2px solid #000000;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+tr:nth-child(even) {
+  background: #c0c0c0
+}
+
+tr {
+  font-weight: 400;
+}
+
+.link {
+  color: #B20E0A;
+}
+
+.Thumbs {
+  text-align: center;
 }
 
 .Middle {
@@ -60,32 +96,6 @@ header {
   background: #ffffff;
 }
 
-
-.LoginBlock form input {
-  padding-left: 5px;
-  padding-top: 2px;
-  padding-bottom: 2px;
-  margin-left: 10px;
-  margin-bottom: 5px;
-
-  width: 200px;
-
-  border: 1px solid #000000;
-  border-radius: 5px;
-
-  font-size: 12px;
-  font-family: inherit;
-  font-weight: inherit;
-}
-
-.MiddleTop {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translateY(-50%) translateX(-50%);
-  width: 700px;
-}
-
 .TableBlock {
   display: flex;
   justify-content: center;
@@ -103,91 +113,56 @@ header {
   border-radius: 20px;
 }
 
-.Table {
-  margin: 0 auto;
-  border: 2px solid #000000;
-  width: 650px;
+.FormBlock input {
+  padding-left: 5px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  margin-left: 10px;
+  margin-bottom: 5px;
+
+  width: 200px;
+
+  border: 1px solid #000000;
+  border-radius: 5px;
+
+  font-size: 12px;
+  font-family: inherit;
+  font-weight: 400;
+}
+
+.PatientSearch {
+  padding-top: 10px;
+  padding-bottom: 10px;
   display: flex;
   flex-direction: row;
+  font-size: 14px;
+  height: 24px;
 }
 
-.TableSymp {
-  display: flex;
-  flex-direction: row;
-  overflow-x: scroll;
-  direction: rtl;
+.BrowseBlock input {
+  padding-left: 10px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+
+  width: 250px;
+
+  border: 1px solid #000000;
+  border-bottom-left-radius: 17px;
+  border-top-left-radius: 17px;
+
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
 }
 
-.DateBlock, .TitleBlock, .SqNo, .SqYes, .SqCri, .SqUrg, .SqUWF, .SqFlu, .SqTir, .SqNor, .SqUnd {
-  border: 1px solid #A9A9A9;
-  height: 40px;
+.MiddleTop {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
 }
 
-.SympBlock, .DateBlock, .TitleBlock {
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  flex-direction: column;
-
-  text-align: center;
-  font-size: 0.7em;
-  color: #000000;
-  font-weight: 700;
-} 
-
-.SqNo, .SqYes, .SqCri, .SqUrg, .SqUWF, .SqFlu, .SqTir, .SqNor, .SqUnd {
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  flex-direction: column;
-
-  text-align: center;
-  font-size: 2em;
-  color: #000000;
-  font-weight: 700;
-}
-
-.SympBlock, .DateBlock {
-  height: 20px;
-}
-
-.SympBlock, .TitleBlock {
-  width: 100px;
-}
-
-.SympBlock {
-  border: 1px solid #A9A9A9;
-}
-
-.SqNo, .SqYes, .SqCri, .SqUrg, .SqUWF, .SqFlu, .SqTir, .SqNor, .SqUnd {
-  width: 60px; 
-}
-
-.SqNo {
-  background: #ffffff; 
-}
-
-.SqYes {
-  background: #3FB0F1;
-}
-
-.SqCri, .SqUrg, .SqUWF {
-  background: #FF1D00;
-}
-
-.SqFlu, .SqTir {
-  background: #FFFE06;
-}
-
-.SqNor  {
-  background: #91D150;
-}
-
-.SqUnd {
-  background: rgba(0, 0, 0, 0);
-}
-
-.Button {
+.HorizButton {
   margin-top: 5px;
   margin-bottom: 0px;
 
@@ -195,7 +170,29 @@ header {
 
   background: #000000;
   border: 1px solid #000000;
-  border-bottom-left-radius: 17px;
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
+
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  color: #ffffff;
+}
+
+.HorizButton:disabled {
+  border: 0.5px solid #000000;
+  background-color: #cccccc;
+  color: #666666;
+}
+
+.VertButton {
+  width: 50px;
+  height: 100%;
+  padding-left: 0px;
+
+  background: #000000;
+  border: 1px solid #000000;
+  border-top-right-radius: 17px;
   border-bottom-right-radius: 17px;
 
   font-size: inherit;
@@ -204,8 +201,11 @@ header {
   color: #ffffff;
 }
 
-.UHI {
+.Picture {
   height: 40px;
+  padding-top: 60px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .grid-container {

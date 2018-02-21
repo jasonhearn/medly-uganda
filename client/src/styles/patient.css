@@ -1,0 +1,112 @@
+/* Hierarchy of CSS: 
+      1. Positioning (dimensions, padding, margins)
+      2. Sizing 
+      3. Aesthetics (background, borders)
+      4. Font (size, type, color)
+*/
+
+.HeadName {
+  display: flex;
+  flex-direction: row;
+}
+
+.HeadButton {
+  margin-top: 10px;
+  margin-left: 40px;
+
+  width: 125px;
+  height: 20px;
+
+  background: #000000;
+  border: 1px solid #000000;
+  border-radius: 17px;
+
+  font-size: 11px;
+  font-family: inherit;
+  font-weight: inherit;
+  color: #ffffff;
+}
+
+.Table {
+  margin: 0 auto;
+  border: 2px solid #000000;
+  width: 650px;
+  display: flex;
+  flex-direction: row;
+}
+
+.TableSymp {
+  display: flex;
+  flex-direction: row;
+  overflow-x: scroll;
+  direction: rtl;
+}
+
+.DateBlock, .TitleBlock, .SqNo, .SqYes, .SqCri, .SqUrg, .SqUWF, .SqFlu, .SqTir, .SqNor, .SqUnd {
+  border: 1px solid #A9A9A9;
+  height: 40px;
+}
+
+.SympBlock, .DateBlock, .TitleBlock {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+
+  text-align: center;
+  font-size: 0.7em;
+  color: #000000;
+  font-weight: 700;
+} 
+
+.SqNo, .SqYes, .SqCri, .SqUrg, .SqUWF, .SqFlu, .SqTir, .SqNor, .SqUnd {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+
+  text-align: center;
+  font-size: 2em;
+  color: #000000;
+  font-weight: 700;
+}
+
+.SympBlock, .DateBlock {
+  height: 20px;
+}
+
+.SympBlock, .TitleBlock {
+  width: 100px;
+}
+
+.SympBlock {
+  border: 1px solid #A9A9A9;
+}
+
+.SqNo, .SqYes, .SqCri, .SqUrg, .SqUWF, .SqFlu, .SqTir, .SqNor, .SqUnd {
+  width: 60px; 
+}
+
+.SqNo {
+  background: #ffffff; 
+}
+
+.SqYes {
+  background: #3FB0F1;
+}
+
+.SqCri, .SqUrg, .SqUWF {
+  background: #FF1D00;
+}
+
+.SqFlu, .SqTir {
+  background: #FFFE06;
+}
+
+.SqNor  {
+  background: #91D150;
+}
+
+.SqUnd {
+  background: rgba(0, 0, 0, 0);
+}

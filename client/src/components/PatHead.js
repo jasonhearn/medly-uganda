@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { Button } from 'react-bootstrap'
+import { Link } from "react-router-dom"
 import '../styles/main.css';
 
 class PatHead extends Component {
@@ -14,16 +16,17 @@ class PatHead extends Component {
 
 	componentDidMount() {
 		var url = '/proxy/api/v2/contacts.json';
-		var area = '+1647'
-		var phone = '3257822'
+		var phone = this.props.phone;
+		var query = url + '?urn=tel:' + phone
 
-		fetch(url + '?urn=tel:' + area + phone)
+		fetch(query)
   			.then(res => res.json())
   			.then(data => this.setState({ name : data.results["0"].name,
   										  age : data.results["0"].fields.age,
   										  sex : data.results["0"].fields.sex,
   										  phone : data.results["0"].urns["0"].substr(4),
   										  lang : data.results["0"].language }));
+  		console.log(this.state.name)
 	}
 
 	componentDidUpdate(prevProps,prevState) {
@@ -34,13 +37,24 @@ class PatHead extends Component {
 	}
 
 	render() {
-		return(
-			<header>
-			  {/* We will eventually call API to get actual values here */}
-			  <h1> {this.state.lname}, {this.state.fname} </h1>
-			  <h2> Age: {this.state.age} | Sex: {this.state.sex} | Language: {this.state.lang} | Phone: {this.state.phone} </h2>
-			</header>
-		)
+		if (this.state.fname != '') {
+			return(
+				<header>
+				  {/* We will eventually call API to get actual values here */}
+				  <div className="HeadName">
+				  	<h1> {this.state.lname}, {this.state.fname} </h1>
+				  	<Link to='/patsearch' className="link">
+				  		<Button className="HeadButton">Change patient</Button>
+				  	</Link>
+				  </div>
+				  <h2> Age: {this.state.age} | Sex: {this.state.sex} | Language: {this.state.lang} | Phone: {this.state.phone} </h2>
+				</header>
+			)
+		} else {
+			return(
+				<div className='Middle'> </div>
+			)
+		}
 	}
 }
 

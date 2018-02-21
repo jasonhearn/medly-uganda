@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import { Link } from "react-router-dom"
-import uhi_logo from "../pictures/uhi-logo.png";
+import uhi from "../pictures/uhi.png";
 import PatSearch from "./PatSearch"
 import '../styles/main.css';
 
@@ -13,7 +13,7 @@ class Login extends Component {
 
         <div className="LoginBlock">
           <form>
-            <FormGroup controlId="username" bsSize="large">
+            <FormGroup className="FormBlock">
               <ControlLabel>Username:</ControlLabel>
               <FormControl
                 autoFocus
@@ -22,7 +22,7 @@ class Login extends Component {
                 // onChange={this.handleChange}
               />
             </FormGroup>
-            <FormGroup controlId="username">
+            <FormGroup className="FormBlock">
               <ControlLabel>Password:</ControlLabel>
               <FormControl
                 autoFocus
@@ -33,14 +33,14 @@ class Login extends Component {
             </FormGroup>
 
             <Link to='/patsearch'>
-              <Button className="Button" type="submit">Login</Button>
+              <Button className="HorizButton" type="submit">Login</Button>
             </Link>
 
           </form>
 
         </div>
 
-        <img className="UHI" src={uhi_logo} />
+        <img className="Picture" src={uhi} />
 
       </div>
     );
