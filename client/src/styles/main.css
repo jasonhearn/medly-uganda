@@ -62,6 +62,7 @@ tr {
 }
 
 .Thumbs {
+  padding-top: 20px;
   text-align: center;
 }
 
@@ -71,7 +72,7 @@ tr {
   left: 50%;
   transform: translateY(-50%) translateX(-50%);
 
-  width: 500px;
+  width: 700px;
   
   text-align: center;
 }
@@ -192,8 +193,8 @@ tr {
 
   background: #000000;
   border: 1px solid #000000;
-  border-top-right-radius: 17px;
-  border-bottom-right-radius: 17px;
+  border-top-right-radius: 18px;
+  border-bottom-right-radius: 18px;
 
   font-size: inherit;
   font-family: inherit;
@@ -203,7 +204,7 @@ tr {
 
 .Picture {
   height: 40px;
-  padding-top: 60px;
+  padding-top: 40px;
   padding-left: 20px;
   padding-right: 20px;
 }

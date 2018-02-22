@@ -4,11 +4,6 @@ import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import { Link } from "react-router-dom"
 import Logos from './Logos'
 
-import uhi from "../pictures/uhi.png";
-import ehealth from "../pictures/ehealth.png";
-import uincd from "../pictures/uincd.png";
-import tedrogers from "../pictures/tedrogers.png";
-
 import '../styles/main.css';
 
 class BrowseHead extends Component {

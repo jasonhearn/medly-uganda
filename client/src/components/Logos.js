@@ -11,10 +11,10 @@ class Logos extends Component {
 	render() {
 		return (
 			<div className="Thumbs">
-	         		<img className="Picture" src={uhi} />
-	         		<img className="Picture" src={ehealth} />
-	         		<img className="Picture" src={uincd} />
-	         		<img className="Picture" src={tedrogers} />
+	         		<img className="Picture" src={uhi} alt="" />
+	         		<img className="Picture" src={ehealth} alt="" />
+	         		<img className="Picture" src={uincd} alt=""/>
+	         		<img className="Picture" src={tedrogers} alt=""/>
 	        </div>
 	    )
 	}

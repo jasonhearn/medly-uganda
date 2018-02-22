@@ -12,6 +12,31 @@ var contacts = require('./routes/contacts');
 var proxy = require('express-http-proxy');
 
 var app = express();
+var basicAuth = require('express-basic-auth')
+var jwt    = require('jsonwebtoken');
+var passport = require("passport");
+var passportJWT = require("passport-jwt");
+
+var ExtractJwt = passportJWT.ExtractJwt;
+var JwtStrategy = passportJWT.Strategy;
+
+var jwtOptions = {}
+jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+jwtOptions.secretOrKey = 'tasmanianDevil';
+
+var strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
+  console.log('payload received', jwt_payload);
+  // usually this would be a database call:
+  var id = "abcd"
+  var user = {id: jwt_payload.id};
+  if (user) {
+    next(null, user);
+  } else {
+    next(null, false);
+  }
+});
+
+passport.use(strategy);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -24,12 +49,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-// app.use(function(req, res, next) {
-// 	res.header('Access-Control-Allow-Origin: *');
-// 	res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
-// 	res.header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
-// })
 
 // set routing for certain entries
 app.use('/', index);
@@ -46,6 +65,25 @@ app.use('/proxy',proxy('https://api.textit.in', {
     return proxyReqOpts;
   }
 }));
+
+// Define authentication strategy
+var basicAuth = basicAuth({
+  users: {
+    'admin': 'Admin1234',
+    'ssinabulya': 'uhi1234'
+  }
+})
+var payload = {name: "abcd"}
+var token = jwt.sign(payload, jwtOptions.secretOrKey);
+
+app.get('/auth', basicAuth, function(req, res) {
+  res.status(200).json({token: token});
+})
+
+// Test authentication strategy
+app.get("/secret", passport.authenticate('jwt', { session: false }), function(req, res){
+  res.json("Success! You can not see this without a token");
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -79,7 +79,7 @@ class PatSearch extends Component {
         <div className="LoginBlock">
           <form>
             <FormGroup 
-              className={`FormBlock ${this.errorClass(this.state.formError)}`}
+              className="FormBlock"
             >
               <ControlLabel>Phone:</ControlLabel>
               <FormControl
@@ -104,7 +104,7 @@ class PatSearch extends Component {
         </div>
 
         <h2>Don't know the phone number? <Link to='/patbrowse' className='link'>Browse your patients</Link>.</h2>
-        <img className="UHI" src={uhi_logo} />
+        <img className="Picture" src={uhi_logo} />
 
       </div>
     );

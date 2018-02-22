@@ -26,7 +26,6 @@ class PatHead extends Component {
   										  sex : data.results["0"].fields.sex,
   										  phone : data.results["0"].urns["0"].substr(4),
   										  lang : data.results["0"].language }));
-  		console.log(this.state.name)
 	}
 
 	componentDidUpdate(prevProps,prevState) {
