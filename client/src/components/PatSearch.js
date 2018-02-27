@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import { Link } from "react-router-dom"
-import uhi_logo from "../pictures/uhi.png";
+import Logos from "./Logos"
+import LogoutButton from './LogoutButton'
 import '../styles/main.css';
 
 class PatSearch extends Component {
@@ -40,6 +41,10 @@ class PatSearch extends Component {
     }
   }
 
+  clearLocal() {
+    localStorage.clear();
+  }
+
   handleChange(e) {
     if (e.target.value.length >= 7) {
       this.setState({ phone: e.target.value },
@@ -53,7 +58,7 @@ class PatSearch extends Component {
     var phoneValid = this.state.phoneValid
     var formError = this.state.formError
 
-    if (phone.charAt(0) != "+") {
+    if (phone.charAt(0) !== "+") {
       var area = "+1647"
       phone = area + phone
     }
@@ -73,40 +78,49 @@ class PatSearch extends Component {
 
   render() {
     return (
-      <div className="Middle">
-        <h1>Enter your patient&#39;s phone number.</h1>
+      <main>
+        <div className="MiddleTop">
+          <div className="Logout">
+            <LogoutButton />
+          </div>
+        </div>
+        <div className="Middle">
 
-        <div className="LoginBlock">
-          <form>
-            <FormGroup 
-              className="FormBlock"
-            >
-              <ControlLabel>Phone:</ControlLabel>
-              <FormControl
-                autoFocus
-                type="text"
-                placeholder="720123456"
-                onChange={this.handleChange}
-              />
-            </FormGroup>
+          <h1>Enter your patient&#39;s phone number.</h1>
 
-            <Link to={'/patient/' + this.state.phone}>
-              <Button className="HorizButton" 
-                type="submit" 
-                disabled={!this.state.phoneValid}
+          <div className="LoginBlock">
+            <form>
+              <FormGroup 
+                className="FormBlock"
               >
-                OK
-              </Button>
-            </Link>
+                <ControlLabel>Phone:</ControlLabel>
+                <FormControl
+                  autoFocus
+                  type="text"
+                  placeholder="720123456"
+                  onChange={this.handleChange}
+                />
+              </FormGroup>
 
-          </form>
+            </form>
+
+          </div>
+
+          <Link to={'/patient/' + this.state.phone}>
+            <Button className="HorizButton" 
+              type="submit" 
+              disabled={!this.state.phoneValid}
+            >
+              OK
+            </Button>
+          </Link>
+
+          <h2>Don't know the phone number? <Link to='/patbrowse' className='link'>Browse your patients</Link>.</h2>
+          
+          <Logos />
 
         </div>
-
-        <h2>Don't know the phone number? <Link to='/patbrowse' className='link'>Browse your patients</Link>.</h2>
-        <img className="Picture" src={uhi_logo} />
-
-      </div>
+      </main>
     );
   }
 }

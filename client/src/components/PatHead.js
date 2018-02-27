@@ -1,7 +1,18 @@
 import React, { Component } from 'react'
 import { Button } from 'react-bootstrap'
 import { Link } from "react-router-dom"
+import LogoutButton from './LogoutButton'
 import '../styles/main.css';
+
+class ChangePtButton extends Component {
+	render() {
+		return(
+			<Link to='/patsearch'>
+		  		<Button className="ChangePtButton">Change patient</Button>
+		  	</Link>
+		)
+	}
+}
 
 class PatHead extends Component {
 
@@ -36,18 +47,21 @@ class PatHead extends Component {
 	}
 
 	render() {
-		if (this.state.fname != '') {
+		if (this.state.fname !== '') {
 			return(
-				<header>
-				  {/* We will eventually call API to get actual values here */}
-				  <div className="HeadName">
-				  	<h1> {this.state.lname}, {this.state.fname} </h1>
-				  	<Link to='/patsearch' className="link">
-				  		<Button className="HeadButton">Change patient</Button>
-				  	</Link>
-				  </div>
-				  <h2> Age: {this.state.age} | Sex: {this.state.sex} | Language: {this.state.lang} | Phone: {this.state.phone} </h2>
-				</header>
+				<main>
+					<header>
+						<div className="Logout">
+					  	  <ChangePtButton />
+					  	  <LogoutButton />
+				        </div>
+					  {/* We will eventually call API to get actual values here */}
+					  <div className="HeadName">
+					  	<h1> {this.state.lname}, {this.state.fname} </h1>
+					  </div>
+					  <h2> Age: {this.state.age} | Sex: {this.state.sex} | Language: {this.state.lang} | Phone: {this.state.phone} </h2>
+					</header>
+				</main>
 			)
 		} else {
 			return(

@@ -10,23 +10,6 @@
   flex-direction: row;
 }
 
-.HeadButton {
-  margin-top: 10px;
-  margin-left: 40px;
-
-  width: 125px;
-  height: 20px;
-
-  background: #000000;
-  border: 1px solid #000000;
-  border-radius: 17px;
-
-  font-size: 11px;
-  font-family: inherit;
-  font-weight: inherit;
-  color: #ffffff;
-}
-
 .Table {
   margin: 0 auto;
   border: 2px solid #000000;

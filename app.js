@@ -36,7 +36,15 @@ var strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
   }
 });
 
+app.use(passport.initialize());
 passport.use(strategy);
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+app.use(bodyParser.json())
+app.get("/", function(req, res) {
+  res.json({message: "Express is up!"});
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -66,23 +74,48 @@ app.use('/proxy',proxy('https://api.textit.in', {
   }
 }));
 
-// Define authentication strategy
-var basicAuth = basicAuth({
-  users: {
-    'admin': 'Admin1234',
-    'ssinabulya': 'uhi1234'
+var users = [
+  {
+    id: 1,
+    name: 'admin',
+    password: 'admin'
+  },
+  {
+    id: 2,
+    name: 'ssinabulya',
+    password: 'uhi1234'
   }
-})
-var payload = {name: "abcd"}
-var token = jwt.sign(payload, jwtOptions.secretOrKey);
+]
 
-app.get('/auth', basicAuth, function(req, res) {
-  res.status(200).json({token: token});
-})
+app.post("/auth", function(req, res) {
+  if(req.body.name && req.body.password){
+    var name = req.body.name;
+    var password = req.body.password;
+  }
+  // usually this would be a database call:
+  for (var i = 0; i<users.length; i++) {
+    if (name === users[i]['name']) {
+      var user = users[i]
+      break;
+    }
+  }
+  if( ! user ){
+    res.status(401).json({message:"no such user found"});
+  }
+
+  if(user.password === req.body.password) {
+    // from now on we'll identify the user by the id and the id is the only personalized value that goes into our token
+    var payload = {id: user.id};
+    var token = jwt.sign(payload, jwtOptions.secretOrKey);
+    res.json({message: "ok", token: token});
+  } else {
+    res.status(401).json({message:"passwords did not match"});
+  }
+});
 
 // Test authentication strategy
 app.get("/secret", passport.authenticate('jwt', { session: false }), function(req, res){
-  res.json("Success! You can not see this without a token");
+  res.json("ok");
 });
 
 // catch 404 and forward to error handler

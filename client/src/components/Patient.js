@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
-import { Link } from "react-router-dom"
 import PatHead from './PatHead'
 import Logos from './Logos'
 import '../styles/main.css';
@@ -43,33 +41,35 @@ class TitleColumn extends Component {
 
 class GridSquare extends Component {
 	render() {
+		var cl, tx;
+
 		if (this.props.text === "Yes") { 
-			var cl = "SqYes"
-			var tx = ""
+			cl = "SqYes"
+			tx = ""
 		} else if (this.props.text === "No") { 
-			var cl = "SqNo" 
-			var tx = ""
+			cl = "SqNo" 
+			tx = ""
 		} else if (this.props.text === "Critical") {
-			var cl = "SqCri"
-			var tx = "H"
+			cl = "SqCri"
+			tx = "H"
 		} else if (this.props.text === "Urgent") {
-			var cl = "SqUrg"
-			var tx = "\u00b7\u00b7\u00b7"
+			cl = "SqUrg"
+			tx = "\u00b7\u00b7\u00b7"
 		} else if (this.props.text === "Urgent with fluid") {
-			var cl = "SqUWF"
-			var tx = "\u00b7\u00b7\u00b7"
+			cl = "SqUWF"
+			tx = "\u00b7\u00b7\u00b7"
 		} else if (this.props.text === "Fluid") {
-			var cl = "SqFlu"
-			var tx = "\u00b7\u00b7"
+			cl = "SqFlu"
+			tx = "\u00b7\u00b7"
 		} else if (this.props.text === "Tired") {
-			var cl = "SqTir"
-			var tx = "\u00b7\u00b7"
+			cl = "SqTir"
+			tx = "\u00b7\u00b7"
 		} else if (this.props.text === "Normal") {
-			var cl = "SqNor"
-			var tx = "\u00b7"
+			cl = "SqNor"
+			tx = "\u00b7"
 		} else {
-			var cl = "SqUnd"
-			var tx = ""
+			cl = "SqUnd"
+			tx = ""
 		}
 
 		return(
@@ -81,29 +81,29 @@ class GridSquare extends Component {
 class GridColumn extends Component {
 	render() {
 		return(
-			<div>
-				<HeadBlock className="DateBlock" text={this.props.values['date']} />
-				<GridSquare text={this.props.values['fainted']}/>
-				<GridSquare text={this.props.values['breath_seated']}/>
-				<GridSquare text={this.props.values['chest_pain']}/>
-				<GridSquare text={this.props.values['lightheaded']}/>
-				<GridSquare text={this.props.values['swollen']}/>
-				<GridSquare text={this.props.values['tired']}/>
-				<GridSquare text={this.props.values['breath_night']}/>
-				<GridSquare text={this.props.values['heart_beat']}/>
-				<GridSquare text={this.props.values['status']}/>
-			</div>
+			<main>
+				<HeadBlock key="head" className="DateBlock" text={this.props.values['date']} />
+				<GridSquare key="fainted" text={this.props.values['fainted']}/>
+				<GridSquare key="breath_seated" text={this.props.values['breath_seated']}/>
+				<GridSquare key="chest_pain" text={this.props.values['chest_pain']}/>
+				<GridSquare key="lightheaded" text={this.props.values['lightheaded']}/>
+				<GridSquare key="swollen" text={this.props.values['swollen']}/>
+				<GridSquare key="tired" text={this.props.values['tired']}/>
+				<GridSquare key="breath_night" text={this.props.values['breath_night']}/>
+				<GridSquare key="heart_beat" text={this.props.values['heart_beat']}/>
+				<GridSquare key="status" text={this.props.values['status']}/>
+			</main>
 		);
 	}
 }
 
 class PatBody extends Component {
 	render() {
-		if (typeof(this.props.values[0]) != 'undefined') {
+		if (typeof(this.props.values[0]) !== 'undefined') {
 			var columns = [];
 			for (var i=Object.keys(this.props.values).length-1; i>-1; i--) {
 				columns.push(
-					<GridColumn values={this.props.values[i]} />
+					<GridColumn key={i} values={this.props.values[i]} />
 				);
 			}
 
@@ -159,7 +159,7 @@ class Patient extends Component {
 	}
 
 	render() {
-		if (typeof(this.state.values[0]) != 'undefined') {
+		if (typeof(this.state.values[0]) !== 'undefined') {
 			return (
 			<div className="MiddleTop">
 				<PatHead phone={this.props.match.params.phone}/>

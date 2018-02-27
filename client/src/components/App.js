@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Link, Route, Router, Redirect } from "react-router-dom"
+import { Switch, Route } from "react-router-dom"
 import Login from './Login'
 import PatSearch from './PatSearch'
 import PatBrowse from './PatBrowse'

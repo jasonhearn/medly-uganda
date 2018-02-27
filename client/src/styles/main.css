@@ -6,11 +6,13 @@
 */
 
 h1 {
+  font-weight: 400;
   font-size: 1.5em;
   color: #484848;
 }
 
 h2 {
+  font-weight: 400;
   font-size: 1em;
   color: #000000;
 }
@@ -21,9 +23,13 @@ body {
 }
 
 header {
-  padding-top: 30px;
   padding-left: 20px;
   line-height: 10px;
+}
+
+header h1 {
+  margin-top: -14px;
+  font-weight: 700;
 }
 
 ::placeholder {
@@ -86,14 +92,14 @@ tr {
   padding-top: 10px; 
   margin: 0 auto;
   margin-top: 25px;
-  margin-bottom: 25px;
 
   width: 350px;
 
   color: #000000;
 
   border: 1px solid #000000;
-  border-radius: 20px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
   background: #ffffff;
 }
 
@@ -105,7 +111,7 @@ tr {
 
   padding-top: 0px; 
   padding-bottom: 20px;
-  margin-top: 20px;
+  margin-top: 25px;
 
   width: 700px;
 
@@ -114,12 +120,16 @@ tr {
   border-radius: 20px;
 }
 
+.TableBlock h1 {
+  font-weight: 700;
+}
+
 .FormBlock input {
   padding-left: 5px;
   padding-top: 2px;
   padding-bottom: 2px;
   margin-left: 10px;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 
   width: 200px;
 
@@ -145,11 +155,10 @@ tr {
   padding-top: 2px;
   padding-bottom: 2px;
 
-  width: 250px;
+  width: 300px;
 
   border: 1px solid #000000;
-  border-bottom-left-radius: 17px;
-  border-top-left-radius: 17px;
+  border-radius: 17px;
 
   font-size: inherit;
   font-family: inherit;
@@ -164,15 +173,14 @@ tr {
 }
 
 .HorizButton {
-  margin-top: 5px;
-  margin-bottom: 0px;
+  margin-bottom: 15px;
 
-  width: 100%;  
+  width: 352px;  
 
   background: #000000;
-  border: 1px solid #000000;
-  border-bottom-left-radius: 18px;
-  border-bottom-right-radius: 18px;
+  border: 0.5px solid #000000;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
 
   font-size: inherit;
   font-family: inherit;
@@ -181,7 +189,7 @@ tr {
 }
 
 .HorizButton:disabled {
-  border: 0.5px solid #000000;
+  border: 1px solid #000000;
   background-color: #cccccc;
   color: #666666;
 }
@@ -201,6 +209,35 @@ tr {
   font-weight: inherit;
   color: #ffffff;
 }
+
+.Logout {
+  text-align: right;
+  padding-right: 20px;
+}
+
+.LogoutButton, .ChangePtButton {
+  margin-top: 15px;
+
+  width: 130px;  
+
+  border: 1.0px solid #000000;
+  border-radius: 20px;
+
+  font-size: 12px;
+  font-family: inherit;
+  font-weight: 400;
+  color: #ffffff;
+}
+
+.LogoutButton {
+  background: #B20E0A;
+  margin-left: 20px;
+}
+
+.ChangePtButton {
+  background: #000000;
+}
+
 
 .Picture {
   height: 40px;
