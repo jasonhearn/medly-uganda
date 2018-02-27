@@ -7,7 +7,7 @@
 
 h1 {
   font-weight: 400;
-  font-size: 1.5em;
+  font-size: 1.4em;
   color: #484848;
 }
 
@@ -40,7 +40,7 @@ header h1 {
 table {
   margin: 0 auto;
   border: 2px solid #000000;
-  width: 90%;
+  width: 650px;
   text-align: left;
   border-collapse: collapse;
 }
@@ -55,6 +55,11 @@ th {
   margin-right: 0px;
 }
 
+th:hover:nth-child(-n+2) {
+  cursor: pointer;
+  background-color: #f1f1f1;
+}
+
 tr:nth-child(even) {
   background: #c0c0c0
 }
@@ -63,12 +68,20 @@ tr {
   font-weight: 400;
 }
 
-.link {
+.Link {
   color: #B20E0A;
+  font-weight: 700;
+}
+
+.Icon {
+  height: 24px;
+  margin-left: 10px;
+  margin-bottom: -7px;
 }
 
 .Thumbs {
   padding-top: 20px;
+  padding-bottom: 30px;
   text-align: center;
 }
 
@@ -93,7 +106,7 @@ tr {
   margin: 0 auto;
   margin-top: 25px;
 
-  width: 350px;
+  width: 267px;
 
   color: #000000;
 
@@ -124,19 +137,20 @@ tr {
   font-weight: 700;
 }
 
-.FormBlock input {
-  padding-left: 5px;
-  padding-top: 2px;
+.MainForm input {
+  padding-left: 8px;
+  padding-top: 3px;
   padding-bottom: 2px;
   margin-left: 10px;
-  margin-bottom: 10px;
+  margin-right: 10px;
+  margin-bottom: 9px;
 
   width: 200px;
 
   border: 1px solid #000000;
-  border-radius: 5px;
+  border-radius: 20px;
 
-  font-size: 12px;
+  font-size: 0.9em;
   font-family: inherit;
   font-weight: 400;
 }
@@ -158,7 +172,7 @@ tr {
   width: 300px;
 
   border: 1px solid #000000;
-  border-radius: 17px;
+  border-radius: 20px;
 
   font-size: inherit;
   font-family: inherit;
@@ -175,7 +189,7 @@ tr {
 .HorizButton {
   margin-bottom: 15px;
 
-  width: 352px;  
+  width: 269px;  
 
   background: #000000;
   border: 0.5px solid #000000;
@@ -194,6 +208,11 @@ tr {
   color: #666666;
 }
 
+.HorizButton:hover:enabled {
+  cursor: pointer;
+  background:  #B20E0A;
+}
+
 .VertButton {
   width: 50px;
   height: 100%;
@@ -201,8 +220,8 @@ tr {
 
   background: #000000;
   border: 1px solid #000000;
-  border-top-right-radius: 18px;
-  border-bottom-right-radius: 18px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
 
   font-size: inherit;
   font-family: inherit;
@@ -215,7 +234,7 @@ tr {
   padding-right: 20px;
 }
 
-.LogoutButton, .ChangePtButton {
+.LogoutButton {
   margin-top: 15px;
 
   width: 130px;  
@@ -234,10 +253,11 @@ tr {
   margin-left: 20px;
 }
 
-.ChangePtButton {
-  background: #000000;
+.LogoutButton:hover {
+  background: #ffffff;
+  color: #B20E0A;
+  cursor: pointer;
 }
-
 
 .Picture {
   height: 40px;

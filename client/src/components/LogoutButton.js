@@ -10,7 +10,8 @@ class LogoutButton extends Component {
 	render() {
 		return(
 			<Link to={'/'}>
-	            <Button className="LogoutButton" 
+	            <Button 
+	              className="LogoutButton" 
 	              type="submit" 
 	              onClick={ ()=>{ this.clearLocal() } }
 	            >

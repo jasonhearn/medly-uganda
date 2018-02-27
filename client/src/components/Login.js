@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import { Link } from "react-router-dom"
 import Logos from "./Logos"
+import username from "../pictures/username.png"
+import password from "../pictures/password.png"
 import '../styles/main.css';
 
 class Login extends Component {
@@ -84,21 +86,35 @@ class Login extends Component {
         <h1>Welcome to the Medly Dashboard.</h1>
         <div className="LoginBlock">
           <form>
-            <FormGroup className="FormBlock">
-              <ControlLabel>Username:</ControlLabel>
+            <FormGroup className="MainForm">
+              <ControlLabel>
+                <img 
+                  src={username} 
+                  className='Icon' 
+                  alt="" 
+                />
+              </ControlLabel>
               <FormControl
                 autoFocus
                 name="username"
                 type="text"
+                placeholder="Username"
                 onChange={this.handleChange}
               />
             </FormGroup>
-            <FormGroup className="FormBlock">
-              <ControlLabel>Password:</ControlLabel>
+            <FormGroup className="MainForm">
+              <ControlLabel>
+                <img 
+                  src={password} 
+                  className='Icon'
+                  alt="" 
+                />
+              </ControlLabel>
               <FormControl
                 autoFocus
                 name="password"
                 type="password"
+                placeholder="Password"
                 onChange={this.handleChange}
               />
             </FormGroup>

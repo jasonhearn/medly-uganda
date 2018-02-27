@@ -51,10 +51,12 @@ class BrowseHead extends Component {
 }
 
 class BrowseBody extends Component {
-	sortTable() {
-	  var table, rows, switching, i, x, y, shouldSwitch;
+	sortTable(n) {
+	  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
 	  table = document.getElementById("PtTable");
 	  switching = true;
+	  // Set the sorting direction to ascending:
+	  dir = "asc"; 
 	  /* Make a loop that will continue until
 	  no switching has been done: */
 	  while (switching) {
@@ -68,13 +70,22 @@ class BrowseBody extends Component {
 	      shouldSwitch = false;
 	      /* Get the two elements you want to compare,
 	      one from current row and one from the next: */
-	      x = rows[i].getElementsByTagName("td")[0];
-	      y = rows[i + 1].getElementsByTagName("td")[0];
-	      // Check if the two rows should switch place:
-	      if (x.innerText.toLowerCase() > y.innerText.toLowerCase()) {
-	        // I so, mark as a switch and break the loop:
-	        shouldSwitch = true;
-	        break;
+	      x = rows[i].getElementsByTagName("td")[n];
+	      y = rows[i + 1].getElementsByTagName("td")[n];
+	      /* Check if the two rows should switch place,
+	      based on the direction, asc or desc: */
+	      if (dir == "asc") {
+	        if (x.innerText.toLowerCase() > y.innerText.toLowerCase()) {
+	          // If so, mark as a switch and break the loop:
+	          shouldSwitch= true;
+	          break;
+	        }
+	      } else if (dir == "desc") {
+	        if (x.innerText.toLowerCase() < y.innerText.toLowerCase()) {
+	          // If so, mark as a switch and break the loop:
+	          shouldSwitch= true;
+	          break;
+	        }
 	      }
 	    }
 	    if (shouldSwitch) {
@@ -82,16 +93,25 @@ class BrowseBody extends Component {
 	      and mark that a switch has been done: */
 	      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
 	      switching = true;
+	      // Each time a switch is done, increase this count by 1:
+	      switchcount ++; 
+	    } else {
+	      /* If no switching has been done AND the direction is "asc",
+	      set the direction to "desc" and run the while loop again. */
+	      if (switchcount == 0 && dir == "asc") {
+	        dir = "desc";
+	        switching = true;
+	      }
 	    }
+	  }
 	}
-}
 
 	render() {
 		if (typeof(this.props.values) !== 'undefined') {
 			var rows = [];
 			rows.push(
 				<tr key={0}>
-					<th onClick={ ()=>{ this.sortTable() } }>
+					<th onClick={ ()=>{ this.sortTable(0) } }>
 						Family name
 						<img src={sort} 
 						style={{
@@ -100,7 +120,15 @@ class BrowseBody extends Component {
 							marginBottom: '-2px'}} 
 						alt="" />
 					</th>
-					<th>Given name</th>
+					<th onClick={ ()=>{ this.sortTable(1) } }>
+						Given name
+						<img src={sort} 
+						style={{
+							height: '15px', 
+							marginLeft: '10px',
+							marginBottom: '-2px'}} 
+						alt="" />
+					</th>
 					<th>Sex</th>
 					<th>Age</th>
 					<th>Phone</th>
@@ -108,10 +136,11 @@ class BrowseBody extends Component {
 				);
 			for (var i=0; i<Object.keys(this.props.values).length; i++) {
 				const vals = this.props.values[i]
+				console.log(vals)
 				rows.push(
 					<tr key={i+1}>
 						<td>
-							<Link to={'/patient/'+vals.urns["0"].substr(4)} className="link" style={{fontWeight: '700'}}>
+							<Link to={'/patient/'+vals.urns["0"].substr(4)} className="Link" style={{fontWeight: '700'}}>
 								{vals.name.split(' ')[1].toUpperCase()}
 							</Link>
 						</td>
@@ -149,11 +178,13 @@ class PatBrowse extends Component {
 	}
 
 	componentDidMount() {
-		var url = '/contacts';
+		var url = '/proxy/api/v2/contacts.json';
+		var group = 'Patients'
+		var query = url + '?group=' + group
 
-		fetch(url)
+		fetch(query)
 			.then(res => res.json())
-			.then(data => this.setState({ data : data[0].results }))
+			.then(data => this.setState({ data : data.results }))
 	}
 
 	render() {

@@ -3,6 +3,7 @@ import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import { Link } from "react-router-dom"
 import Logos from "./Logos"
 import LogoutButton from './LogoutButton'
+import phone from "../pictures/phone.png"
 import '../styles/main.css';
 
 class PatSearch extends Component {
@@ -91,9 +92,15 @@ class PatSearch extends Component {
           <div className="LoginBlock">
             <form>
               <FormGroup 
-                className="FormBlock"
+                className="MainForm"
               >
-                <ControlLabel>Phone:</ControlLabel>
+                <ControlLabel>
+                  <img 
+                    src={phone} 
+                    className='Icon' 
+                    alt="" 
+                  />
+                </ControlLabel>
                 <FormControl
                   autoFocus
                   type="text"
@@ -115,7 +122,7 @@ class PatSearch extends Component {
             </Button>
           </Link>
 
-          <h2>Don't know the phone number? <Link to='/patbrowse' className='link'>Browse your patients</Link>.</h2>
+          <h2>Don't know the phone number? <Link to='/patbrowse' className='Link'>Browse your patients</Link>.</h2>
           
           <Logos />
 
