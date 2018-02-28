@@ -16,6 +16,7 @@ var basicAuth = require('express-basic-auth')
 var jwt    = require('jsonwebtoken');
 var passport = require("passport");
 var passportJWT = require("passport-jwt");
+var request = require('request');
 
 var ExtractJwt = passportJWT.ExtractJwt;
 var JwtStrategy = passportJWT.Strategy;
@@ -42,9 +43,6 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(bodyParser.json())
-app.get("/", function(req, res) {
-  res.json({message: "Express is up!"});
-});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -116,6 +114,23 @@ app.post("/auth", function(req, res) {
 // Test authentication strategy
 app.get("/secret", passport.authenticate('jwt', { session: false }), function(req, res){
   res.json("ok");
+});
+
+// Test authentication strategy
+app.get("/contByGroup", passport.authenticate('jwt', { session: false }), function(req, res){
+  var options = {
+    url: 'https://api.textit.in/api/v2/contacts.json?group=' + req.param('group'),
+    headers: {
+      'Authorization': 'Token f3cfe4509225eea931254f4368cb3ebb003c618e',
+      'Cache-Control': 'no-cache'
+    }
+  }
+  request(options, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      console.log(body)
+      res.send(body)
+    }
+  })
 });
 
 // catch 404 and forward to error handler

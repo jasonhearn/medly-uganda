@@ -27,7 +27,6 @@ export default function requireAuth(Component) {
 		        .then(res => res.json())
 		        .then(status => {
 		        	localStorage.setItem('status', status)
-		        	localStorage.setItem('proceed', 'ok')
 		        })
 		    }
 		}
