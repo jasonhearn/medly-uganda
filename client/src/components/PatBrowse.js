@@ -109,25 +109,22 @@ class BrowseBody extends Component {
 	render() {
 		if (typeof(this.props.values) !== 'undefined') {
 			var rows = [];
+			var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 			rows.push(
 				<tr key={0}>
 					<th onClick={ ()=>{ this.sortTable(0) } }>
 						Family name
 						<img src={sort} 
-						style={{
-							height: '15px', 
-							marginLeft: '10px',
-							marginBottom: '-2px'}} 
-						alt="" />
+							className='SortIcon' 
+							alt=""
+						/>
 					</th>
 					<th onClick={ ()=>{ this.sortTable(1) } }>
 						Given name
 						<img src={sort} 
-						style={{
-							height: '15px', 
-							marginLeft: '10px',
-							marginBottom: '-2px'}} 
-						alt="" />
+							className='SortIcon' 
+							alt="" 
+						/>
 					</th>
 					<th>Sex</th>
 					<th>Age</th>
@@ -137,6 +134,11 @@ class BrowseBody extends Component {
 			for (var i=0; i<Object.keys(this.props.values).length; i++) {
 				const vals = this.props.values[i]
 				console.log(vals)
+				if (width < 700) {
+					var phone = vals.urns["0"].substr(8)
+				} else {
+					var phone = vals.urns["0"].substr(4)
+				}
 				rows.push(
 					<tr key={i+1}>
 						<td>
@@ -147,7 +149,7 @@ class BrowseBody extends Component {
 						<td>{vals.name.split(' ')[0]}</td>
 						<td>{vals.fields.sex}</td>
 						<td>{vals.fields.age}</td>
-						<td>{vals.urns["0"].substr(4)}</td>
+						<td>{phone}</td>
 					</tr>
 				);
 			}

@@ -19,9 +19,15 @@ class ChangePt extends Component {
 		if (prevState === null || prevState.data !== this.state.data) {
 			var contacts = [];
 			var contact
+			var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 			const vals = this.state.data
 			for (var i=0; i<Object.keys(this.state.data).length; i++) {
-				contact = vals[i].name.split(' ')[1].toUpperCase() + ', ' + vals[i].name.split(' ')[0]
+				if (width > 700) {
+					contact = vals[i].name.split(' ')[1].toUpperCase() + ', ' + vals[i].name.split(' ')[0]
+				} else {
+					contact = vals[i].name.split(' ')[1].toUpperCase() + ', ' + vals[i].name.split(' ')[0][0] + '.'
+				}
+				
 				contacts.push(
 					<li>
 						<a><Link to={'/patient/'+vals[i].urns["0"].substr(4)}>
@@ -30,10 +36,10 @@ class ChangePt extends Component {
 					</li>
 				)
 			}
+			if (width > 700) { var searchText = 'Search by phone number' } else { var searchText = 'Search by phone' }
 			contacts.push(
-				<li>
-					<a><Link to={'/patsearch'}>
-						Search by phone number
+				<li><a><Link to={'/patsearch'}>
+						{searchText}
 					</Link></a>
 				</li>
 			)
@@ -47,7 +53,7 @@ class ChangePt extends Component {
 		if (this.state !== null) {
 			return(
 				<div className="dropdown">
-			  		<Button className="ChangePtButton">Change patient</Button>
+			  		<Button className="ChangePtButton">Change Patient</Button>
 			  		<div className="dropdownContent">
 			  			{this.state.contacts}
 			  		</div>

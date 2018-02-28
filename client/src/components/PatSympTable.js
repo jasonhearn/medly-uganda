@@ -5,15 +5,24 @@ import '../styles/symptoms.css'
 
 class HeadBlock extends Component {
 	render() {
-		if (this.props.text === this.props.today) {
-			return(
-				<div className={this.props.className}>TODAY</div>
-			);
+		if (this.props.className === "SympBlock") {
+			var text = this.props.text;
 		} else {
-			return(
-				<div className={this.props.className}>{this.props.text}</div>
-			);
+			if (this.props.text === this.props.today) {
+				var text = 'TODAY';
+			} else {
+				var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+				if (width < 700) {
+					var text = this.props.text.substr(3);
+				} else {
+					var text = this.props.text;
+				}
+			}
 		}
+
+		return(
+			<div className={this.props.className}>{text}</div>
+		);
 	}
 }
 

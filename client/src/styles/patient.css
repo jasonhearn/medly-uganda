@@ -6,24 +6,35 @@
 */
 
 .ChangePtButton, .SaveNotesButton {
-  margin-top: 15px;
-
-  width: 130px;  
+  margin-top: 15px;  
 
   border: 1.0px solid #000000;
   border-radius: 20px;
 
-  font-size: 12px;
   font-family: inherit;
   font-weight: 400;
   color: #ffffff;
 }
 
 .ChangePtButton {
+  height: 25px;
+  width: 115px;
+  font-size: 0.7em;
   background: #000000;
 }
 
+@media (min-width: 700px) {
+  .ChangePtButton {
+    font-size: 0.8em;
+    height: 20px;
+    width: 130px;
+  }
+}
+
 .SaveNotesButton {
+  font-size: 12px;
+  width: 130px;
+  margin-bottom: -2%;
   margin-left: auto;
   margin-right: auto;
   background: #484848;
@@ -48,11 +59,19 @@
     display: none;
     position: absolute;
     background-color: #f9f9f9;
-    min-width: 280px;
+
+    width: 180px;
+    
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     border-radius: 20px;
     border: 1px solid #000000;
     z-index: 1;
+}
+
+@media (min-width: 700px) {
+  .dropdownContent {
+    width: 280px;
+  }
 }
 
 .dropdownContent li {
@@ -109,11 +128,16 @@
 .Table {
   margin: 0 auto;
   border: 2px solid #000000;
-  width: 650px;
+  width: 93%;
+}
+
+.GridRow {
+  display: flex;
+  width: 100%;
 }
 
 .DateBlock, .NoteBlock {
-  height: 40px;
+  height: 33px;
   border: 1px solid #A9A9A9;
 
   display: flex;
@@ -122,27 +146,32 @@
   flex-direction: column;
 
   text-align: center;
-  font-size: 0.7em;
+  font-size: 0.5em;
   color: #000000;
   font-weight: 700;
 } 
 
+@media (min-width: 700px) {
+  .DateBlock, .NoteBlock {
+    height: 40px;
+    font-size: 0.7em;
+  } 
+}
+
 .DateBlock {
-  width: 100px;
+  width: 15%;
 }
 
-.NoteBlock: {
-  width: 550px;
+.NoteBlock {
+  width: 85%;
 }
 
-.NotesForm textarea {
-  margin-top: 3px;
+.NoteBlock textarea {
   padding-left: 8px;
   padding-top: 3px;
   padding-bottom: 2px;
 
-  height: 35px;
-  width: 550px;
+  height: 40px;
 
   font-size: 1.0em;
   font-family: inherit;
@@ -150,8 +179,4 @@
   word-wrap: break-word;
   word-break: break-all;
   resize: none;
-}
-
-.GridRow {
-  display: flex;
 }

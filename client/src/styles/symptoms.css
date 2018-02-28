@@ -6,7 +6,13 @@
 
 .DateHead, .TitleBlock, .SqNo, .SqYes, .SqCri, .SqUrg, .SqUWF, .SqFlu, .SqTir, .SqNor, .SqUnd {
   border: 1px solid #A9A9A9;
-  height: 40px;
+  height: 30px;
+}
+
+@media (min-width: 700px) {
+  .DateHead, .TitleBlock, .SqNo, .SqYes, .SqCri, .SqUrg, .SqUWF, .SqFlu, .SqTir, .SqNor, .SqUnd {
+    height: 40px;
+  }
 }
 
 .SympBlock, .DateHead, .TitleBlock, .NoteBlock {
@@ -16,21 +22,36 @@
   flex-direction: column;
 
   text-align: center;
-  font-size: 0.7em;
+  font-size: 0.5em;
   color: #000000;
   font-weight: 700;
 } 
 
+@media (min-width: 700px) {
+  .SympBlock, .DateHead, .TitleBlock, .NoteBlock {
+    font-size: 0.7em;
+  }
+}
+
 .SqNo, .SqYes, .SqCri, .SqUrg, .SqUWF, .SqFlu, .SqTir, .SqNor, .SqUnd {
+  width: 40px;
+
   display: flex;
   justify-content: center;
   align-content: center;
   flex-direction: column;
 
   text-align: center;
-  font-size: 2em;
+  font-size: 1.3em;
   color: #000000;
   font-weight: 700;
+}
+
+@media (min-width: 700px) {
+  .SqNo, .SqYes, .SqCri, .SqUrg, .SqUWF, .SqFlu, .SqTir, .SqNor, .SqUnd {
+    width: 60px; 
+    font-size: 2em;
+  }
 }
 
 .SympBlock, .DateHead {
@@ -38,15 +59,17 @@
 }
 
 .SympBlock, .TitleBlock {
-  width: 100px;
+  width: 80px;
+}
+
+@media (min-width: 700px) {
+  .SympBlock, .TitleBlock {
+    width: 100px;
+  }
 }
 
 .SympBlock {
   border: 1px solid #A9A9A9;
-}
-
-.SqNo, .SqYes, .SqCri, .SqUrg, .SqUWF, .SqFlu, .SqTir, .SqNor, .SqUnd {
-  width: 60px; 
 }
 
 .SqNo {

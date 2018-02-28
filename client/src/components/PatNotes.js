@@ -10,14 +10,18 @@ import '../styles/patient.css'
 class DateBlock extends Component {
 	render() {
 		if (this.props.text === this.props.today) {
-			return(
-				<div className="DateBlock">TODAY</div>
-			);
+			var text = 'TODAY';
 		} else {
-			return(
-				<div className="DateBlock">{this.props.text}</div>
-			);
-		}		
+			var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+			if (width < 700) {
+				var text = this.props.text.substr(3);
+			} else {
+				var text = this.props.text
+			}
+		}
+		return(
+			<div className="DateBlock">{text}</div>
+		);		
 	}
 }
 
@@ -25,15 +29,10 @@ class NoteBlock extends Component {
 	render() {
 		return(
 			<div className="NoteBlock">
-				<form>
-		            <FormGroup className="NotesForm">
-		              <textarea 
-		              	className="form-control" 
-		              	placeholder="No notes recorded"
-		              >
-		              </textarea>
-		            </FormGroup>
-          		</form>
+                <textarea
+              	  placeholder="No notes recorded"
+                >
+            	</textarea>
 			</div>
 		);
 	}
