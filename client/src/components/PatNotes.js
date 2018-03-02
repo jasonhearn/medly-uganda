@@ -1,36 +1,73 @@
 import React, { Component } from 'react';
-import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
-import PatHead from './PatHead'
-import PatSympTable from './PatSympTable'
-import Logos from './Logos'
+import { Button } from "react-bootstrap";
 import calcToday from './calcToday'
+import success from "../pictures/success.png"
 import '../styles/main.css';
 import '../styles/patient.css'
 
+class SavedMessage extends Component {
+  render() {
+    if (this.props.saved) {
+      return(
+        <div className='Success'>
+          <img 
+            src={success} 
+            className='ErrorIcon' 
+            alt="" 
+          />
+          All notes saved to database
+        </div>
+      );
+    } else {
+      return(
+        <div> </div>
+    )}
+  }
+}
+
 class DateBlock extends Component {
 	render() {
-		if (this.props.text === this.props.today) {
-			var text = 'TODAY';
+		var date;
+		// if (this.props.text === this.props.today) {
+		if (this.props.date === '18-02-14') {
+			date = 'TODAY';
 		} else {
+			var dd = this.props.date.substr(6,2)
+			var mm = this.props.date.substr(3,2)
+			var yy = this.props.date.substr(0,2)
 			var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 			if (width < 700) {
-				var text = this.props.text.substr(3);
+				date = dd + '/' + mm;
 			} else {
-				var text = this.props.text
+				date = dd + '/' + mm + '/' + yy;
 			}
 		}
 		return(
-			<div className="DateBlock">{text}</div>
+			<div className="DateBlock">{date}</div>
 		);		
 	}
 }
 
 class NoteBlock extends Component {
+	constructor(props) { 
+		super(props)
+		this.state = { 
+			note: this.props.note
+		}
+	}
+
 	render() {
+		var date = this.props.date
+		var id   = "notesOn"+date
 		return(
 			<div className="NoteBlock">
                 <textarea
               	  placeholder="No notes recorded"
+              	  value={this.state.note}
+              	  id={id}
+              	  onChange = { (e) => {
+              	  	this.setState({note: e.target.value})
+              	  }}
                 >
             	</textarea>
 			</div>
@@ -40,35 +77,100 @@ class NoteBlock extends Component {
 
 class GridRow extends Component {
 	render() {
+		var date = this.props.values['date']
+		var note = this.props.notes[date]
 		return(
 			<div className="GridRow">
-				<DateBlock text={this.props.values['date']} today={this.props.today} />
-				<NoteBlock />
+				<DateBlock date={date} today={this.props.today} />
+				<NoteBlock date={date} note={note}/>
 			</div>
 		);
 	}
 }
 
 class PatNotes extends Component {
+	constructor(props) { 
+		super(props)
+		this.state = { 
+			notes: {},
+			saved: false
+		}
+	}
+
+	componentDidMount() {
+		var uuid = this.props.uuid;
+	    var token = localStorage.getItem('token');
+
+	    var url = '/getNotes?uuid=' + uuid
+	    var request = {
+	      headers: {
+	      	'Authorization': 'Bearer ' + token,
+	      },
+	    }
+
+	    fetch(url, request)
+	    	.then(res => res.json())
+			.then(data => this.setState({ notes : data }))
+	}
+
+	saveNotes() {
+		var dates = [];
+		// var formBody = [];
+		var vals = this.props.values
+		var noteObj = {
+			uuid: this.props.uuid,
+			notes: {}
+		};
+		for (var i=Object.keys(this.props.values).length-1; i>-1; i--) {
+			dates.push(vals[i]['date'])
+		} 
+
+		for (var j=0; j<dates.length; j++) {
+			var elem = document.getElementById('notesOn'+dates[j])
+			noteObj['notes'][dates[j]] = elem.value
+		}
+
+		var payload = JSON.stringify(noteObj)
+
+	    var token = localStorage.getItem('token');
+
+	    var request = {
+	      method: 'POST',
+	      headers: {
+	      	'Authorization': 'Bearer '+token,
+	      	'Content-Type': 'application/json'
+	      },
+	      body: payload
+	    }
+
+	    fetch('/saveNotes', request)
+	    	.then(res => {
+	    		if (res.status === 200) {
+	    			this.setState({ saved: true })
+	    		}
+	    	})
+	}
+
 	render() {
-		if (typeof(this.props.values[0]) !== 'undefined') {
+		if (!!this.props.values[0] && Object.keys(this.state.notes).length !== 0) {
 			var today = calcToday()
 			var rows = [];
 			for (var i=Object.keys(this.props.values).length-1; i>-1; i--) {
 				rows.push(
-					<GridRow key={i} values={this.props.values[i]} today={today} />
+					<GridRow key={i} today={today} values={this.props.values[i]} notes={this.state.notes} />
 				);
 			}
 
 			return (
-				<div className="TableBlock">
+				<div className="TableBlock" style={{paddingBottom: '3%'}}>
 					<h1>CLINICIAN NOTES</h1>
 					<div className="Table">
 						{rows}
 					</div>
-					<Button className="SaveNotesButton" type="submit">
+					<Button className="SaveNotesButton" type="submit" onClick = {() => this.saveNotes() }>
 		              Save Notes
 		            </Button>
+		            <SavedMessage saved={this.state.saved}/>
 				</div>
 				);
 		} else {

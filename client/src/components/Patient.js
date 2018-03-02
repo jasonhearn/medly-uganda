@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import PatHead from './PatHead'
 import PatSympTable from './PatSympTable'
 import PatNotes from './PatNotes'
@@ -12,7 +11,8 @@ class Patient extends Component {
 		super(props)
 		this.state = { 
 			data : {},
-			values: {} 
+			values: {},
+			uuid: '' 
 		}
 	}
 
@@ -36,17 +36,21 @@ class Patient extends Component {
 					tmp_val[i][var_keys[j]] = tmp_dict[var_keys[j]]['category']
 				}
 			}
-			this.setState({values : tmp_val})
+			var uuid = this.state.data[0].results[0].contact.uuid
+			this.setState({
+				values : tmp_val,
+				uuid : uuid
+			})
 		}
 	}
 
 	render() {
-		if (typeof(this.state.values[0]) !== 'undefined') {
+		if (!!this.state.values[0]) {
 			return (
 				<div className="MiddleTop">
 					<PatHead phone={this.props.match.params.phone} />
 					<PatSympTable values={this.state.values} />
-					<PatNotes values={this.state.values} />
+					<PatNotes values={this.state.values} uuid={this.state.uuid} />
 					<Logos />
 				</div>
 			);

@@ -15,6 +15,7 @@ h2 {
   font-weight: 400;
   font-size: 0.65em;
   color: #000000;
+  line-height: 1.1em;
 }
 
 @media (min-width: 700px) { 
@@ -53,7 +54,7 @@ header h1 {
   font-weight: 700;
 }
 
-@media (min-width: 700 px) {
+@media (min-width: 700px) {
   header h1 {
     margin-top: -14px;
   }
@@ -116,6 +117,18 @@ tr {
   margin-bottom: -7px;
 }
 
+.ErrorIcon {
+  height: 18px;
+  margin-right: 7px;
+  margin-bottom: -5px;
+}
+@media (min-width: 700px) {
+  .ErrorIcon {
+    margin-bottom: -7px;
+    height: 24px;
+  }
+}
+
 .SortIcon {
   height: 10px;
   margin-left: 10px;
@@ -168,6 +181,30 @@ tr {
   }
 }
 
+.Error {
+  color: #B20E0A;
+  font-size: 0.8em;
+  font-weight: 400;
+  margin-top: 10px;
+  margin-bottom: 25px;
+}
+@media (min-width: 700px) {
+  .Error {
+    font-size: 1em;
+  }
+}
+
+.Success {
+  color: #000000;
+  font-size: 0.8em;
+  font-weight: 400;
+  margin-top: 3%;
+}
+@media (min-width: 700px) {
+  .Success {
+    font-size: 0.9em;
+  }
+}
 
 .LoginBlock {
   padding-top: 10px; 
@@ -353,7 +390,20 @@ tr {
   padding-left: 8px;
   padding-right: 8px;
 }
-
+@media (min-width: 420px) and (max-width: 700px) {
+  .Picture {
+    height: 24px;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+@media (min-width: 550px) and (max-width: 700px) {
+  .Picture {
+    height: 30px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
 @media (min-width: 700px) { 
   .Picture {
     height: 40px; 

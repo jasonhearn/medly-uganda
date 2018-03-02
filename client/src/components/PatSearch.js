@@ -4,7 +4,28 @@ import { Link } from "react-router-dom"
 import Logos from "./Logos"
 import LogoutButton from './LogoutButton'
 import phone from "../pictures/phone.png"
+import error from "../pictures/error.png"
 import '../styles/main.css';
+
+class ErrorMessage extends Component {
+  render() {
+    if (this.props.failed) {
+      return(
+        <div className='Error'>
+          <img 
+            src={error} 
+            className='ErrorIcon' 
+            alt="" 
+          />
+          Phone number not in database.
+        </div>
+      );
+    } else {
+      return(
+        <div className='Error'> </div>
+    )}
+  }
+}
 
 class PatSearch extends Component {
   constructor(props, context) {
@@ -17,18 +38,26 @@ class PatSearch extends Component {
     this.state = {
       phone: '',
       phoneList: [],
-      formError: '',
+      failed: false,
       phoneValid: false,
       data: {}
     };
   }
 
   componentDidMount() {
-    var url = '/proxy/api/v2/contacts.json';
+    var url = '/contAll'
 
-    fetch(url)
-        .then(res => res.json())
-        .then(data => this.setState({ data: data.results }));
+    var token = localStorage.getItem('token');
+
+    var request = {
+      headers: {
+        'Authorization': 'Bearer '+token
+      }
+    }
+
+    fetch(url,request)
+      .then(res => res.json())
+      .then(data => this.setState({ data : data.results }))
   }
 
   componentDidUpdate(prevProps,prevState) {
@@ -51,7 +80,10 @@ class PatSearch extends Component {
       this.setState({ phone: e.target.value },
         () => {this.validateField(this.state.phone) });
     } else {
-      this.setState({ phoneValid : false })
+      this.setState({ 
+        phoneValid: false,
+        failed: false 
+      })
     }
   }
 
@@ -64,9 +96,11 @@ class PatSearch extends Component {
       phone = area + phone
     }
     
-    console.log(phone)
     phoneValid = this.state.phoneList.indexOf(phone) > -1
-    formError = phoneValid ? '' : ' is not in database'
+
+    if (phone.length >= 12 && !phoneValid) {
+      this.setState({ failed: true })
+    }
 
     this.setState( { phone: phone,
                      formError: formError,
@@ -121,6 +155,8 @@ class PatSearch extends Component {
               OK
             </Button>
           </Link>
+
+          <ErrorMessage failed={this.state.failed} />
 
           <h2>Don't know the phone number? <Link to='/patbrowse' className='Link'>Browse your patients</Link>.</h2>
           

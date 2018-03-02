@@ -6,6 +6,7 @@
 */
 
 .ChangePtButton, .SaveNotesButton {
+  cursor: pointer;
   margin-top: 15px;  
 
   border: 1.0px solid #000000;
@@ -34,7 +35,7 @@
 .SaveNotesButton {
   font-size: 12px;
   width: 130px;
-  margin-bottom: -2%;
+  margin-top: 3%;
   margin-left: auto;
   margin-right: auto;
   background: #484848;
@@ -171,7 +172,8 @@
   padding-top: 3px;
   padding-bottom: 2px;
 
-  height: 40px;
+  height: 100%;
+  border: 0px;
 
   font-size: 1.0em;
   font-family: inherit;

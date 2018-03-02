@@ -18,26 +18,21 @@ export default function requireAuth(Component) {
 		    var request = {
 				method: 'GET',
 				headers: {
-				'Authorization': 'Bearer '+token
+					'Authorization': 'Bearer '+token
 				},
 		    }
 
 		    if (token !== 'undefined' && token !== null) {
 		    	fetch('/secret', request)
-		        .then(res => res.json())
-		        .then(status => {
-		        	localStorage.setItem('status', status)
-		        })
+			        .then(res => this.setState({status: res.status}))
 		    }
 		}
 
 	    render() {
-	    	var token = localStorage.getItem('token')
-	    	var status = localStorage.getItem('status')
-	    	var proceed = localStorage.getItem('proceed')
-
-	    	if (typeof(proceed) !== "undefined") {
-		        return status === "ok" && token !== 'undefined'
+	    	if (!!this.state.status || 
+	    		!localStorage.getItem('token') ||
+	    		localStorage.getItem('token') === 'undefined') {
+		        return this.state.status === 200
 			        ? <Component { ...this.props } />
 			        : <Redirect to="/" />;
 			} else {

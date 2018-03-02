@@ -1,10 +1,31 @@
 import React, { Component } from 'react';
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
-import { Link } from "react-router-dom"
+import { Redirect } from "react-router-dom"
 import Logos from "./Logos"
 import username from "../pictures/username.png"
 import password from "../pictures/password.png"
+import error from "../pictures/error.png"
 import '../styles/main.css';
+
+class ErrorMessage extends Component {
+  render() {
+    if (this.props.failed) {
+      return(
+        <div className='Error'>
+          <img 
+            src={error} 
+            className='ErrorIcon' 
+            alt="" 
+          />
+          Something isn't right. Please try again.
+        </div>
+      );
+    } else {
+      return(
+        <div className='Error'> </div>
+    )}
+  }
+}
 
 class Login extends Component {
   constructor(props, context) {
@@ -17,13 +38,15 @@ class Login extends Component {
       res: {},
       username: '',
       password: '',
+      failed: false,
+      success: false,
       usernameValid: false,
       passwordValid: false }
   }
 
   getAuth(name,value) {
     var details = {
-        name: name,
+        username: name,
         password: value
       }
 
@@ -44,13 +67,15 @@ class Login extends Component {
       body: formBody
     }
 
-    console.log(request)
-
     fetch('/auth', request)
       .then(res => res.json())
       .then(data => {
-        localStorage.setItem('token',data.token)
-        localStorage.setItem('status',data.message)
+        if (data.token) {
+          localStorage.setItem('token',data.token)
+          this.setState({success: true})
+        } else {
+          this.setState({failed: true})
+        }
       }
     )
   }
@@ -62,15 +87,8 @@ class Login extends Component {
       this.setState({ [name]: value })
       if (name === 'username') { 
         this.setState({ usernameValid : true }) 
-        if (this.state.passwordValid === true) {
-          this.getAuth(value,this.state.password)
-        }
       } else {
         this.setState({ passwordValid : true }) 
-        console.log(value)
-        if (this.state.usernameValid === true) {
-          this.getAuth(this.state.username,value)
-        }
       }
     } else {
       if (name === 'username') { 
@@ -81,11 +99,14 @@ class Login extends Component {
   }
 
   render() {
-    return (
-      <div className="Middle">
-        <h1>Welcome to the Medly Dashboard.</h1>
-        <div className="LoginBlock">
-          <form>
+    if (this.state.success) {
+      return <Redirect push to="/patsearch" />;
+    } else {
+      localStorage.clear();
+      return (
+        <div className="Middle">
+          <h1>Welcome to the Medly Dashboard.</h1>
+          <div className="LoginBlock">
             <FormGroup className="MainForm">
               <ControlLabel>
                 <img 
@@ -118,23 +139,22 @@ class Login extends Component {
                 onChange={this.handleChange}
               />
             </FormGroup>
+          </div>
 
-          </form>
-
-        </div>
-
-        <Link to='/patsearch'>
           <Button className="HorizButton" 
-          disabled={!(this.state.usernameValid && this.state.passwordValid)}
+            disabled={!(this.state.usernameValid && this.state.passwordValid)}
+            onClick={() => { this.getAuth(this.state.username, this.state.password) }}
           >
             Login
           </Button>
-        </Link>
 
-        <Logos />
+          <ErrorMessage failed={this.state.failed} />
 
-      </div>
-    );
+          <Logos />
+
+        </div>
+      );
+    }
   }
 }
 

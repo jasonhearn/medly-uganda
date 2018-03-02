@@ -25,7 +25,7 @@ class ChangePt extends Component {
 	componentDidUpdate(prevProps,prevState) {
 		if (prevState === null || prevState.data !== this.state.data) {
 			var contacts = [];
-			var contact
+			var contact, searchText;
 			var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 			const vals = this.state.data
 			for (var i=0; i<Object.keys(this.state.data).length; i++) {
@@ -36,27 +36,26 @@ class ChangePt extends Component {
 				}
 				
 				contacts.push(
-					<li>
+					<li key={i}>
 						<a><Link to={'/patient/'+vals[i].urns["0"].substr(4)}>
 							{contact}
 						</Link></a>
 					</li>
 				)
 			}
-			if (width > 700) { var searchText = 'Search by phone number' } else { var searchText = 'Search by phone' }
+			if (width > 700) { searchText = 'Search by phone number' } else { searchText = 'Search by phone' }
 			contacts.push(
-				<li><a><Link to={'/patsearch'}>
+				<li key="last'">
+					<a><Link to={'/patsearch'}>
 						{searchText}
 					</Link></a>
 				</li>
 			)
-			console.log(contacts)
 			this.setState({ contacts: contacts})
 		}
 	}
 
 	render() {
-		console.log(this.state)
 		if (this.state !== null) {
 			return(
 				<div className="dropdown">
@@ -86,12 +85,17 @@ class PatHead extends Component {
 			}
 
 	componentDidMount() {
-		var url = '/proxy/api/v2/contacts.json';
-		var phone = this.props.phone;
-		var query = url + '?urn=tel:' + phone
+		var phone = this.props.phone
+		var url = '/contByPhone?phone=' + phone
 
-		fetch(query)
-  			.then(res => res.json())
+		var token = localStorage.getItem('token');
+
+	    var request = {
+			headers: { 'Authorization': 'Bearer ' + token }
+	    }
+
+		fetch(url,request)
+			.then(res => res.json())
   			.then(data => this.setState({ name : data.results["0"].name,
   										  age : data.results["0"].fields.age,
   										  sex : data.results["0"].fields.sex,

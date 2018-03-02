@@ -5,17 +5,22 @@ import '../styles/symptoms.css'
 
 class HeadBlock extends Component {
 	render() {
+		var text;
 		if (this.props.className === "SympBlock") {
-			var text = this.props.text;
+			text = this.props.text;
 		} else {
-			if (this.props.text === this.props.today) {
-				var text = 'TODAY';
+			// if (this.props.text === this.props.today) {
+			if (this.props.text === '18-02-14') {
+				text = 'TODAY';
 			} else {
+				var dd = this.props.text.substr(6,2)
+				var mm = this.props.text.substr(3,2)
+				var yy = this.props.text.substr(0,2)
 				var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 				if (width < 700) {
-					var text = this.props.text.substr(3);
+					text = dd + '/' + mm;
 				} else {
-					var text = this.props.text;
+					text = dd + '/' + mm + '/' + yy;
 				}
 			}
 		}
@@ -56,7 +61,6 @@ class TitleColumn extends Component {
 class GridSquare extends Component {
 	render() {
 		var cl, tx;
-
 		if (this.props.text === "Yes") { 
 			cl = "SqYes"
 			tx = ""
@@ -85,7 +89,6 @@ class GridSquare extends Component {
 			cl = "SqUnd"
 			tx = ""
 		}
-
 		return(
 			<div className={cl}>{tx}</div>
 		);
@@ -113,7 +116,7 @@ class GridColumn extends Component {
 
 class PatSympTable extends Component {
 	render() {
-		if (typeof(this.props.values[0]) !== 'undefined') {
+		if (!!this.props.values[0]) {
 			var today = calcToday();
 
 			var columns = [];

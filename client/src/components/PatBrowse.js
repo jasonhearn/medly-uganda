@@ -74,16 +74,16 @@ class BrowseBody extends Component {
 	      y = rows[i + 1].getElementsByTagName("td")[n];
 	      /* Check if the two rows should switch place,
 	      based on the direction, asc or desc: */
-	      if (dir == "asc") {
+	      if (dir === "asc") {
 	        if (x.innerText.toLowerCase() > y.innerText.toLowerCase()) {
 	          // If so, mark as a switch and break the loop:
 	          shouldSwitch= true;
 	          break;
 	        }
-	      } else if (dir == "desc") {
+	      } else if (dir === "desc") {
 	        if (x.innerText.toLowerCase() < y.innerText.toLowerCase()) {
 	          // If so, mark as a switch and break the loop:
-	          shouldSwitch= true;
+	          shouldSwitch = true;
 	          break;
 	        }
 	      }
@@ -98,7 +98,7 @@ class BrowseBody extends Component {
 	    } else {
 	      /* If no switching has been done AND the direction is "asc",
 	      set the direction to "desc" and run the while loop again. */
-	      if (switchcount == 0 && dir == "asc") {
+	      if (switchcount === 0 && dir === "asc") {
 	        dir = "desc";
 	        switching = true;
 	      }
@@ -107,11 +107,10 @@ class BrowseBody extends Component {
 	}
 
 	render() {
-		if (typeof(this.props.values) !== 'undefined') {
 			var rows = [];
 			var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 			rows.push(
-				<tr key={0}>
+				<tr key={-1}>
 					<th onClick={ ()=>{ this.sortTable(0) } }>
 						Family name
 						<img src={sort} 
@@ -133,11 +132,11 @@ class BrowseBody extends Component {
 				);
 			for (var i=0; i<Object.keys(this.props.values).length; i++) {
 				const vals = this.props.values[i]
-				console.log(vals)
+				var phone;
 				if (width < 700) {
-					var phone = vals.urns["0"].substr(8)
+					phone = vals.urns["0"].substr(8)
 				} else {
-					var phone = vals.urns["0"].substr(4)
+					phone = vals.urns["0"].substr(4)
 				}
 				rows.push(
 					<tr key={i+1}>
@@ -158,16 +157,10 @@ class BrowseBody extends Component {
 				<div className="TableBlock">
 					<h1>PATIENT LIST</h1>
 					<table id="PtTable">
-						{rows}
+						<tbody>{rows}</tbody>
 					</table>
 				</div>
 				);
-
-		} else {
-			return(
-				<div className='Middle'> </div>
-			)
-		}
 	}
 }
 
@@ -180,28 +173,41 @@ class PatBrowse extends Component {
 	}
 
 	componentDidMount() {
-		var url = '/proxy/api/v2/contacts.json';
 		var group = 'Patients'
-		var query = url + '?group=' + group
+		var url = '/contByGroup?group=' + group
 
-		fetch(query)
+		var token = localStorage.getItem('token');
+
+	    var request = {
+			headers: {
+				'Authorization': 'Bearer '+token
+			}
+	    }
+
+		fetch(url,request)
 			.then(res => res.json())
 			.then(data => this.setState({ data : data.results }))
 	}
 
 	render() {
-		return (
-			<main>
-				<div className="MiddleTop">
-					<div className="Logout">
-				  		<LogoutButton />
-			        </div>
-					<BrowseHead />
-		         	<BrowseBody values={this.state.data} />
-		         	<Logos />
-				</div>
-			</main>
-		);
+		if (!!this.state.data) {
+			return (
+				<main>
+					<div className="MiddleTop">
+						<div className="Logout">
+					  		<LogoutButton />
+				        </div>
+						<BrowseHead />
+			         	<BrowseBody values={this.state.data} />
+			         	<Logos />
+					</div>
+				</main>
+			);
+		} else {
+			return(
+				<div className='Middle'> </div>
+			);
+		}
 	}
 }
 
