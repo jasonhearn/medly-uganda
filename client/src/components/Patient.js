@@ -12,11 +12,11 @@ class Patient extends Component {
 		this.state = { 
 			data : {},
 			values: {},
-			uuid: '' 
 		}
 	}
 
 	componentDidMount() {
+		// This will be replaced by actual API call once data is available
 		var url = '/runs';
 
 		fetch(url)
@@ -36,10 +36,8 @@ class Patient extends Component {
 					tmp_val[i][var_keys[j]] = tmp_dict[var_keys[j]]['category']
 				}
 			}
-			var uuid = this.state.data[0].results[0].contact.uuid
 			this.setState({
 				values : tmp_val,
-				uuid : uuid
 			})
 		}
 	}
@@ -50,7 +48,7 @@ class Patient extends Component {
 				<div className="MiddleTop">
 					<PatHead phone={this.props.match.params.phone} />
 					<PatSympTable values={this.state.values} />
-					<PatNotes values={this.state.values} uuid={this.state.uuid} />
+					<PatNotes values={this.state.values} phone={this.props.match.params.phone} />
 					<Logos />
 				</div>
 			);

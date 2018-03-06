@@ -90,7 +90,7 @@ class GridSquare extends Component {
 			tx = ""
 		}
 		return(
-			<div className={cl}>{tx}</div>
+			<div className={cl} title={this.props.text}>{tx}</div>
 		);
 	}
 }

@@ -146,21 +146,24 @@ app.get("/contAll", passport.authenticate('jwt', { session: false }), function(r
 
 // Create GET request to update notes in MongoDB
 app.get('/getNotes', passport.authenticate('jwt', { session: false }), function(req, res){
-  var query = {}; query['uuid'] = req.param('uuid');
+  var query = {}; query['phone'] = req.param('phone');
+  console.log(query)
   var notes;
   db.collection('notes').find(query).toArray(function(err, results) {
-    notes = results[0]['notes']
-    if (!notes) {
-      res.json('No notes found')
+    data = results[0]
+    if (!data) {
+      console.log('No match')
+      res.json({Message: 'No notes found'})
     } else {
-      res.json(notes)
+      console.log('Match found')
+      res.json(data['notes'])
     }
   });
 });
 
 // Create POST request to update notes in MongoDB
 app.post('/saveNotes', passport.authenticate('jwt', { session: false }), function(req, res){
-  var query = {}; query['uuid'] = req.body.uuid;
+  var query = {}; query['phone'] = req.body.phone;
   var notes;
   db.collection('notes').find(query).toArray(function(err, results) {
     notes = results[0]

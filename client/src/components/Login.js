@@ -132,7 +132,6 @@ class Login extends Component {
                 />
               </ControlLabel>
               <FormControl
-                autoFocus
                 name="password"
                 type="password"
                 placeholder="Password"

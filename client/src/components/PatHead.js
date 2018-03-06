@@ -29,12 +29,7 @@ class ChangePt extends Component {
 			var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 			const vals = this.state.data
 			for (var i=0; i<Object.keys(this.state.data).length; i++) {
-				if (width > 700) {
-					contact = vals[i].name.split(' ')[1].toUpperCase() + ', ' + vals[i].name.split(' ')[0]
-				} else {
-					contact = vals[i].name.split(' ')[1].toUpperCase() + ', ' + vals[i].name.split(' ')[0][0] + '.'
-				}
-				
+				contact = vals[i].name.split(' ')[1].toUpperCase() + ', ' + vals[i].name.split(' ')[0][0] + '.'
 				contacts.push(
 					<li key={i}>
 						<a><Link to={'/patient/'+vals[i].urns["0"].substr(4)}>
@@ -43,10 +38,10 @@ class ChangePt extends Component {
 					</li>
 				)
 			}
-			if (width > 700) { searchText = 'Search by phone number' } else { searchText = 'Search by phone' }
+			searchText = 'Browse patients'
 			contacts.push(
 				<li key="last'">
-					<a><Link to={'/patsearch'}>
+					<a><Link to={'/patbrowse'}>
 						{searchText}
 					</Link></a>
 				</li>
@@ -119,7 +114,6 @@ class PatHead extends Component {
 					  	  <ChangePt />
 					  	  <LogoutButton />
 				        </div>
-					  {/* We will eventually call API to get actual values here */}
 					  <div className="HeadName">
 					  	<h1> {this.state.lname}, {this.state.fname} </h1>
 					  </div>

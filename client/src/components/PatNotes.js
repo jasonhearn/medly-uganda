@@ -98,10 +98,10 @@ class PatNotes extends Component {
 	}
 
 	componentDidMount() {
-		var uuid = this.props.uuid;
+		var phone = this.props.phone.substr(1);
 	    var token = localStorage.getItem('token');
 
-	    var url = '/getNotes?uuid=' + uuid
+	    var url = '/getNotes?phone=' + phone
 	    var request = {
 	      headers: {
 	      	'Authorization': 'Bearer ' + token,
@@ -115,10 +115,9 @@ class PatNotes extends Component {
 
 	saveNotes() {
 		var dates = [];
-		// var formBody = [];
 		var vals = this.props.values
 		var noteObj = {
-			uuid: this.props.uuid,
+			phone: this.props.phone.substr(1),
 			notes: {}
 		};
 		for (var i=Object.keys(this.props.values).length-1; i>-1; i--) {
