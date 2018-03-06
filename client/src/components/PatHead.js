@@ -5,127 +5,56 @@ import LogoutButton from './LogoutButton'
 import '../styles/main.css';
 
 class ChangePt extends Component {
-	componentDidMount() {
-		var group = 'Patients'
-		var url = '/contByGroup?group=' + group
-
-		var token = localStorage.getItem('token');
-
-	    var request = {
-			headers: {
-				'Authorization': 'Bearer '+token
-			}
-	    }
-
-		fetch(url,request)
-			.then(res => res.json())
-			.then(data => this.setState({ data : data.results }))
-	}
-
-	componentDidUpdate(prevProps,prevState) {
-		if (prevState === null || prevState.data !== this.state.data) {
-			var contacts = [];
-			var contact, searchText;
-			var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-			const vals = this.state.data
-			for (var i=0; i<Object.keys(this.state.data).length; i++) {
-				contact = vals[i].name.split(' ')[1].toUpperCase() + ', ' + vals[i].name.split(' ')[0][0] + '.'
-				contacts.push(
-					<li key={i}>
-						<a><Link to={'/patient/'+vals[i].urns["0"].substr(4)}>
-							{contact}
-						</Link></a>
-					</li>
-				)
-			}
-			searchText = 'Browse patients'
-			contacts.push(
-				<li key="last'">
-					<a><Link to={'/patbrowse'}>
-						{searchText}
-					</Link></a>
+	render() {
+		var dropList = [];
+		var contact, searchText;
+		const contacts = this.props.contacts;
+		for (var i=0; i<Object.keys(contacts).length; i++) {
+			contact = contacts[i].name.split(' ')[1].toUpperCase() + ', ' + contacts[i].name.split(' ')[0][0] + '.'
+			dropList.push(
+				<li key={i}>
+					<Link to={'/patient/'+contacts[i].phone} className="Sublist">
+						{contact}
+					</Link>
 				</li>
 			)
-			this.setState({ contacts: contacts})
 		}
-	}
-
-	render() {
-		if (this.state !== null) {
-			return(
-				<div className="dropdown">
-			  		<Button className="ChangePtButton">Change Patient</Button>
-			  		<div className="dropdownContent">
-			  			{this.state.contacts}
-			  		</div>
-			  	</div>
-			)
-		} else {
-			return(
-				<div className='dropdown'> </div>
-			)
-		}
+		searchText = 'Browse patients'
+		dropList.push(
+			<li key="last'">
+				<Link to={'/patbrowse'} className="Sublist">
+					{searchText}
+				</Link>
+			</li>
+		)
+		
+		return(
+			<div className="dropdown">
+		  		<Button className="ChangePtButton">Change Patient</Button>
+		  		<div className="dropdownContent">
+		  			{dropList}
+		  		</div>
+		  	</div>
+		)
 	}
 }
 
 class PatHead extends Component {
-
-	state = { name: '',
-			  fname: '',
-			  lname: '',	
-			  age: '',
-			  sex: '',
-			  lang: '',
-			  phone: '',
-			}
-
-	componentDidMount() {
-		var phone = this.props.phone
-		var url = '/contByPhone?phone=' + phone
-
-		var token = localStorage.getItem('token');
-
-	    var request = {
-			headers: { 'Authorization': 'Bearer ' + token }
-	    }
-
-		fetch(url,request)
-			.then(res => res.json())
-  			.then(data => this.setState({ name : data.results["0"].name,
-  										  age : data.results["0"].fields.age,
-  										  sex : data.results["0"].fields.sex,
-  										  phone : data.results["0"].urns["0"].substr(4),
-  										  lang : data.results["0"].language }));
-	}
-
-	componentDidUpdate(prevProps,prevState) {
-		if (prevState.name !== this.state.name) {
-			this.setState({ fname: this.state.name.split(' ')[0] })
-			this.setState({ lname: this.state.name.split(' ')[1].toUpperCase() })
-		}
-	}
-
 	render() {
-		if (this.state.fname !== '') {
-			return(
-				<main>
-					<header>
-						<div className="Logout">
-					  	  <ChangePt />
-					  	  <LogoutButton />
-				        </div>
-					  <div className="HeadName">
-					  	<h1> {this.state.lname}, {this.state.fname} </h1>
-					  </div>
-					  <h2> Age: {this.state.age} | Sex: {this.state.sex} | Language: {this.state.lang} | Phone: {this.state.phone} </h2>
-					</header>
-				</main>
-			)
-		} else {
-			return(
-				<div className='Middle'> </div>
-			)
-		}
+		return(
+			<main>
+				<header>
+					<div className="Logout">
+				  	  <ChangePt contacts={this.props.contacts}/>
+				  	  <LogoutButton />
+			        </div>
+				  <div className="HeadName">
+				  	<h1> {this.props.individ.lname}, {this.props.individ.fname} </h1>
+				  </div>
+				  <h2> Age: {this.props.individ.age} | Sex: {this.props.individ.sex} | Language: {this.props.individ.lang} | Phone: {this.props.individ.phone} </h2>
+				</header>
+			</main>
+		)
 	}
 }
 

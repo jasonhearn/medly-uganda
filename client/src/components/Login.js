@@ -32,6 +32,7 @@ class Login extends Component {
     super(props, context);
 
     this.handleChange = this.handleChange.bind(this);
+    this.keyPress = this.keyPress.bind(this);
     this.getAuth = this.getAuth.bind(this);
 
     this.state = { 
@@ -95,17 +96,25 @@ class Login extends Component {
         this.setState({ usernameValid : false }) } else {
         this.setState({ passwordValid : false }) }
     }
+  }
 
+  keyPress(e) {
+    if (e.key === 'Enter') {
+      this.getAuth(this.state.username, this.state.password)
+    }
   }
 
   render() {
     if (this.state.success) {
       return <Redirect push to="/patsearch" />;
     } else {
+
       localStorage.clear();
+      
       return (
         <div className="Middle">
           <h1>Welcome to the Medly Dashboard.</h1>
+          
           <div className="LoginBlock">
             <FormGroup className="MainForm">
               <ControlLabel>
@@ -121,6 +130,7 @@ class Login extends Component {
                 type="text"
                 placeholder="Username"
                 onChange={this.handleChange}
+                onKeyPress={this.keyPress}
               />
             </FormGroup>
             <FormGroup className="MainForm">
@@ -136,6 +146,7 @@ class Login extends Component {
                 type="password"
                 placeholder="Password"
                 onChange={this.handleChange}
+                onKeyPress={this.keyPress}
               />
             </FormGroup>
           </div>

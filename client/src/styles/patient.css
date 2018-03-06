@@ -6,11 +6,11 @@
 */
 
 .ChangePtButton, .SaveNotesButton {
-  cursor: pointer;
   margin-top: 15px;  
 
   border: 1.0px solid #000000;
   border-radius: 20px;
+  cursor: pointer;
 
   font-family: inherit;
   font-weight: 400;
@@ -20,53 +20,61 @@
 .ChangePtButton {
   height: 25px;
   width: 115px;
-  font-size: 0.7em;
+
   background: #000000;
+
+  font-size: 0.7em;
 }
 
 @media (min-width: 700px) {
   .ChangePtButton {
-    font-size: 0.8em;
     height: 20px;
     width: 130px;
+
+    font-size: 0.8em;
   }
 }
 
 .SaveNotesButton {
-  font-size: 12px;
-  width: 130px;
   margin-top: 3%;
   margin-left: auto;
   margin-right: auto;
+
+  width: 130px;
+  
   background: #484848;
+
+  font-size: 12px;
 }
 
 .ChangePtButton:hover {
   background: #ffffff;
+
   color: #000000;
 }
 
 .SaveNotesButton:hover {
   background: #ffffff;
+
   color: #484848;
 }
 
 .dropdown {
-    position: relative;
-    display: inline-block;
+  position: relative;
+  display: inline-block;
 }
 
 .dropdownContent {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
+  display: none;
+  position: absolute;
 
-    width: 180px;
-    
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    border-radius: 20px;
-    border: 1px solid #000000;
-    z-index: 1;
+  width: 180px;
+  
+  background-color: #f9f9f9;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  border-radius: 20px;
+  border: 1px solid #000000;
+  z-index: 1;
 }
 
 @media (min-width: 700px) {
@@ -75,21 +83,29 @@
   }
 }
 
-.dropdownContent li {
-  list-style: none;
-}
+.Sublist {
+  display: block;
 
-.dropdownContent li a {
   color: #484848;
-  padding: 6px;
+  font-weight: 400;
   text-align: left;
   text-decoration: none;
-  display: block;
-  font-weight: 400;
+}
+
+.dropdownContent li {
+  padding-left: 10px;
+
+  list-style: none;
+  line-height: 30px;
+  
 }
 
 .dropdownContent li:hover {
   background-color: #f1f1f1
+}
+
+.dropdownContent li:first-child {
+  padding-top: 3px;
 }
 
 .dropdownContent li:last-child {
@@ -119,7 +135,7 @@
 }
 
 .dropdown:hover .dropdownContent {
-    display: block;
+  display: block;
 }
 
 .HeadName {
@@ -128,23 +144,27 @@
 
 .Table {
   margin: 0 auto;
-  border: 2px solid #000000;
+
   width: 93%;
+
+  border: 2px solid #000000;
 }
 
 .GridRow {
   display: flex;
+
   width: 100%;
 }
 
 .DateBlock, .NoteBlock {
-  height: 33px;
-  border: 1px solid #A9A9A9;
-
   display: flex;
   justify-content: center;
   align-content: center;
   flex-direction: column;
+
+  height: 33px;
+
+  border: 1px solid #A9A9A9;
 
   text-align: center;
   font-size: 0.5em;
@@ -155,6 +175,7 @@
 @media (min-width: 700px) {
   .DateBlock, .NoteBlock {
     height: 40px;
+
     font-size: 0.7em;
   } 
 }
@@ -172,11 +193,13 @@
   padding-top: 3px;
   padding-bottom: 2px;
 
+
   height: 100%;
+
   border: 0px;
+  resize: none;
 
   font-size: 1.0em;
   font-family: inherit;
   font-weight: 400;
-  resize: none;
 }

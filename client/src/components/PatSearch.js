@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
-import { Link } from "react-router-dom"
+import { Link, Redirect } from "react-router-dom"
 import Logos from "./Logos"
 import LogoutButton from './LogoutButton'
 import phone from "../pictures/phone.png"
@@ -32,23 +32,21 @@ class PatSearch extends Component {
     super(props, context);
 
     this.handleChange = this.handleChange.bind(this);
-
+    this.keyPress = this.keyPress.bind(this);
     this.validateField = this.validateField.bind(this);
 
     this.state = {
       phone: '',
       phoneList: [],
+      success: false,
       failed: false,
       phoneValid: false,
-      data: {}
     };
   }
 
   componentDidMount() {
     var url = '/contAll'
-
     var token = localStorage.getItem('token');
-
     var request = {
       headers: {
         'Authorization': 'Bearer '+token
@@ -57,18 +55,13 @@ class PatSearch extends Component {
 
     fetch(url,request)
       .then(res => res.json())
-      .then(data => this.setState({ data : data.results }))
-  }
-
-  componentDidUpdate(prevProps,prevState) {
-    var tmp_list = [] 
-
-    if (prevState.data !== this.state.data) {
-      for (var i=0; i<Object.keys(this.state.data).length; i++) {
-        tmp_list[i] = this.state.data[i].urns[0].substr(4)
-      }
-      this.setState({ phoneList : tmp_list })
-    }
+      .then(data => { 
+        var tmp_list = []
+        for (var i=0; i<Object.keys(data.results).length; i++) {
+          tmp_list[i] = data.results[i].urns[0].substr(4)
+        }
+        this.setState({ phoneList : tmp_list })
+      })
   }
 
   clearLocal() {
@@ -84,6 +77,17 @@ class PatSearch extends Component {
         phoneValid: false,
         failed: false 
       })
+    }
+  }
+
+  keyPress(e) {
+    if (e.key === 'Enter') {
+      if (this.state.phoneValid) {
+        this.setState({ success: true }); 
+      } else {
+        e.preventDefault();
+        this.setState({ failed: true })
+      }
     }
   }
 
@@ -107,64 +111,65 @@ class PatSearch extends Component {
                      phoneValid: phoneValid })
   }
 
-  errorClass(error) {
-    return(error.length === 0 ? '' : 'has-error');
-  }
-
   render() {
-    return (
-      <main>
-        <div className="MiddleTop">
-          <div className="Logout">
-            <LogoutButton />
+    if (this.state.success) {
+      return <Redirect push to={'/patient/' + this.state.phone} />;
+    } else {
+      return (
+        <main>
+          <div className="MiddleTop">
+            <div className="Logout">
+              <LogoutButton />
+            </div>
           </div>
-        </div>
-        <div className="Middle">
+          <div className="Middle">
 
-          <h1>Enter your patient&#39;s phone number.</h1>
+            <h1>Enter your patient&#39;s phone number.</h1>
 
-          <div className="LoginBlock">
-            <form>
-              <FormGroup 
-                className="MainForm"
-              >
-                <ControlLabel>
-                  <img 
-                    src={phone} 
-                    className='Icon' 
-                    alt="" 
+            <div className="LoginBlock">
+              <form>
+                <FormGroup 
+                  className="MainForm"
+                >
+                  <ControlLabel>
+                    <img 
+                      src={phone} 
+                      className='Icon' 
+                      alt="" 
+                    />
+                  </ControlLabel>
+                  <FormControl
+                    autoFocus
+                    type="text"
+                    placeholder="720123456"
+                    onChange={this.handleChange}
+                    onKeyPress={this.keyPress}
                   />
-                </ControlLabel>
-                <FormControl
-                  autoFocus
-                  type="text"
-                  placeholder="720123456"
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
+                </FormGroup>
 
-            </form>
+              </form>
+
+            </div>
+
+            <Link to={'/patient/' + this.state.phone}>
+              <Button className="HorizButton" 
+                type="submit" 
+                disabled={!this.state.phoneValid}
+              >
+                OK
+              </Button>
+            </Link>
+
+            <ErrorMessage failed={this.state.failed} />
+
+            <h2>Don't know the phone number? <Link to='/patbrowse' className='Link'>Browse your patients</Link>.</h2>
+            
+            <Logos />
 
           </div>
-
-          <Link to={'/patient/' + this.state.phone}>
-            <Button className="HorizButton" 
-              type="submit" 
-              disabled={!this.state.phoneValid}
-            >
-              OK
-            </Button>
-          </Link>
-
-          <ErrorMessage failed={this.state.failed} />
-
-          <h2>Don't know the phone number? <Link to='/patbrowse' className='Link'>Browse your patients</Link>.</h2>
-          
-          <Logos />
-
-        </div>
-      </main>
-    );
+        </main>
+      );
+    }
   }
 }
 

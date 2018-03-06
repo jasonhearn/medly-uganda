@@ -77,7 +77,7 @@ class NoteBlock extends Component {
 
 class GridRow extends Component {
 	render() {
-		var date = this.props.values['date']
+		var date = this.props.runs['date']
 		var note = this.props.notes[date]
 		return(
 			<div className="GridRow">
@@ -92,35 +92,19 @@ class PatNotes extends Component {
 	constructor(props) { 
 		super(props)
 		this.state = { 
-			notes: {},
+			notes: this.props.notes,
 			saved: false
 		}
 	}
 
-	componentDidMount() {
-		var phone = this.props.phone.substr(1);
-	    var token = localStorage.getItem('token');
-
-	    var url = '/getNotes?phone=' + phone
-	    var request = {
-	      headers: {
-	      	'Authorization': 'Bearer ' + token,
-	      },
-	    }
-
-	    fetch(url, request)
-	    	.then(res => res.json())
-			.then(data => this.setState({ notes : data }))
-	}
-
 	saveNotes() {
 		var dates = [];
-		var vals = this.props.values
+		var vals = this.props.runs
 		var noteObj = {
 			phone: this.props.phone.substr(1),
 			notes: {}
 		};
-		for (var i=Object.keys(this.props.values).length-1; i>-1; i--) {
+		for (var i=Object.keys(this.props.runs).length-1; i>-1; i--) {
 			dates.push(vals[i]['date'])
 		} 
 
@@ -151,32 +135,22 @@ class PatNotes extends Component {
 	}
 
 	render() {
-		if (!!this.props.values[0] && Object.keys(this.state.notes).length !== 0) {
-			var today = calcToday()
-			var rows = [];
-			for (var i=Object.keys(this.props.values).length-1; i>-1; i--) {
-				rows.push(
-					<GridRow key={i} today={today} values={this.props.values[i]} notes={this.state.notes} />
-				);
-			}
-
-			return (
-				<div className="TableBlock" style={{paddingBottom: '3%'}}>
-					<h1>CLINICIAN NOTES</h1>
-					<div className="Table">
-						{rows}
-					</div>
-					<Button className="SaveNotesButton" type="submit" onClick = {() => this.saveNotes() }>
-		              Save Notes
-		            </Button>
-		            <SavedMessage saved={this.state.saved}/>
-				</div>
-				);
-		} else {
-			return(
-				<div className='Middle'> </div>
-			)
+		var today = calcToday()
+		var rows = [];
+		for (var i=Object.keys(this.props.runs).length-1; i>-1; i--) {
+			rows.push(
+				<GridRow key={i} today={today} runs={this.props.runs[i]} notes={this.state.notes} />
+			);
 		}
+
+		return (
+			<div className="TableBlock" style={{paddingBottom: '3%'}}>
+				<h1>CLINICIAN NOTES</h1>
+				<div className="Table"> {rows} </div>
+				<Button className="SaveNotesButton" type="submit" onClick = {() => this.saveNotes() }>Save Notes</Button>
+	            <SavedMessage saved={this.state.saved}/>
+			</div>
+		);
 	}
 }
 

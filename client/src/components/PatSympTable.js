@@ -99,16 +99,16 @@ class GridColumn extends Component {
 	render() {
 		return(
 			<main>
-				<HeadBlock key="head" className="DateHead" text={this.props.values['date']} today={this.props.today} />
-				<GridSquare key="fainted" text={this.props.values['fainted']}/>
-				<GridSquare key="breath_seated" text={this.props.values['breath_seated']}/>
-				<GridSquare key="chest_pain" text={this.props.values['chest_pain']}/>
-				<GridSquare key="lightheaded" text={this.props.values['lightheaded']}/>
-				<GridSquare key="swollen" text={this.props.values['swollen']}/>
-				<GridSquare key="tired" text={this.props.values['tired']}/>
-				<GridSquare key="breath_night" text={this.props.values['breath_night']}/>
-				<GridSquare key="heart_beat" text={this.props.values['heart_beat']}/>
-				<GridSquare key="status" text={this.props.values['status']}/>
+				<HeadBlock key="head" className="DateHead" text={this.props.runs['date']} today={this.props.today} />
+				<GridSquare key="fainted" text={this.props.runs['fainted']}/>
+				<GridSquare key="breath_seated" text={this.props.runs['breath_seated']}/>
+				<GridSquare key="chest_pain" text={this.props.runs['chest_pain']}/>
+				<GridSquare key="lightheaded" text={this.props.runs['lightheaded']}/>
+				<GridSquare key="swollen" text={this.props.runs['swollen']}/>
+				<GridSquare key="tired" text={this.props.runs['tired']}/>
+				<GridSquare key="breath_night" text={this.props.runs['breath_night']}/>
+				<GridSquare key="heart_beat" text={this.props.runs['heart_beat']}/>
+				<GridSquare key="status" text={this.props.runs['status']}/>
 			</main>
 		);
 	}
@@ -116,13 +116,13 @@ class GridColumn extends Component {
 
 class PatSympTable extends Component {
 	render() {
-		if (!!this.props.values[0]) {
+		if (!!this.props.runs[0]) {
 			var today = calcToday();
 
 			var columns = [];
-			for (var i=Object.keys(this.props.values).length-1; i>-1; i--) {
+			for (var i=Object.keys(this.props.runs).length-1; i>-1; i--) {
 				columns.push(
-					<GridColumn key={i} values={this.props.values[i]} today={today} />
+					<GridColumn key={i} runs={this.props.runs[i]} today={today} />
 				);
 			}
 
