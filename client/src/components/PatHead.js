@@ -39,6 +39,40 @@ class ChangePt extends Component {
 	}
 }
 
+class DemoHeader extends Component {
+	render() {
+		// Convert language abbreviation to full word
+		var language;
+		switch(this.props.individ.lang) {
+			case 'eng':
+				language = 'English';
+				break;
+			case 'lug':
+				language = 'Luganda';
+				break;
+			case 'laj':
+				language = 'Runyankore';
+				break;
+			default: 
+				language = 'Unknown'
+				break;
+
+		}
+
+		// Get width and output header depending on value
+		var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+		if (width >= 700) {
+			return (
+				<h2> <b>Age:</b> {this.props.individ.age} | <b>Sex:</b> {this.props.individ.sex} | <b>Language:</b> {language} | <b>Phone:</b> {this.props.individ.phone.substr(4,3)} {this.props.individ.phone.substr(7,6)} </h2>
+			);
+		} else {
+			return (
+				<h2> <b>Age:</b> {this.props.individ.age} | <b>Sex:</b> {this.props.individ.sex} | <b>Lang.:</b> {language} | <b>Phone:</b> {this.props.individ.phone.substr(4,3)} {this.props.individ.phone.substr(7,6)} </h2>
+			);
+		}
+	}
+}
+
 class PatHead extends Component {
 	render() {
 		return(
@@ -51,7 +85,7 @@ class PatHead extends Component {
 				  <div className="HeadName">
 				  	<h1> {this.props.individ.lname}, {this.props.individ.fname} </h1>
 				  </div>
-				  <h2> Age: {this.props.individ.age} | Sex: {this.props.individ.sex} | Language: {this.props.individ.lang} | Phone: {this.props.individ.phone} </h2>
+				  <DemoHeader individ={this.props.individ} />
 				</header>
 			</main>
 		)

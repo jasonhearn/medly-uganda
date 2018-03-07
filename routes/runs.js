@@ -3,12 +3,11 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.json([
+  res.json(
   	{
 	    "next": null,
 	    "previous": null,
-	    "results": 
-	    [
+	    "results": [
 	        {
 	            "id": 78872987,
 	            "flow": {
@@ -153,13 +152,7 @@ router.get('/', function(req, res, next) {
 	            "modified_on": "2018-01-25T20:55:17.496622Z",
 	            "exited_on": "2018-01-25T20:55:17.493249Z",
 	            "exit_type": "completed"
-	        }
-	    ]
-	},{
-		"next": null,
-	    "previous": null,
-	    "results": 
-	    [
+	        },
 	        {
 	            "id": 78872987,
 	            "flow": {
@@ -304,13 +297,7 @@ router.get('/', function(req, res, next) {
 	            "modified_on": "2018-01-27T20:55:17.496622Z",
 	            "exited_on": "2018-01-27T20:55:17.493249Z",
 	            "exit_type": "completed"
-	        }
-	    ]
-	},{
-		"next": null,
-	    "previous": null,
-	    "results": 
-	    [
+	        },
 	        {
 	            "id": 78872987,
 	            "flow": {
@@ -455,13 +442,7 @@ router.get('/', function(req, res, next) {
 	            "modified_on": "2018-01-29T20:55:17.496622Z",
 	            "exited_on": "2018-01-29T20:55:17.493249Z",
 	            "exit_type": "completed"
-	        }
-	    ]
-	},{
-		"next": null,
-	    "previous": null,
-	    "results": 
-	    [
+	        },
 	        {
 	            "id": 788729878,
 	            "flow": {
@@ -606,13 +587,7 @@ router.get('/', function(req, res, next) {
 	            "modified_on": "2018-01-31T20:55:17.496622Z",
 	            "exited_on": "2018-01-31T20:55:17.493249Z",
 	            "exit_type": "completed"
-	        }
-	    ]
-	},{
-		"next": null,
-	    "previous": null,
-	    "results": 
-	    [
+	        },
 	        {
 	            "id": 78872989,
 	            "flow": {
@@ -757,13 +732,7 @@ router.get('/', function(req, res, next) {
 	            "modified_on": "2018-02-02T20:55:17.496622Z",
 	            "exited_on": "2018-02-02T20:55:17.493249Z",
 	            "exit_type": "completed"
-	        }
-	    ]
-	},{
-		"next": null,
-	    "previous": null,
-	    "results": 
-	    [
+	        },
 	        {
 	            "id": 78872990,
 	            "flow": {
@@ -908,13 +877,7 @@ router.get('/', function(req, res, next) {
 	            "modified_on": "2018-02-04T20:55:17.496622Z",
 	            "exited_on": "2018-02-04T20:55:17.493249Z",
 	            "exit_type": "completed"
-	        }
-	    ]
-	},{
-	    "next": null,
-	    "previous": null,
-	    "results": 
-	    [
+	        },
 	        {
 	            "id": 78872991,
 	            "flow": {
@@ -1059,13 +1022,7 @@ router.get('/', function(req, res, next) {
 	            "modified_on": "2018-02-05T20:55:17.496622Z",
 	            "exited_on": "2018-02-05T20:55:17.493249Z",
 	            "exit_type": "completed"
-	        }
-	    ]
-	},{
-		"next": null,
-	    "previous": null,
-	    "results": 
-	    [
+	        },
 	        {
 	            "id": 78872987,
 	            "flow": {
@@ -1210,13 +1167,7 @@ router.get('/', function(req, res, next) {
 	            "modified_on": "2018-02-06T20:55:17.496622Z",
 	            "exited_on": "2018-02-06T20:55:17.493249Z",
 	            "exit_type": "completed"
-	        }
-	    ]
-	},{
-		"next": null,
-	    "previous": null,
-	    "results": 
-	    [
+	        },
 	        {
 	            "id": 78872987,
 	            "flow": {
@@ -1361,13 +1312,7 @@ router.get('/', function(req, res, next) {
 	            "modified_on": "2018-02-08T20:55:17.496622Z",
 	            "exited_on": "2018-02-08T20:55:17.493249Z",
 	            "exit_type": "completed"
-	        }
-	    ]
-	},{
-		"next": null,
-	    "previous": null,
-	    "results": 
-	    [
+	        },
 	        {
 	            "id": 788729878,
 	            "flow": {
@@ -1512,13 +1457,7 @@ router.get('/', function(req, res, next) {
 	            "modified_on": "2018-02-09T20:55:17.496622Z",
 	            "exited_on": "2018-02-09T20:55:17.493249Z",
 	            "exit_type": "completed"
-	        }
-	    ]
-	},{
-		"next": null,
-	    "previous": null,
-	    "results": 
-	    [
+	        },
 	        {
 	            "id": 78872989,
 	            "flow": {
@@ -1663,13 +1602,7 @@ router.get('/', function(req, res, next) {
 	            "modified_on": "2018-02-12T20:55:17.496622Z",
 	            "exited_on": "2018-02-12T20:55:17.493249Z",
 	            "exit_type": "completed"
-	        }
-	    ]
-	},{
-		"next": null,
-	    "previous": null,
-	    "results": 
-	    [
+	        },
 	        {
 	            "id": 78872990,
 	            "flow": {
@@ -1816,7 +1749,7 @@ router.get('/', function(req, res, next) {
 	            "exit_type": "completed"
 	        }
 	    ]
-	}])
+	})
 });
 
 module.exports = router;

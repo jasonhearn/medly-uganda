@@ -143,6 +143,17 @@ app.get("/contAll", passport.authenticate('jwt', { session: false }), function(r
     }
   })
 });
+app.get("/runsByUUID", passport.authenticate('jwt', { session: false }), function(req, res){
+  var options = {
+    url: 'https://api.textit.in/api/v2/runs.json?contact=' + req.param('contact') + '&after=' + req.param('after'),
+    headers: headers
+  }
+  request(options, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      res.send(body)
+    }
+  })
+});
 
 // Create GET request to update notes in MongoDB
 app.get('/getNotes', passport.authenticate('jwt', { session: false }), function(req, res){
