@@ -60,37 +60,29 @@ class TitleColumn extends Component {
 
 class GridSquare extends Component {
 	render() {
-		var cl, tx;
+		var tx, col;
 		if (this.props.text === "Yes") { 
-			cl = "SqYes"
-			tx = ""
+			tx = ""; col = '#3FB0F1'
 		} else if (this.props.text === "No") { 
-			cl = "SqNo" 
-			tx = ""
+			tx = ""; col = '#FFFFFF'
 		} else if (this.props.text === "Critical") {
-			cl = "SqCri"
-			tx = "H"
+			tx = "H"; col = '#FF1D00';
 		} else if (this.props.text === "Urgent") {
-			cl = "SqUrg"
-			tx = "\u00b7\u00b7\u00b7"
+			tx = "\u00b7\u00b7\u00b7"; col = '#FF1D00';
 		} else if (this.props.text === "Urgent with fluid") {
-			cl = "SqUWF"
-			tx = "\u00b7\u00b7\u00b7"
+			tx = "\u00b7\u00b7\u00b7"; col = '#FF1D00';
 		} else if (this.props.text === "Fluid") {
-			cl = "SqFlu"
-			tx = "\u00b7\u00b7"
+			tx = "\u00b7\u00b7"; col = '#FFFE06';
 		} else if (this.props.text === "Tired") {
-			cl = "SqTir"
-			tx = "\u00b7\u00b7"
+			tx = "\u00b7\u00b7"; col = '#FFFE06';
 		} else if (this.props.text === "Normal") {
-			cl = "SqNor"
-			tx = "\u00b7"
+			tx = "\u00b7"; col = '#91D150';
 		} else {
-			cl = "SqUnd"
-			tx = ""
+			tx = ""; col = 'rgba(0, 0, 0, 0)'
 		}
+		
 		return(
-			<div className={cl} title={this.props.text}>{tx}</div>
+			<div className='ResponseBlock' title={this.props.text} style={{background: col}}>{tx}</div>
 		);
 	}
 }
@@ -99,7 +91,7 @@ class GridColumn extends Component {
 	render() {
 		return(
 			<main>
-				<HeadBlock key="head" className="DateHead" text={this.props.runs['date']} today={this.props.today} />
+				<HeadBlock  key="head" className="DateHead" text={this.props.runs['date']} today={this.props.today} />
 				<GridSquare key="fainted" text={this.props.runs['fainted']}/>
 				<GridSquare key="breath_seated" text={this.props.runs['breath_seated']}/>
 				<GridSquare key="chest_pain" text={this.props.runs['chest_pain']}/>

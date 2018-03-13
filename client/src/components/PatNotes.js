@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import calcToday from './calcToday'
 import success from "../pictures/success.png"
 import '../styles/main.css';
-import '../styles/patient.css'
+import '../styles/patient.css';
 
 class SavedMessage extends Component {
   render() {
@@ -48,6 +48,28 @@ class DateBlock extends Component {
 	}
 }
 
+class GridSquare extends Component {
+	render() {
+		var tx, col;
+		if (this.props.text === "Critical") {
+			tx = "H"; col = '#FF1D00';
+		} else if (this.props.text === "Urgent") {
+			tx = "\u00b7\u00b7\u00b7"; col = '#FF1D00';
+		} else if (this.props.text === "Urgent with fluid") {
+			tx = "\u00b7\u00b7\u00b7"; col = '#FF1D00';
+		} else if (this.props.text === "Fluid") {
+			tx = "\u00b7\u00b7"; col = '#FFFE06';
+		} else if (this.props.text === "Tired") {
+			tx = "\u00b7\u00b7"; col = '#FFFE06';
+		} else if (this.props.text === "Normal") {
+			tx = "\u00b7"; col = '#91D150';
+		}
+		return(
+			<div className='StatusBlock' title={this.props.text} style={{backgroundColor: col}}>{tx}</div>
+		);
+	}
+}
+
 class NoteBlock extends Component {
 	constructor(props) { 
 		super(props)
@@ -82,6 +104,7 @@ class GridRow extends Component {
 		return(
 			<div className="GridRow">
 				<DateBlock date={date} today={this.props.today} />
+				<GridSquare key="status" text={this.props.runs['status']}/>
 				<NoteBlock date={date} note={note}/>
 			</div>
 		);

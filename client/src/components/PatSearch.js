@@ -96,7 +96,7 @@ class PatSearch extends Component {
     var formError = this.state.formError
 
     if (phone.charAt(0) !== "+") {
-      var area = "+1647"
+      var area = "+256"
       phone = area + phone
     }
     

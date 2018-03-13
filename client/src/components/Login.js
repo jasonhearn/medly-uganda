@@ -113,7 +113,7 @@ class Login extends Component {
       
       return (
         <div className="Middle">
-          <h1>Welcome to the Medly Dashboard.</h1>
+          <h1>Welcome to the Medly dashboard.</h1>
           
           <div className="LoginBlock">
             <FormGroup className="MainForm">
