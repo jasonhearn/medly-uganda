@@ -78,8 +78,36 @@ class NoteBlock extends Component {
 		}
 	}
 
+	saveNote(note, phone, date) {
+		var noteObj = {
+			phone: phone,
+			date: date,
+			note: note
+		};
+
+		var payload = JSON.stringify(noteObj)
+	    var token = localStorage.getItem('token');
+
+	    var request = {
+	      method: 'POST',
+	      headers: {
+	      	'Authorization': 'Bearer '+token,
+	      	'Content-Type': 'application/json'
+	      },
+	      body: payload
+	    }
+
+	    fetch('/saveNote', request)
+	    	.then(res => {
+	    		if (res.status === 200) {
+	    			this.setState({ saved: true })
+	    		}
+	    	})
+	}
+
 	render() {
 		var date = this.props.date
+		var phone = this.props.phone
 		var id   = "notesOn"+date
 		return(
 			<div className="NoteBlock">
@@ -89,6 +117,7 @@ class NoteBlock extends Component {
               	  id={id}
               	  onChange = { (e) => {
               	  	this.setState({note: e.target.value})
+              	  	this.saveNote(e.target.value,phone,date)
               	  }}
                 >
             	</textarea>
@@ -105,7 +134,7 @@ class GridRow extends Component {
 			<div className="GridRow">
 				<DateBlock date={date} today={this.props.today} />
 				<GridSquare key="status" text={this.props.runs['status']}/>
-				<NoteBlock date={date} note={note}/>
+				<NoteBlock date={date} note={note} phone={this.props.phone}/>
 			</div>
 		);
 	}
@@ -120,57 +149,19 @@ class PatNotes extends Component {
 		}
 	}
 
-	saveNotes() {
-		var dates = [];
-		var vals = this.props.runs
-		var noteObj = {
-			phone: this.props.phone.substr(1),
-			notes: {}
-		};
-		for (var i=Object.keys(this.props.runs).length-1; i>-1; i--) {
-			dates.push(vals[i]['date'])
-		} 
-
-		for (var j=0; j<dates.length; j++) {
-			var elem = document.getElementById('notesOn'+dates[j])
-			noteObj['notes'][dates[j]] = elem.value
-		}
-
-		var payload = JSON.stringify(noteObj)
-
-	    var token = localStorage.getItem('token');
-
-	    var request = {
-	      method: 'POST',
-	      headers: {
-	      	'Authorization': 'Bearer '+token,
-	      	'Content-Type': 'application/json'
-	      },
-	      body: payload
-	    }
-
-	    fetch('/saveNotes', request)
-	    	.then(res => {
-	    		if (res.status === 200) {
-	    			this.setState({ saved: true })
-	    		}
-	    	})
-	}
-
 	render() {
 		var today = calcToday()
 		var rows = [];
 		for (var i=Object.keys(this.props.runs).length-1; i>-1; i--) {
 			rows.push(
-				<GridRow key={i} today={today} runs={this.props.runs[i]} notes={this.state.notes} />
+				<GridRow key={i} today={today} runs={this.props.runs[i]} notes={this.state.notes} phone={this.props.phone.substr(1)} />
 			);
 		}
 
 		return (
-			<div className="TableBlock" style={{paddingBottom: '3%'}}>
+			<div className="TableBlock">
 				<h1>CLINICIAN NOTES</h1>
 				<div className="Table"> {rows} </div>
-				<Button className="SaveNotesButton" type="submit" onClick = {() => this.saveNotes() }>Save Notes</Button>
 	            <SavedMessage saved={this.state.saved}/>
 			</div>
 		);

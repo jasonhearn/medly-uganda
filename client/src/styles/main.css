@@ -78,7 +78,7 @@ th, tr {
   line-height: 20px;
 }
 
-@media (min-width: 700px) {
+@media (min-width: 600px) {
   th,tr {
     font-size: 1em;
     line-height: 20px;
@@ -232,6 +232,7 @@ tr {
   margin-right: 2.5px;
   margin-top: 18px;
 
+  min-width: 340px;
   width: calc(100%-10px);
 
   text-align: center;

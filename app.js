@@ -157,7 +157,7 @@ app.get("/runsByUUID", passport.authenticate('jwt', { session: false }), functio
 
 // Create GET request to update notes in MongoDB
 app.get('/getNotes', passport.authenticate('jwt', { session: false }), function(req, res){
-  var query = {}; query['phone'] = req.param('phone');
+  var query = {}; query['phone'] = "+"+req.param('phone');
   console.log(query)
   var notes;
   db.collection('notes').find(query).toArray(function(err, results) {
@@ -173,17 +173,32 @@ app.get('/getNotes', passport.authenticate('jwt', { session: false }), function(
 });
 
 // Create POST request to update notes in MongoDB
-app.post('/saveNotes', passport.authenticate('jwt', { session: false }), function(req, res){
-  var query = {}; query['phone'] = req.body.phone;
+app.post('/saveNote', passport.authenticate('jwt', { session: false }), function(req, res){
+  var phone = "+"+req.body.phone; date = req.body.date; note = req.body.note
+  var query = {}; query['phone'] = phone;
+  var upd = {}; 
+  upd['notes.'+date] = note
   var notes;
   db.collection('notes').find(query).toArray(function(err, results) {
     notes = results[0]
     if (!notes) {
-      db.collection('notes').save(req.body, (err, result) => {
+      var init = {}, note = {}; 
+      first_note[date] = note
+      init['phone'] = phone
+      init['notes'] = first_note
+      console.log(init)
+      db.collection('notes').save(init)
+      db.collection('notes').update(
+        query,
+        { $set: upd }, 
+        (err, result) => {
         res.send('Saved notes to database')
       })
     } else {
-      db.collection('notes').update(query, req.body, (err, result) => {
+      db.collection('notes').update(
+        query, 
+        { $set: upd }, 
+        (err, result) => {
         res.send('Saved notes to database')
       });
     }

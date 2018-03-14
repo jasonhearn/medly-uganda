@@ -69,8 +69,9 @@ class PatSearch extends Component {
   }
 
   handleChange(e) {
-    if (e.target.value.length >= 7) {
-      this.setState({ phone: e.target.value },
+    var val = e.target.value.replace(" ", "")
+    if (val >= 7) {
+      this.setState({ phone: val },
         () => {this.validateField(this.state.phone) });
     } else {
       this.setState({ 
@@ -95,15 +96,19 @@ class PatSearch extends Component {
     var phoneValid = this.state.phoneValid
     var formError = this.state.formError
 
+    // Add area code if not already present
     if (phone.charAt(0) !== "+") {
       var area = "+256"
       phone = area + phone
     }
     
+    // Check for match in phone list
     phoneValid = this.state.phoneList.indexOf(phone) > -1
 
-    if (phone.length >= 12 && !phoneValid) {
+    if (phone.length >= 13 && !phoneValid) {
       this.setState({ failed: true })
+    } else {
+      this.setState({ failed: false })
     }
 
     this.setState( { phone: phone,
