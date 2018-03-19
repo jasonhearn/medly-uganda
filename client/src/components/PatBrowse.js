@@ -108,49 +108,44 @@ class BrowseBody extends Component {
 
 	render() {
 			var rows = [];
-			var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 			rows.push(
-				<tr key={-1}>
-					<th onClick={ ()=>{ this.sortTable(0) } }>
-						Family name
-						<img src={sort} 
-							className='SortIcon' 
-							alt=""
-						/>
-					</th>
-					<th onClick={ ()=>{ this.sortTable(1) } }>
-						Given name
-						<img src={sort} 
-							className='SortIcon' 
-							alt="" 
-						/>
-					</th>
-					<th>Sex</th>
-					<th>Age</th>
-					<th>Phone</th>
-				</tr>
-				);
+			<tr key={-1}>
+				<th onClick={ ()=>{ this.sortTable(0) } } width='30%'>
+					Family name
+					<img src={sort} 
+						className='SortIcon' 
+						alt=""
+					/>
+				</th>
+				<th onClick={ ()=>{ this.sortTable(1) } } width='25%'>
+					Given name
+					<img src={sort} 
+						className='SortIcon' 
+						alt="" 
+					/>
+				</th>
+				<th width='10%'>Sex</th>
+				<th width='10%'>Age</th>
+				<th width='25%'>Phone</th>
+			</tr>
+			);
+			
 			for (var i=0; i<Object.keys(this.props.values).length; i++) {
 				const vals = this.props.values[i]
-				var phone;
-				if (width < 700) {
-					phone = vals.urns["0"].substr(8)
-				} else {
-					phone = vals.urns["0"].substr(4)
-				}
-				rows.push(
-					<tr key={i+1}>
-						<td>
-							<Link to={'/patient/'+vals.urns["0"].substr(4)} className="Link" style={{fontWeight: '700'}}>
-								{vals.name.split(' ')[1].toUpperCase()}
-							</Link>
-						</td>
-						<td>{vals.name.split(' ')[0]}</td>
-						<td>{vals.fields.sex}</td>
-						<td>{vals.fields.age}</td>
-						<td>{phone}</td>
-					</tr>
-				);
+				var phone = vals.urns["0"].substr(8)
+					rows.push(
+						<tr key={i+1}>
+							<td>
+								<Link to={'/patient/'+vals.urns["0"].substr(4)} className="Link">
+									{vals.name.split(' ')[1].toUpperCase()}
+								</Link>
+							</td>
+							<td>{vals.name.split(' ')[0]}</td>
+							<td>{vals.fields.sex}</td>
+							<td>{vals.fields.age}</td>
+							<td>{phone}</td>
+						</tr>
+					);
 			}
 
 			return (

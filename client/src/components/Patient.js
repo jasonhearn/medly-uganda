@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PatHead from './PatHead'
 import PatSympTable from './PatSympTable'
 import PatNotes from './PatNotes'
+import Legend from './Legend'
 import Logos from './Logos'
 import '../styles/main.css';
 import '../styles/patient.css'
@@ -80,7 +81,6 @@ class Patient extends Component {
 
   		// GET NOTES
   		var phone_notes = phone.substr(1);
-
 	    var url_notes = '/getNotes?phone=' + phone_notes
 
 	    fetch(url_notes, request)
@@ -96,11 +96,11 @@ class Patient extends Component {
 
 			// // SET AUTHENTICATION CREDENTIALS
 			// var token = localStorage.getItem('token');
-		 //    var request = {
-			// 	headers: {
-			// 		'Authorization': 'Bearer '+token
-			// 	}
-		 //    }
+		 	// var request = {
+			// 		headers: {
+			// 			'Authorization': 'Bearer '+token
+			// 		}
+		 	// }
 
 			// GET RUNS
 			// // This will eventually be replaced by actual API call once data is available
@@ -146,6 +146,7 @@ class Patient extends Component {
 					<PatHead individ={this.state.individ} contacts={this.state.contacts}/>
 					<PatSympTable runs={this.state.runs} />
 					<PatNotes phone={this.props.match.params.phone} runs={this.state.runs} notes={this.state.notes} />
+					<Legend />
 					<Logos />
 				</div>
 			);

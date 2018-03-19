@@ -5,7 +5,7 @@
       4. Font (size, type, color)
 */
 
-.ChangePtButton, .SaveNotesButton {
+.ChangePtButton {
   margin-top: 15px;  
 
   border: 1.0px solid #000000;
@@ -35,28 +35,10 @@
   }
 }
 
-.SaveNotesButton {
-  margin-top: 3%;
-  margin-left: auto;
-  margin-right: auto;
-
-  width: 130px;
-  
-  background: #484848;
-
-  font-size: 12px;
-}
-
 .ChangePtButton:hover {
   background: #ffffff;
 
   color: #000000;
-}
-
-.SaveNotesButton:hover {
-  background: #ffffff;
-
-  color: #484848;
 }
 
 .dropdown {
@@ -161,8 +143,8 @@
   justify-content: center;
   align-content: center;
   flex-direction: column;
-
-  height: 33px;
+  
+  height: 39px;
 
   border: 1px solid #A9A9A9;
 
@@ -174,7 +156,7 @@
 
 @media (min-width: 700px) {
   .DateBlock, .NoteBlock {
-    height: 40px;
+    height: 47px;
     font-size: 0.7em;
   } 
 }
@@ -185,7 +167,7 @@
 
 .StatusBlock {
   width: 40px;
-  height: 33px;
+  height: 39px;
 
   display: flex;
   justify-content: center;
@@ -200,7 +182,7 @@
 }
 @media (min-width: 700px) {
   .StatusBlock {
-    height: 40px;
+    height: 47px;
     width: 60px; 
     font-size: 2em;
   }
@@ -216,6 +198,7 @@
   padding-bottom: 2px;
 
   height: 100%;
+  hyphens: auto;
 
   border: 0px;
   resize: none;

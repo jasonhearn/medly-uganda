@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import calcToday from './calcToday'
+import GridSquare from './GridSquare'
 import '../styles/main.css';
 import '../styles/symptoms.css'
 
@@ -58,49 +59,20 @@ class TitleColumn extends Component {
 	}
 }
 
-class GridSquare extends Component {
-	render() {
-		var tx, col;
-		if (this.props.text === "Yes") { 
-			tx = ""; col = '#3FB0F1'
-		} else if (this.props.text === "No") { 
-			tx = ""; col = '#FFFFFF'
-		} else if (this.props.text === "Critical") {
-			tx = "H"; col = '#FF1D00';
-		} else if (this.props.text === "Urgent") {
-			tx = "\u00b7\u00b7\u00b7"; col = '#FF1D00';
-		} else if (this.props.text === "Urgent with fluid") {
-			tx = "\u00b7\u00b7\u00b7"; col = '#FF1D00';
-		} else if (this.props.text === "Fluid") {
-			tx = "\u00b7\u00b7"; col = '#FFFE06';
-		} else if (this.props.text === "Tired") {
-			tx = "\u00b7\u00b7"; col = '#FFFE06';
-		} else if (this.props.text === "Normal") {
-			tx = "\u00b7"; col = '#91D150';
-		} else {
-			tx = ""; col = 'rgba(0, 0, 0, 0)'
-		}
-		
-		return(
-			<div className='ResponseBlock' title={this.props.text} style={{background: col}}>{tx}</div>
-		);
-	}
-}
-
 class GridColumn extends Component {
 	render() {
 		return(
 			<main>
 				<HeadBlock  key="head" className="DateHead" text={this.props.runs['date']} today={this.props.today} />
-				<GridSquare key="fainted" text={this.props.runs['fainted']}/>
-				<GridSquare key="breath_seated" text={this.props.runs['breath_seated']}/>
-				<GridSquare key="chest_pain" text={this.props.runs['chest_pain']}/>
-				<GridSquare key="lightheaded" text={this.props.runs['lightheaded']}/>
-				<GridSquare key="swollen" text={this.props.runs['swollen']}/>
-				<GridSquare key="tired" text={this.props.runs['tired']}/>
-				<GridSquare key="breath_night" text={this.props.runs['breath_night']}/>
-				<GridSquare key="heart_beat" text={this.props.runs['heart_beat']}/>
-				<GridSquare key="status" text={this.props.runs['status']}/>
+				<GridSquare class='ResponseBlock' key="fainted" text={this.props.runs['fainted']}/>
+				<GridSquare class='ResponseBlock' key="breath_seated" text={this.props.runs['breath_seated']}/>
+				<GridSquare class='ResponseBlock' key="chest_pain" text={this.props.runs['chest_pain']}/>
+				<GridSquare class='ResponseBlock' key="lightheaded" text={this.props.runs['lightheaded']}/>
+				<GridSquare class='ResponseBlock' key="swollen" text={this.props.runs['swollen']}/>
+				<GridSquare class='ResponseBlock' key="tired" text={this.props.runs['tired']}/>
+				<GridSquare class='ResponseBlock' key="breath_night" text={this.props.runs['breath_night']}/>
+				<GridSquare class='ResponseBlock' key="heart_beat" text={this.props.runs['heart_beat']}/>
+				<GridSquare class='ResponseBlock' key="status" text={this.props.runs['status']}/>
 			</main>
 		);
 	}
@@ -119,13 +91,15 @@ class PatSympTable extends Component {
 			}
 
 			return (
-				<div className="TableBlock">
-					<h1>SYMPTOMS</h1>
-					<div className="Table" style={{display: "flex"}}>
-						<TitleColumn />
-						<div className="TableSymp">{columns}</div>
+				<main>
+					<div className="TableBlock">
+						<h1>SYMPTOMS</h1>
+						<div className="Table" style={{display: "flex"}}>
+							<TitleColumn />
+							<div className="TableSymp">{columns}</div>
+						</div>
 					</div>
-				</div>
+				</main>
 				);
 		} else {
 			return(

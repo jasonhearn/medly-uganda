@@ -51,6 +51,7 @@ class Login extends Component {
         password: value
       }
 
+    localStorage.setItem('username',name)
     var formBody = [];
 
     for (var property in details) {

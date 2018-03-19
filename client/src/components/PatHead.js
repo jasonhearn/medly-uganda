@@ -30,7 +30,7 @@ class ChangePt extends Component {
 		
 		return(
 			<div className="dropdown">
-		  		<Button className="ChangePtButton">Change Patient</Button>
+		  		<Button className="ChangePtButton">Recent Patients</Button>
 		  		<div className="dropdownContent">
 		  			{dropList}
 		  		</div>

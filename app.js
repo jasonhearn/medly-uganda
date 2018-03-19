@@ -174,16 +174,22 @@ app.get('/getNotes', passport.authenticate('jwt', { session: false }), function(
 
 // Create POST request to update notes in MongoDB
 app.post('/saveNote', passport.authenticate('jwt', { session: false }), function(req, res){
-  var phone = "+"+req.body.phone; date = req.body.date; note = req.body.note
+  var phone = "+"+req.body.phone; date = req.body.date; 
+  add = {}; 
+  add['note'] = req.body.note; 
+  add['author'] = req.body.author; 
+  add['timestamp'] = req.body.timestamp
+  console.log(add)
   var query = {}; query['phone'] = phone;
   var upd = {}; 
-  upd['notes.'+date] = note
+  upd['notes.'+date] = add
+  console.log(upd)
   var notes;
   db.collection('notes').find(query).toArray(function(err, results) {
     notes = results[0]
     if (!notes) {
-      var init = {}, note = {}; 
-      first_note[date] = note
+      var init = {}, first_note = {}; 
+      first_note[date] = add
       init['phone'] = phone
       init['notes'] = first_note
       console.log(init)

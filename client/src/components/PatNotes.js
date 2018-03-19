@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Button } from "react-bootstrap";
 import calcToday from './calcToday'
 import success from "../pictures/success.png"
 import '../styles/main.css';
 import '../styles/patient.css';
+var dateFormat = require('dateformat')
 
 class SavedMessage extends Component {
   render() {
@@ -73,16 +73,27 @@ class GridSquare extends Component {
 class NoteBlock extends Component {
 	constructor(props) { 
 		super(props)
-		this.state = { 
-			note: this.props.note
+		if (!!this.props.note) {
+			this.state = { 
+				note: this.props.note.note
+			}
+		} else {
+			this.state = { 
+				note: ""
+			}
 		}
 	}
 
 	saveNote(note, phone, date) {
+		var timestamp = dateFormat((new Date(), "isoDateTime"))
+		var author = localStorage.getItem('username')
+
 		var noteObj = {
 			phone: phone,
 			date: date,
-			note: note
+			note: note,
+			timestamp: timestamp,
+			author: author
 		};
 
 		var payload = JSON.stringify(noteObj)
