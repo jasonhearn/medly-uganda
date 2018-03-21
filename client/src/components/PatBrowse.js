@@ -132,17 +132,17 @@ class BrowseBody extends Component {
 			
 			for (var i=0; i<Object.keys(this.props.values).length; i++) {
 				const vals = this.props.values[i]
-				var phone = vals.urns["0"].substr(8)
+				var phone = (""+vals.phone).substr(3)
 					rows.push(
 						<tr key={i+1}>
 							<td>
-								<Link to={'/patient/'+vals.urns["0"].substr(4)} className="Link">
+								<Link to={'/patient/'+vals.uuid} className="Link">
 									{vals.name.split(' ')[1].toUpperCase()}
 								</Link>
 							</td>
 							<td>{vals.name.split(' ')[0]}</td>
-							<td>{vals.fields.sex}</td>
-							<td>{vals.fields.age}</td>
+							<td>{vals.sex}</td>
+							<td>{vals.age}</td>
 							<td>{phone}</td>
 						</tr>
 					);
@@ -168,9 +168,9 @@ class PatBrowse extends Component {
 	}
 
 	componentDidMount() {
-		var group = 'Patients'
-		var url = '/contByGroup?group=' + group
-
+		// var group = 'Patients'
+		// var url = '/contByGroup?group=' + group
+		var url = '/getAllContacts'
 		var token = localStorage.getItem('token');
 
 	    var request = {
@@ -181,11 +181,12 @@ class PatBrowse extends Component {
 
 		fetch(url,request)
 			.then(res => res.json())
-			.then(data => this.setState({ data : data.results }))
+			.then(data => this.setState({ data : data }))
 	}
 
 	render() {
 		if (!!this.state.data) {
+			console.log(this.state.data)
 			return (
 				<main>
 					<div className="MiddleTop">

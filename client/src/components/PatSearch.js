@@ -37,7 +37,9 @@ class PatSearch extends Component {
 
     this.state = {
       phone: '',
+      uuid: '',
       phoneList: [],
+      uuidList: [],
       success: false,
       failed: false,
       phoneValid: false,
@@ -45,7 +47,7 @@ class PatSearch extends Component {
   }
 
   componentDidMount() {
-    var url = '/contAll'
+    var url = '/getAllContacts'
     var token = localStorage.getItem('token');
     var request = {
       headers: {
@@ -55,12 +57,16 @@ class PatSearch extends Component {
 
     fetch(url,request)
       .then(res => res.json())
-      .then(data => { 
-        var tmp_list = []
-        for (var i=0; i<Object.keys(data.results).length; i++) {
-          tmp_list[i] = data.results[i].urns[0].substr(4)
+      .then(data => {
+        var phone_list = [], uuid_list = []
+        for (var i=0; i<data.length; i++) {
+          phone_list[i] = '+'+data[i].phone
+          uuid_list[i] = data[i].uuid
         }
-        this.setState({ phoneList : tmp_list })
+        this.setState({ 
+          phoneList : phone_list,
+          uuidList : uuid_list 
+        })
       })
   }
 
@@ -105,6 +111,14 @@ class PatSearch extends Component {
     // Check for match in phone list
     phoneValid = this.state.phoneList.indexOf(phone) > -1
 
+    // Get matching UUID for phone number
+    var uuid;
+    if (phoneValid) {
+      uuid = this.state.uuidList[this.state.phoneList.indexOf(phone)]
+    } else {
+      uuid = ""
+    }
+
     if (phone.length >= 13 && !phoneValid) {
       this.setState({ failed: true })
     } else {
@@ -112,13 +126,14 @@ class PatSearch extends Component {
     }
 
     this.setState( { phone: phone,
+                     uuid: uuid,
                      formError: formError,
                      phoneValid: phoneValid })
   }
 
   render() {
     if (this.state.success) {
-      return <Redirect push to={'/patient/' + this.state.phone} />;
+      return <Redirect push to={'/patient/' + this.state.uuid} />;
     } else {
       return (
         <main>
@@ -156,7 +171,7 @@ class PatSearch extends Component {
 
             </div>
 
-            <Link to={'/patient/' + this.state.phone}>
+            <Link to={'/patient/' + this.state.uuid}>
               <Button className="HorizButton" 
                 type="submit" 
                 disabled={!this.state.phoneValid}

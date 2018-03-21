@@ -109,32 +109,39 @@ var headers = {
   'Cache-Control': 'no-cache'
 }
 
-// Define TextIt API get requests, requiring authentication through a JWT
-app.get("/contByGroup", passport.authenticate('jwt', { session: false }), function(req, res) {
-  var options = {
-    url: 'https://api.textit.in/api/v2/contacts.json?group=' + req.param('group'),
-    headers: headers
-  }
-  request(options, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      res.send(body)
+// Get all contacts from MongoDB
+app.get("/getAllContacts", passport.authenticate('jwt', { session: false }), function(req, res) {
+  var query = {};
+  db.collection('contacts').find().toArray(function(err, results) {
+    if (!results) {
+      console.log('No match')
+      res.json({Message: 'No notes found'})
+    } else {
+      console.log('Match found')
+      res.json(results)
     }
-  })
+  });
 });
+
+// Get contact by UUID from MongoDB
+app.get("/getContact", passport.authenticate('jwt', { session: false }), function(req, res) {
+  console.log('UUID: '+req.param('uuid'))
+  var query = {}; query['uuid'] = req.param('uuid')
+  console.log(query)
+  db.collection('contacts').find(query).toArray(function(err, results) {
+    if (!results) {
+      console.log('No match')
+      res.json({Message: 'No notes found'})
+    } else {
+      console.log('Match found')
+      res.json(results)
+    }
+  });
+});
+
 app.get("/contByPhone", passport.authenticate('jwt', { session: false }), function(req, res){
   var options = {
     url: 'https://api.textit.in/api/v2/contacts.json?urn=tel:' + req.param('phone'),
-    headers: headers
-  }
-  request(options, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      res.send(body)
-    }
-  })
-});
-app.get("/contAll", passport.authenticate('jwt', { session: false }), function(req, res){
-  var options = {
-    url: 'https://api.textit.in/api/v2/contacts.json',
     headers: headers
   }
   request(options, function (error, response, body) {
@@ -157,8 +164,7 @@ app.get("/runsByUUID", passport.authenticate('jwt', { session: false }), functio
 
 // Create GET request to update notes in MongoDB
 app.get('/getNotes', passport.authenticate('jwt', { session: false }), function(req, res){
-  var query = {}; query['phone'] = "+"+req.param('phone');
-  console.log(query)
+  var query = {}; query['uuid'] = req.param('uuid');
   var notes;
   db.collection('notes').find(query).toArray(function(err, results) {
     data = results[0]
@@ -174,25 +180,33 @@ app.get('/getNotes', passport.authenticate('jwt', { session: false }), function(
 
 // Create POST request to update notes in MongoDB
 app.post('/saveNote', passport.authenticate('jwt', { session: false }), function(req, res){
-  var phone = "+"+req.body.phone; date = req.body.date; 
+  var uuid = req.body.uuid; date = req.body.date; 
+  console.log(uuid)
+
+  // Define parameters of note to be added (incl. author and timestamp)
   add = {}; 
   add['note'] = req.body.note; 
   add['author'] = req.body.author; 
   add['timestamp'] = req.body.timestamp
-  console.log(add)
-  var query = {}; query['phone'] = phone;
+
+  // Query by UUID
+  var query = {}; query['uuid'] = uuid;
+
+  // Define note to be added as a sub-field of notes
   var upd = {}; 
   upd['notes.'+date] = add
-  console.log(upd)
+
+  // Search to see if any notes exist for patient
   var notes;
   db.collection('notes').find(query).toArray(function(err, results) {
     notes = results[0]
+
+    // If no notes exist, first add initializer and then update with note
     if (!notes) {
       var init = {}, first_note = {}; 
       first_note[date] = add
-      init['phone'] = phone
+      init['uuid'] = uuid
       init['notes'] = first_note
-      console.log(init)
       db.collection('notes').save(init)
       db.collection('notes').update(
         query,
@@ -200,6 +214,8 @@ app.post('/saveNote', passport.authenticate('jwt', { session: false }), function
         (err, result) => {
         res.send('Saved notes to database')
       })
+
+    // If notes do exist, just update
     } else {
       db.collection('notes').update(
         query, 

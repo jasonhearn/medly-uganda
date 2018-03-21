@@ -38,19 +38,19 @@ class Patient extends Component {
 	    }
 
 		// GET CONTACTS
-		var group = 'Patients'
-		var url_cont = '/contByGroup?group=' + group
+		// var group = 'Patients'
+		// var url_cont = '/contByGroup?group=' + group
+		var url_cont = '/getAllContacts'
 
 		fetch(url_cont,request)
 			.then(res => res.json())
 			.then(data => {
 				var contacts = [];
 				var contact;
-				const vals = data.results;
-				for (var i=0; i<Object.keys(vals).length; i++) {
+				for (var i=0; i<data.length; i++) {
 					contact = {
-						name: vals[i].name,
-						phone: vals[i].urns["0"].substr(4),
+						name: data[i].name,
+						uuid: data[i].uuid,
 					}
 					contacts.push(contact)
 				}
@@ -59,29 +59,28 @@ class Patient extends Component {
 		)
 
 		// GET INDIVIDUAL INFO
-		var phone = this.props.match.params.phone
-		var url_ind = '/contByPhone?phone=' + phone
+		var uuid = this.props.match.params.uuid
+		var url_ind = '/getContact?uuid=' + uuid
 
 		fetch(url_ind,request)
 			.then(res => res.json())
   			.then(data => {
   				var ind_dict = {
-	  				fname: data.results[0].name.split(' ')[0],
-					lname: data.results[0].name.split(' ')[1].toUpperCase(),
-					age : data.results[0].fields.age,
-					sex : data.results[0].fields.sex,
-					phone : data.results[0].urns["0"].substr(4),
-					lang : data.results[0].language,
-					uuid : data.results[0].uuid,
-					registered_on : data.results[0].fields.registered_on.substr(0,19)+".000"
+	  				fname: data[0].name.split(' ')[0],
+					lname: data[0].name.split(' ')[1].toUpperCase(),
+					age : data[0].age,
+					sex : data[0].sex,
+					phone : '+'+data[0].phone,
+					lang : data[0].language,
+					uuid : data[0].uuid,
+					registered_on : data[0].registered_on+"T23:59:00.000"
   				} 
   				this.setState({individ: ind_dict})
 			}
 		);
 
   		// GET NOTES
-  		var phone_notes = phone.substr(1);
-	    var url_notes = '/getNotes?phone=' + phone_notes
+	    var url_notes = '/getNotes?uuid=' + uuid
 
 	    fetch(url_notes, request)
 	    	.then(res => res.json())
@@ -145,7 +144,7 @@ class Patient extends Component {
 				<div className="MiddleTop">
 					<PatHead individ={this.state.individ} contacts={this.state.contacts}/>
 					<PatSympTable runs={this.state.runs} />
-					<PatNotes phone={this.props.match.params.phone} runs={this.state.runs} notes={this.state.notes} />
+					<PatNotes uuid={this.props.match.params.uuid} runs={this.state.runs} notes={this.state.notes} />
 					<Legend />
 					<Logos />
 				</div>

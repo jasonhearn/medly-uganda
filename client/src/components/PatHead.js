@@ -13,7 +13,7 @@ class ChangePt extends Component {
 			contact = contacts[i].name.split(' ')[1].toUpperCase() + ', ' + contacts[i].name.split(' ')[0][0] + '.'
 			dropList.push(
 				<li key={i}>
-					<Link to={'/patient/'+contacts[i].phone} className="Sublist">
+					<Link to={'/patient/'+contacts[i].uuid} className="Sublist">
 						{contact}
 					</Link>
 				</li>
