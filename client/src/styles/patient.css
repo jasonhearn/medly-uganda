@@ -139,12 +139,13 @@
 }
 
 .DateBlock, .NoteBlock {
+  position: relative;
   display: flex;
   justify-content: center;
   align-content: center;
   flex-direction: column;
   
-  height: 39px;
+  height: 41px;
 
   border: 1px solid #A9A9A9;
 
@@ -156,6 +157,30 @@
 
 @media (min-width: 700px) {
   .DateBlock, .NoteBlock {
+    height: 49px;
+    font-size: 0.7em;
+  } 
+}
+
+.SavedNoteBlock {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  
+  height: 39px;
+
+  border: 2px solid #91D150;
+
+  text-align: center;
+  font-size: 0.5em;
+  color: #000000;
+  font-weight: 700;
+} 
+
+@media (min-width: 700px) {
+  .SavedNoteBlock {
     height: 47px;
     font-size: 0.7em;
   } 
@@ -167,7 +192,7 @@
 
 .StatusBlock {
   width: 40px;
-  height: 39px;
+  height: 41px;
 
   display: flex;
   justify-content: center;
@@ -182,13 +207,13 @@
 }
 @media (min-width: 700px) {
   .StatusBlock {
-    height: 47px;
+    height: 49px;
     width: 60px; 
     font-size: 2em;
   }
 }
 
-.NoteBlock {
+.NoteBlock, .SavedNoteBlock {
   width: 85%;
 }
 
@@ -206,4 +231,37 @@
   font-size: 1.0em;
   font-family: inherit;
   font-weight: 400;
+}
+
+.SavedNoteBlock textarea {
+  padding-left: 8px;
+  padding-top: 3px;
+  padding-bottom: 2px;
+
+  height: 100%;
+  hyphens: auto;
+
+  border: 0px;
+  resize: none;
+
+  font-size: 1.0em;
+  font-family: inherit;
+  font-weight: 700;
+}
+
+.Success {
+  position: absolute;
+  width: 10px;
+  bottom: 0;
+  right: 3px;
+}
+@media (min-width: 700px) {
+  .Success {
+    width: 15px;
+  }
+}
+
+
+.SuccessLogo {
+  width: 100%;
 }

@@ -70,6 +70,23 @@ class GridSquare extends Component {
 	}
 }
 
+class SuccessLogo extends Component {
+	render() {
+		if (this.props.saved) {
+			return(
+				<div className="Success">
+					<img className="SuccessLogo" src={success} alt="" />
+				</div>
+			);
+		} else {
+			return(
+				<div></div>
+			);
+		}
+		
+	}
+}
+
 class NoteBlock extends Component {
 	constructor(props) { 
 		super(props)
@@ -93,7 +110,8 @@ class NoteBlock extends Component {
 			date: date,
 			note: note,
 			timestamp: timestamp,
-			author: author
+			author: author,
+			saved: false,
 		};
 
 		var payload = JSON.stringify(noteObj)
@@ -119,20 +137,28 @@ class NoteBlock extends Component {
 	render() {
 		var date = this.props.date
 		var uuid = this.props.uuid
-		console.log(uuid)
 		var id   = "notesOn"+date
+		var noteStyle;
+
+		if (this.state.saved) {
+			noteStyle = "SavedNoteBlock"		
+		} else {
+			noteStyle = "NoteBlock"
+		}
+
 		return(
-			<div className="NoteBlock">
+			<div className={noteStyle} >
                 <textarea
               	  placeholder="No notes recorded"
               	  value={this.state.note}
               	  id={id}
               	  onChange = { (e) => {
-              	  	this.setState({note: e.target.value})
+              	  	this.setState({ note: e.target.value })
               	  	this.saveNote(e.target.value,uuid,date)
               	  }}
                 >
             	</textarea>
+        		<SuccessLogo saved={this.state.saved} />
 			</div>
 		);
 	}
