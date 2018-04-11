@@ -5,6 +5,7 @@ import { Link } from "react-router-dom"
 import LogoutButton from './LogoutButton'
 import Logos from './Logos'
 import sort from '../pictures/sort.png'
+import moment from 'moment';
 
 import '../styles/main.css';
 
@@ -132,6 +133,8 @@ class BrowseBody extends Component {
 			
 			for (var i=0; i<Object.keys(this.props.values).length; i++) {
 				const vals = this.props.values[i]
+				var age = moment(vals.DOB, "YYYY-MM-DD").fromNow();
+				age = age.split(" ")[0]
 				var phone = (""+vals.phone).substr(3)
 					rows.push(
 						<tr key={i+1}>
@@ -142,7 +145,7 @@ class BrowseBody extends Component {
 							</td>
 							<td>{vals.name.split(' ')[0]}</td>
 							<td>{vals.sex}</td>
-							<td>{vals.age}</td>
+							<td>{age}</td>
 							<td>{phone}</td>
 						</tr>
 					);

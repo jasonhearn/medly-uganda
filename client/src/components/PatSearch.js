@@ -182,7 +182,9 @@ class PatSearch extends Component {
 
             <ErrorMessage failed={this.state.failed} />
 
-            <h2>Don't know the phone number? <Link to='/patbrowse' className='Link'>Browse your patients</Link>.</h2>
+            <h2>Patient not in system? <Link to='/createpatient' className='Link'>Add a new patient</Link>.</h2>
+
+            <h2>Don't know the phone number? <Link to='/patientbrowse' className='Link'>Browse your patients</Link>.</h2>
             
             <Logos />
 

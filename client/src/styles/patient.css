@@ -37,7 +37,6 @@
 
 .ChangePtButton:hover {
   background: #ffffff;
-
   color: #000000;
 }
 
@@ -76,10 +75,8 @@
 
 .dropdownContent li {
   padding-left: 10px;
-
   list-style: none;
   line-height: 30px;
-  
 }
 
 .dropdownContent li:hover {

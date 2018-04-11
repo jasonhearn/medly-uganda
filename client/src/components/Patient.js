@@ -65,10 +65,11 @@ class Patient extends Component {
 		fetch(url_ind,request)
 			.then(res => res.json())
   			.then(data => {
+  				console.log(data)
   				var ind_dict = {
 	  				fname: data[0].name.split(' ')[0],
 					lname: data[0].name.split(' ')[1].toUpperCase(),
-					age : data[0].age,
+					DOB : data[0].DOB,
 					sex : data[0].sex,
 					phone : '+'+data[0].phone,
 					lang : data[0].language,

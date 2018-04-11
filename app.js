@@ -227,6 +227,49 @@ app.post('/saveNote', passport.authenticate('jwt', { session: false }), function
   });
 });
 
+// Create POST request to create new patient in MongoDB
+app.post('/createPat', passport.authenticate('jwt', { session: false }), function(req, res){
+  var phone = req.body.phone; 
+  var name = req.body.name; 
+  var DOB = req.body.DOB; 
+  var sex = req.body.sex; 
+  var language = req.body.language;
+  var registered_on = req.body.registered_on;
+  var registered_by = req.body.registered_by;
+
+  // Define parameters of note to be added (incl. author and timestamp)
+  add = {}; 
+  add['phone'] = phone; 
+  add['name'] = name; 
+  add['DOB'] = DOB;
+  add['sex'] = sex; 
+  add['language'] = language;
+  add['registered_on'] = registered_on;
+  add['registered_by'] = registered_by;
+
+  // Query by UUID
+  var query = {}; query['phone'] = phone;
+
+  // Search to see if any notes exist for patient
+  var contact;
+  db.collection('contacts').find(query).toArray(function(err, results) {
+    contact = results[0]
+
+    // If no contact exists at provided phone number, create contact
+    if (!contact) {
+      db.collection('contacts').save(
+        add, 
+        (err, result) => {
+        res.send('Saved new contact to database')
+      })
+
+    // If notes do exist, just update
+    } else {
+      res.send('Contact already associated with provided phone number')
+    }
+  });
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

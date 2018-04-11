@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Button } from 'react-bootstrap'
 import { Link } from "react-router-dom"
 import LogoutButton from './LogoutButton'
+import calcToday from './calcToday'
+import moment from 'moment';
 import '../styles/main.css';
 
 class ChangePt extends Component {
@@ -22,7 +24,7 @@ class ChangePt extends Component {
 		searchText = 'Browse patients'
 		dropList.push(
 			<li key="last'">
-				<Link to={'/patbrowse'} className="Sublist">
+				<Link to={'/patientbrowse'} className="Sublist">
 					{searchText}
 				</Link>
 			</li>
@@ -40,6 +42,8 @@ class ChangePt extends Component {
 }
 
 class DemoHeader extends Component {
+	
+
 	render() {
 		// Convert language abbreviation to full word
 		var language;
@@ -59,15 +63,18 @@ class DemoHeader extends Component {
 
 		}
 
+		var age = moment(this.props.individ.DOB, "YYYY-MM-DD").fromNow();
+		age = age.split(" ")[0]
+
 		// Get width and output header depending on value
 		var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 		if (width >= 700) {
 			return (
-				<h2> <b>Age:</b> {this.props.individ.age} | <b>Sex:</b> {this.props.individ.sex} | <b>Language:</b> {language} | <b>Phone:</b> {this.props.individ.phone.substr(4,3)} {this.props.individ.phone.substr(7,6)} </h2>
+				<h2> <b>Age:</b> {age} | <b>Sex:</b> {this.props.individ.sex} | <b>Language:</b> {language} | <b>Phone:</b> {this.props.individ.phone.substr(4,3)} {this.props.individ.phone.substr(7,6)} </h2>
 			);
 		} else {
 			return (
-				<h2> <b>Age:</b> {this.props.individ.age} | <b>Sex:</b> {this.props.individ.sex} | <b>Lang.:</b> {language} | <b>Phone:</b> {this.props.individ.phone.substr(4,3)} {this.props.individ.phone.substr(7,6)} </h2>
+				<h2> <b>Age:</b> {age} | <b>Sex:</b> {this.props.individ.sex} | <b>Lang.:</b> {language} | <b>Ph.:</b> {this.props.individ.phone.substr(4,3)} {this.props.individ.phone.substr(7,6)} </h2>
 			);
 		}
 	}

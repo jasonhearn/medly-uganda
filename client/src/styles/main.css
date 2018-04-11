@@ -135,7 +135,20 @@ td {
 .Icon {
   height: 24px;
   margin-left: 10px;
-  margin-bottom: -7px;
+  margin-bottom: -6px;
+}
+
+.CreateIcon {
+  height: 20px;
+  width: 20px;
+  margin-left: 10px;
+  margin-bottom: -6px;
+}
+@media (min-width: 700px) {
+  .CreateIcon {
+    width: 24px;
+    height: 24px;
+  }
 }
 
 .ErrorIcon {
@@ -287,6 +300,26 @@ td {
   background: #ffffff;
 }
 
+.CreateBlock {
+  padding-top: 10px; 
+  margin: 0 auto;
+  margin-top: 25px;
+
+  width: 290px;
+
+  color: #000000;
+
+  border: 1px solid #000000;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  background: #ffffff;
+}
+@media (min-width: 700px) {
+  .CreateBlock {
+    width: 350px;
+  }
+}
+
 .TableBlock {
   display: flex;
   justify-content: center;
@@ -332,6 +365,122 @@ td {
   font-size: 0.9em;
   font-family: inherit;
   font-weight: 400;
+}
+
+.CreateDropButton, .CreateForm input {
+  padding-left: 8px;
+  padding-top: 3px;
+  padding-bottom: 2px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 9px;
+
+  width: 225px;
+  height: 14px;
+
+  border: 1px solid #000000;
+  border-radius: 20px;
+  background: #ffffff;
+
+  font-size: 0.6em;
+  font-family: inherit;
+  font-weight: 400;
+}
+@media (min-width: 700px) { 
+  .CreateDropButton, .CreateForm input {
+    width: 281px;
+    height: 18px;
+    font-size: 0.9em;
+  } 
+}
+
+.CreateDropButton {
+  color: #d3d3d3;
+  text-align: left;
+  height: 20px;
+  width: 235px;
+}
+@media (min-width: 700px) { 
+  .CreateDropButton{
+    width: 291px;
+    height: 24px;
+    font-size: 0.9em;
+  } 
+}
+
+.CreateDropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.Hidden {
+  display: none;
+}
+
+.CreateDropdownContent {
+  margin-left: 9px;
+  margin-top: -10px;
+  display: show;
+  position: absolute;
+
+  width: 235px;
+  height: 14px;
+  
+  background-color: #f9f9f9;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  border-radius: 20px;
+  border: 1px solid #000000;
+  z-index: 1;
+
+  font-size: 0.6em;
+}
+@media (min-width: 700px) { 
+  .CreateDropdownContent {
+    width: 291px;
+    height: 18px;
+    font-size: 0.9em;
+  } 
+}
+
+/*.CreateDropdown:hover .CreateDropdownContent {
+  display: block;
+}*/
+
+.CreateDropdownContent li {
+  cursor: pointer;
+  background: #ffffff;
+  padding-left: 10px;
+  list-style: none;
+  line-height: 24px;
+}
+
+.CreateDropdownContent li:nth-child(odd) {
+  background: #ffffff;
+}
+
+.CreateDropdownContent li:nth-child(even) {
+  background: #f1f1f1;
+}
+
+.CreateDropdownContent li:first-child {
+  border-top-left-radius: 19px;
+  border-top-right-radius: 19px;
+  border-color: #000000
+}
+
+.CreateDropdownContent li:last-child {
+  border-bottom-left-radius: 19px;
+  border-bottom-right-radius: 19px;
+}
+
+.CreateDropdownContent li:hover:first-child {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.CreateDropdownContent li:hover:last-child {
+  border-bottom-left-radius: 19px;
+  border-bottom-right-radius: 19px;
 }
 
 .PatientSearch {
@@ -410,6 +559,38 @@ td {
   font-family: inherit;
   font-weight: inherit;
   color: #ffffff;
+}
+
+.CreateButton {
+  margin-bottom: 15px;
+
+  width: 292px;  
+
+  background: #000000;
+  border: 0.5px solid #000000;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  color: #ffffff;
+}
+@media (min-width: 700px) {
+  .CreateButton {
+    width: 352px;
+  }
+}
+
+.CreateButton:disabled {
+  border: 1px solid #000000;
+  background-color: #cccccc;
+  color: #666666;
+}
+
+.CreateButton:hover:enabled {
+  cursor: pointer;
+  background:  #3FB1F1;
 }
 
 .Logout {
