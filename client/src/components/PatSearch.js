@@ -27,6 +27,21 @@ class ErrorMessage extends Component {
   }
 }
 
+class NewClinicianButton extends Component {
+  render() {
+    return(
+      <Link to={'/createclinician'}>
+        <Button 
+          className="ChangePtButton" 
+          type="submit" 
+        >
+          Add clinician
+        </Button>
+      </Link>
+    )
+  }
+}
+
 class PatSearch extends Component {
   constructor(props, context) {
     super(props, context);
@@ -37,9 +52,7 @@ class PatSearch extends Component {
 
     this.state = {
       phone: '',
-      uuid: '',
       phoneList: [],
-      uuidList: [],
       success: false,
       failed: false,
       phoneValid: false,
@@ -58,14 +71,12 @@ class PatSearch extends Component {
     fetch(url,request)
       .then(res => res.json())
       .then(data => {
-        var phone_list = [], uuid_list = []
+        var phone_list = []
         for (var i=0; i<data.length; i++) {
           phone_list[i] = '+'+data[i].phone
-          uuid_list[i] = data[i].uuid
         }
         this.setState({ 
           phoneList : phone_list,
-          uuidList : uuid_list 
         })
       })
   }
@@ -101,23 +112,16 @@ class PatSearch extends Component {
   validateField(phone) { 
     var phoneValid = this.state.phoneValid
     var formError = this.state.formError
+    console.log(phone.length)
 
     // Add area code if not already present
-    if (phone.charAt(0) !== "+") {
+    if (phone.length === 9) {
       var area = "+256"
       phone = area + phone
     }
     
     // Check for match in phone list
     phoneValid = this.state.phoneList.indexOf(phone) > -1
-
-    // Get matching UUID for phone number
-    var uuid;
-    if (phoneValid) {
-      uuid = this.state.uuidList[this.state.phoneList.indexOf(phone)]
-    } else {
-      uuid = ""
-    }
 
     if (phone.length >= 13 && !phoneValid) {
       this.setState({ failed: true })
@@ -126,21 +130,23 @@ class PatSearch extends Component {
     }
 
     this.setState( { phone: phone,
-                     uuid: uuid,
                      formError: formError,
                      phoneValid: phoneValid })
   }
 
   render() {
     if (this.state.success) {
-      return <Redirect push to={'/patient/' + this.state.uuid} />;
+      return <Redirect push to={'/patient/' + this.state.phone} />;
     } else {
       return (
         <main>
           <div className="MiddleTop">
-            <div className="Logout">
-              <LogoutButton />
-            </div>
+            <header>
+              <div className="Logout">
+                <NewClinicianButton />
+                <LogoutButton />
+              </div>
+            </header>
           </div>
           <div className="Middle">
 
@@ -171,7 +177,7 @@ class PatSearch extends Component {
 
             </div>
 
-            <Link to={'/patient/' + this.state.uuid}>
+            <Link to={'/patient/' + this.state.phone}>
               <Button className="HorizButton" 
                 type="submit" 
                 disabled={!this.state.phoneValid}
@@ -182,7 +188,7 @@ class PatSearch extends Component {
 
             <ErrorMessage failed={this.state.failed} />
 
-            <h2>Patient not in system? <Link to='/createpatient' className='Link'>Add a new patient</Link>.</h2>
+            <h2>Patient not in the system? <Link to='/createpatient' className='Link'>Add a new patient</Link>.</h2>
 
             <h2>Don't know the phone number? <Link to='/patientbrowse' className='Link'>Browse your patients</Link>.</h2>
             

@@ -38,8 +38,6 @@ class Patient extends Component {
 	    }
 
 		// GET CONTACTS
-		// var group = 'Patients'
-		// var url_cont = '/contByGroup?group=' + group
 		var url_cont = '/getAllContacts'
 
 		fetch(url_cont,request)
@@ -50,7 +48,7 @@ class Patient extends Component {
 				for (var i=0; i<data.length; i++) {
 					contact = {
 						name: data[i].name,
-						uuid: data[i].uuid,
+						phone: data[i].phone,
 					}
 					contacts.push(contact)
 				}
@@ -59,21 +57,20 @@ class Patient extends Component {
 		)
 
 		// GET INDIVIDUAL INFO
-		var uuid = this.props.match.params.uuid
-		var url_ind = '/getContact?uuid=' + uuid
+		var phone = this.props.match.params.phone
+		var phone_query = '%2B' + phone.substr(1)
+		var url_ind = '/getContact?phone=' + phone_query
 
 		fetch(url_ind,request)
 			.then(res => res.json())
   			.then(data => {
-  				console.log(data)
   				var ind_dict = {
 	  				fname: data[0].name.split(' ')[0],
 					lname: data[0].name.split(' ')[1].toUpperCase(),
 					DOB : data[0].DOB,
 					sex : data[0].sex,
-					phone : '+'+data[0].phone,
+					phone : data[0].phone,
 					lang : data[0].language,
-					uuid : data[0].uuid,
 					registered_on : data[0].registered_on+"T23:59:00.000"
   				} 
   				this.setState({individ: ind_dict})
@@ -81,7 +78,7 @@ class Patient extends Component {
 		);
 
   		// GET NOTES
-	    var url_notes = '/getNotes?uuid=' + uuid
+	    var url_notes = '/getNotes?phone=' + phone_query
 
 	    fetch(url_notes, request)
 	    	.then(res => res.json())
@@ -94,24 +91,26 @@ class Patient extends Component {
 	componentDidUpdate(prevProps,prevState) {
 		if (prevState.individ !== this.state.individ) {
 
-			// // SET AUTHENTICATION CREDENTIALS
+			// SET AUTHENTICATION CREDENTIALS
 			// var token = localStorage.getItem('token');
-		 	// var request = {
-			// 		headers: {
-			// 			'Authorization': 'Bearer '+token
-			// 		}
-		 	// }
+		 // 	var request = {
+			// 	headers: {
+			// 		'Authorization': 'Bearer '+token
+			// 	}
+		 // 	}
 
 			// GET RUNS
-			// // This will eventually be replaced by actual API call once data is available
+			// var phone = this.props.match.params.phone
+			// var phone_query = '%2B' + phone.substr(1)
 			// var contact = "6c45471e-829d-4f8a-b948-78f7d988ebfc" //this.state.individ.uuid // Unique patient identifier;
 			// var after = "2018-01-15T23:59:00.000" // this.state.individ.registered_on // Date after which runs are returned
 			var flow = "fe72849f-7d3f-41a4-b677-cef7c24ecf16" // Unique flow identifier
+			// var url_runs = '/runsByPhone?phone=' + phone_query + '&after=' + after;
 
-			// var url_runs = '/runsByUUID?contact='+contact+'&after='+after;
+			// This will eventually be replaced by actual API call once data is available
 			var url_runs = '/runs';
 
-			fetch(url_runs)//, request)
+			fetch(url_runs) //, request)
 				.then(res => res.json())
 				.then(data => {
 					var tmp_val = {}
@@ -145,7 +144,7 @@ class Patient extends Component {
 				<div className="MiddleTop">
 					<PatHead individ={this.state.individ} contacts={this.state.contacts}/>
 					<PatSympTable runs={this.state.runs} />
-					<PatNotes uuid={this.props.match.params.uuid} runs={this.state.runs} notes={this.state.notes} />
+					<PatNotes phone={this.props.match.params.phone} runs={this.state.runs} notes={this.state.notes} />
 					<Legend />
 					<Logos />
 				</div>

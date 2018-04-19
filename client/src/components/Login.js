@@ -85,7 +85,7 @@ class Login extends Component {
   handleChange(e) {
     const name = e.target.name;
     const value = e.target.value;
-    if (value.length >= 6) {
+    if (value.length >= 5) {
       this.setState({ [name]: value })
       if (name === 'username') { 
         this.setState({ usernameValid : true }) 

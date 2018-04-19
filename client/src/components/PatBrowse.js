@@ -135,11 +135,11 @@ class BrowseBody extends Component {
 				const vals = this.props.values[i]
 				var age = moment(vals.DOB, "YYYY-MM-DD").fromNow();
 				age = age.split(" ")[0]
-				var phone = (""+vals.phone).substr(3)
+				var phone = vals.phone.substr(4)
 					rows.push(
 						<tr key={i+1}>
 							<td>
-								<Link to={'/patient/'+vals.uuid} className="Link">
+								<Link to={'/patient/'+vals.phone} className="Link">
 									{vals.name.split(' ')[1].toUpperCase()}
 								</Link>
 							</td>

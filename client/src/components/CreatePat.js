@@ -20,6 +20,7 @@ class CreatePat extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.dateChange = this.dateChange.bind(this);
+    this.checkDate = this.checkDate.bind(this)
 
     this.state = { 
       success: false,
@@ -37,10 +38,37 @@ class CreatePat extends Component {
 
     if (name === "phone") {
       var area = "+256"
-      value = area + value
+      value = area + value.replace(/\s/g, '')
+      console.log(value)
+    }
+
+    if (value.length < 3) {
+      e.target.setCustomValidity("Invalid field.");
+    } else {
+      if (name === "phone") {
+        if (value.length !== 13) {
+          e.target.setCustomValidity("Invalid field.");
+        } else {
+          e.target.setCustomValidity("");
+        }
+      } else {
+        e.target.setCustomValidity("");
+      }
     }
 
     this.setState({ [name]: value })
+  }
+
+  checkDate(startDate) {
+    var date = moment(startDate).format('YYYY-MM-DD');
+    var regEx = /(19|20)\d{2}-(0\d{1}|1[0-2])-([0-2]\d{1}|3[0-1])/
+    console.log('Format:' + (date.match(regEx)))
+    if(!date.match(regEx)) {
+      var x = false;  // Invalid format
+    } else {
+      var x = true;
+    }
+    console.log(x)
   }
 
   dateChange(startDate) {
@@ -49,10 +77,15 @@ class CreatePat extends Component {
       startDate: startDate,
       dob: date
     });
+    //   document.getElementById('datePicker').setCustomValidity("");
+    // } else {
+    //   document.getElementById('datePicker').setCustomValidity("Invalid field.");
+    // }
+    
   }
 
   checkVal() {
-    if(this.state.phone !== "" & 
+    if(this.state.phone.length === 13 & 
       this.state.name !== "" &
       this.state.dob !== "" &
       this.state.sex !== "" &
@@ -92,7 +125,6 @@ class CreatePat extends Component {
 
     var payload = JSON.stringify(contObj)
     var token = localStorage.getItem('token');
-    console.log(token)
 
     var request = {
       method: 'POST',
@@ -106,7 +138,7 @@ class CreatePat extends Component {
     fetch('/createPat', request)
       .then(res => {
         if (res.status === 200) {
-          this.setState({ saved: true })
+          this.setState({ success: true })
         }
       })
   }
@@ -138,38 +170,42 @@ class CreatePat extends Component {
                   autoFocus
                   name="name"
                   type="text"
+                  id="usernameForm"
                   placeholder="Name"
                   onChange={this.handleChange}
                 />
               </FormGroup>
 
-              <FormGroup className="CreateForm">
+              <FormGroup className="CreateFormPhone">
                 <ControlLabel>
                   <img 
                     src={phone} 
                     className='CreateIcon' 
                     alt="" 
+                    style = {{marginRight: '10px'}}
                   />
+                  <p>+256</p>
                 </ControlLabel>
                 <FormControl
-                  autoFocus
                   name="phone"
                   type="text"
-                  placeholder="Phone number"
+                  placeholder="Phone number (720123456)"
                   onChange={this.handleChange}
                 />
               </FormGroup>
 
-              <FormGroup className="CreateForm">
+              <FormGroup className="CreateFormDate">
                 <img 
                   src={dob} 
                   className='CreateIcon'
-                  style={{float: 'left', marginLeft: '12px'}}
+                  style={{float: 'left', marginLeft: '12px', marginRight: '8px'}}
                   alt="" 
                 />
                 <DatePicker
+                  id="datePicker"
                   dateFormat="DD/MM/YYYY"
                   selected={this.state.startDate}
+                  onSelect={this.checkDate}
                   onChange={this.dateChange}
                   placeholderText="Date of birth (DD/MM/YYYY)"
                 />
@@ -183,7 +219,7 @@ class CreatePat extends Component {
                 />
                 <div className="CreateDropdown">
                   <Button className="CreateDropButton" id="sexButton" onClick={() => { this.dropMenu("sex") }}>Sex</Button>
-                  <div className="Hidden" id="sex">
+                  <div className="Hidden" id="sex" style={{height: '48px'}}>
                     <li onClick={() => { 
                       this.setState({sex: 'M'})
                       document.getElementById("sexButton").style.color = '#000000';
@@ -207,8 +243,11 @@ class CreatePat extends Component {
                   alt="" 
                 />
                 <div className="CreateDropdown">
-                  <Button className="CreateDropButton" id="languageButton" onClick={() => { this.dropMenu("language") }}>Language</Button>
-                  <div className="Hidden" id="language">
+                  <Button className="CreateDropButton" 
+                    id="languageButton" 
+                    onClick={() => { this.dropMenu("language") }}>Language
+                  </Button>
+                  <div className="Hidden" id="language" style={{height: '72px'}}>
                     <li onClick={() => { 
                       this.setState({language: 'eng'})
                       document.getElementById("languageButton").style.color = '#000000';

@@ -236,6 +236,8 @@ td {
   text-align: center;
 }
 
+
+
 .Middle h2 {
   color: #484848;
   padding-bottom: 10px;
@@ -244,6 +246,13 @@ td {
 @media (min-width: 700px) { 
   .Middle { 
     width: 700px;
+  }
+}
+
+@media (max-height: 450px) { 
+  .Middle { 
+    top: 70px;
+    transform: translateY(0%) translateX(-50%);
   }
 }
 
@@ -367,7 +376,7 @@ td {
   font-weight: 400;
 }
 
-.CreateDropButton, .CreateForm input {
+.CreateDropButton, .CreateForm input, .CreateFormDate input, .CreateFormPhone input {
   padding-left: 8px;
   padding-top: 3px;
   padding-bottom: 2px;
@@ -387,22 +396,51 @@ td {
   font-weight: 400;
 }
 @media (min-width: 700px) { 
-  .CreateDropButton, .CreateForm input {
+  .CreateDropButton, .CreateForm input, .CreateFormDate input {
     width: 281px;
     height: 18px;
     font-size: 0.9em;
   } 
 }
 
+.CreateForm input:invalid, .CreateFormDate input:invalid, .CreateFormPhone input:invalid {
+  border: 1px solid #FF1D00;
+}
+
+.CreateFormPhone input {
+  width: 196px;
+  margin-left: 5px;
+}
+.CreateFormPhone p {
+  display: inline-block;
+  line-height: 0;
+  font-size: 0.6em;
+}
+@media (min-width: 700px) { 
+  .CreateFormPhone input {
+    width: 241px;
+    height: 18px;
+    font-size: 0.9em;
+  } 
+  .CreateFormPhone p {
+    font-size: 0.9em;
+  }
+}
+
+.CreateFormDate input {
+  margin-left: 0px;
+}
+
 .CreateDropButton {
   color: #d3d3d3;
+  border-color: #000000;
   text-align: left;
   height: 20px;
-  width: 235px;
+  width: 236px;
 }
 @media (min-width: 700px) { 
   .CreateDropButton{
-    width: 291px;
+    width: 292px;
     height: 24px;
     font-size: 0.9em;
   } 
@@ -424,7 +462,6 @@ td {
   position: absolute;
 
   width: 235px;
-  height: 14px;
   
   background-color: #f9f9f9;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
@@ -437,7 +474,6 @@ td {
 @media (min-width: 700px) { 
   .CreateDropdownContent {
     width: 291px;
-    height: 18px;
     font-size: 0.9em;
   } 
 }
@@ -633,30 +669,35 @@ td {
 }
 
 .Picture {
-  height: 17px;
+  height: 20px;
   padding-top: 20px;
-  padding-left: 8px;
-  padding-right: 8px;
+  padding-left: 25px;
+  padding-right: 25px;
 }
-@media (min-width: 420px) and (max-width: 700px) {
+@media (min-width: 390px) and (max-width: 700px) {
   .Picture {
-    height: 24px;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+}
+@media (min-width: 425px) and (max-width: 700px) {
+  .Picture {
     padding-left: 12px;
     padding-right: 12px;
   }
 }
 @media (min-width: 550px) and (max-width: 700px) {
   .Picture {
-    height: 30px;
+    height: 25px;
     padding-left: 15px;
     padding-right: 15px;
   }
 }
 @media (min-width: 700px) { 
   .Picture {
-    height: 40px; 
-    padding-left: 20px;
-    padding-right: 20px;
+    height: 30px; 
+    padding-left: 18px;
+    padding-right: 18px;
   }
 }
 

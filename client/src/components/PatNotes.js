@@ -101,12 +101,12 @@ class NoteBlock extends Component {
 		}
 	}
 
-	saveNote(note, uuid, date) {
+	saveNote(note, phone, date) {
 		var timestamp = dateFormat((new Date(), "isoDateTime"))
 		var author = localStorage.getItem('username')
 
 		var noteObj = {
-			uuid: uuid,
+			phone: phone,
 			date: date,
 			note: note,
 			timestamp: timestamp,
@@ -136,7 +136,7 @@ class NoteBlock extends Component {
 
 	render() {
 		var date = this.props.date
-		var uuid = this.props.uuid
+		var phone = this.props.phone
 		var id   = "notesOn"+date
 		var noteStyle;
 
@@ -154,7 +154,7 @@ class NoteBlock extends Component {
               	  id={id}
               	  onChange = { (e) => {
               	  	this.setState({ note: e.target.value })
-              	  	this.saveNote(e.target.value,uuid,date)
+              	  	this.saveNote(e.target.value,phone,date)
               	  }}
                 >
             	</textarea>
@@ -172,7 +172,7 @@ class GridRow extends Component {
 			<div className="GridRow">
 				<DateBlock date={date} today={this.props.today} />
 				<GridSquare key="status" text={this.props.runs['status']}/>
-				<NoteBlock date={date} note={note} uuid={this.props.uuid}/>
+				<NoteBlock date={date} note={note} phone={this.props.phone}/>
 			</div>
 		);
 	}
@@ -192,7 +192,7 @@ class PatNotes extends Component {
 		var rows = [];
 		for (var i=Object.keys(this.props.runs).length-1; i>-1; i--) {
 			rows.push(
-				<GridRow key={i} today={today} runs={this.props.runs[i]} notes={this.state.notes} uuid={this.props.uuid} />
+				<GridRow key={i} today={today} runs={this.props.runs[i]} notes={this.state.notes} phone={this.props.phone} />
 			);
 		}
 

@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "react": "^16.2.0",
+    "react-datepicker": "^1.4.1",
     "react-dom": "^16.2.0",
     "react-loading": "^1.0.3",
     "react-native-loading-spinner-overlay": "^0.5.2",
