@@ -275,9 +275,9 @@ app.post('/createPat', passport.authenticate('jwt', { session: false }), functio
         res.send('Saved new contact to database')
       })
 
-    // If notes do exist, just update
+    // If contact already exists, return error statement
     } else {
-      res.send('Contact already associated with provided phone number')
+      res.send('Contact exists')
     }
   });
 });

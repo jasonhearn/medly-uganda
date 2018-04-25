@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { FormGroup, FormControl } from "react-bootstrap";
-
 import { Link } from "react-router-dom"
 import LogoutButton from './LogoutButton'
+import ReturnButton from './ReturnButton'
 import Logos from './Logos'
 import sort from '../pictures/sort.png'
 import moment from 'moment';
@@ -140,10 +140,10 @@ class BrowseBody extends Component {
 						<tr key={i+1}>
 							<td>
 								<Link to={'/patient/'+vals.phone} className="Link">
-									{vals.name.split(' ')[1].toUpperCase()}
+									{vals.name.split(' ')[vals.name.split(' ').length-1].toUpperCase()}
 								</Link>
 							</td>
-							<td>{vals.name.split(' ')[0]}</td>
+							<td>{vals.name.split(' ').slice(0,-1).join(" ")}</td>
 							<td>{vals.sex}</td>
 							<td>{age}</td>
 							<td>{phone}</td>
@@ -194,6 +194,7 @@ class PatBrowse extends Component {
 				<main>
 					<div className="MiddleTop">
 						<div className="Logout">
+					  		<ReturnButton />
 					  		<LogoutButton />
 				        </div>
 						<BrowseHead />

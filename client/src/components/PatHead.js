@@ -11,7 +11,7 @@ class ChangePt extends Component {
 		var contact, searchText;
 		const contacts = this.props.contacts;
 		for (var i=0; i<Object.keys(contacts).length; i++) {
-			contact = contacts[i].name.split(' ')[1].toUpperCase() + ', ' + contacts[i].name.split(' ')[0][0] + '.'
+			contact = contacts[i].name.split(' ')[contacts[i].name.split(' ').length-1].toUpperCase() + ', ' + contacts[i].name.split(' ')[0][0] + '.'
 			dropList.push(
 				<li key={i}>
 					<Link to={'/patient/'+contacts[i].phone} className="Sublist">

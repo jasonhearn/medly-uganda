@@ -3,6 +3,7 @@ import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import { Redirect } from "react-router-dom"
 import Logos from "./Logos"
 import LogoutButton from './LogoutButton'
+import ReturnButton from './ReturnButton'
 import username from "../pictures/username.png"
 import password from "../pictures/password.png"
 import '../styles/main.css';
@@ -76,9 +77,12 @@ class CreateClin extends Component {
       return (
         <main>
           <div className="MiddleTop">
-            <div className="Logout">
-              <LogoutButton />
-            </div>
+            <header>
+              <div className="Logout">
+                <ReturnButton />
+                <LogoutButton />
+              </div>
+            </header>
           </div>
           <div className="Middle">
             <h1>Enter the clinician's credentials.</h1>

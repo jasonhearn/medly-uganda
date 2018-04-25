@@ -5,6 +5,7 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import Logos from "./Logos"
 import LogoutButton from './LogoutButton'
+import ReturnButton from './ReturnButton'
 import username from "../pictures/username.png"
 import phone from "../pictures/phone.png"
 import dob from "../pictures/dob.png"
@@ -19,8 +20,9 @@ class CreatePat extends Component {
     super(props, context);
 
     this.handleChange = this.handleChange.bind(this);
-    this.dateChange = this.dateChange.bind(this);
     this.checkDate = this.checkDate.bind(this)
+    this.setWrapperRef = this.setWrapperRef.bind(this);
+    this.handleClickOutside = this.handleClickOutside.bind(this);
 
     this.state = { 
       success: false,
@@ -29,6 +31,35 @@ class CreatePat extends Component {
       dob: "",
       sex: "",
       language: ""
+    }
+  }
+
+  componentDidMount() {
+    document.addEventListener('mousedown', this.handleClickOutside);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.handleClickOutside);
+  }
+
+  setWrapperRef(node) {
+    if (node !== null) {
+      if (node.id === "sex") {
+        this.wrapperSex  = node
+      } else if (node.id === "language") {
+        this.wrapperLang = node;
+      }
+    }
+  }
+
+  handleClickOutside(event) {
+    if (!this.wrapperSex.contains(event.target) && !this.wrapperLang.contains(event.target)) {
+      var sexStatus = document.getElementById("sex").getAttribute("class")
+      var langStatus = document.getElementById("language").getAttribute("class")
+      if (sexStatus != "Hidden" | langStatus != "Hidden") {
+        document.getElementById("sex").setAttribute("class","Hidden")
+        document.getElementById("language").setAttribute("class","Hidden")
+      } 
     }
   }
 
@@ -42,15 +73,17 @@ class CreatePat extends Component {
       console.log(value)
     }
 
-    if (value.length < 3) {
-      e.target.setCustomValidity("Invalid field.");
-    } else {
-      if (name === "phone") {
-        if (value.length !== 13) {
-          e.target.setCustomValidity("Invalid field.");
-        } else {
-          e.target.setCustomValidity("");
-        }
+    if (name === "name") {
+      if (value.split(" ").length < 2 | value.split(" ")[1] === "") {
+        e.target.setCustomValidity("Invalid field.");
+      } else {
+        e.target.setCustomValidity("");
+      }
+    }
+
+    if (name === "phone") {
+      if (value.length !== 13) {
+        e.target.setCustomValidity("Invalid field.");
       } else {
         e.target.setCustomValidity("");
       }
@@ -59,32 +92,36 @@ class CreatePat extends Component {
     this.setState({ [name]: value })
   }
 
-  checkDate(startDate) {
-    var date = moment(startDate).format('YYYY-MM-DD');
-    var regEx = /(19|20)\d{2}-(0\d{1}|1[0-2])-([0-2]\d{1}|3[0-1])/
-    console.log('Format:' + (date.match(regEx)))
-    if(!date.match(regEx)) {
-      var x = false;  // Invalid format
+  checkDate(e) {
+    const id = e.target.id;
+    var value  = e.target.value;
+    var regEx;
+
+    if (id == "dd") {
+      regEx = /([0-2]\d{1}|3[0-1])/
+    } else if (id == "mm") {
+      regEx = /(0\d{1}|1[0-2])/
     } else {
-      var x = true;
+      regEx = /(19|20)\d{2}/
     }
-    console.log(x)
+    if(!value.match(regEx)) {
+      e.target.setCustomValidity("Invalid field.");
+    } else {
+      e.target.setCustomValidity("");
+    }
+    if (document.getElementById("dd").value.length == 2 &
+        document.getElementById("mm").value.length == 2 &
+        document.getElementById("yyyy").value.length == 4 &
+        document.getElementById("dd").checkValidity() &
+        document.getElementById("mm").checkValidity() &
+        document.getElementById("yyyy").checkValidity()) {
+      var date = document.getElementById("yyyy").value+"-"+document.getElementById("mm").value+"-"+document.getElementById("dd").value
+      console.log(date)
+      this.setState({ dob: date })
+    }
   }
 
-  dateChange(startDate) {
-    var date = moment(startDate).format('YYYY-MM-DD');
-    this.setState({
-      startDate: startDate,
-      dob: date
-    });
-    //   document.getElementById('datePicker').setCustomValidity("");
-    // } else {
-    //   document.getElementById('datePicker').setCustomValidity("Invalid field.");
-    // }
-    
-  }
-
-  checkVal() {
+  checkAll() {
     if(this.state.phone.length === 13 & 
       this.state.name !== "" &
       this.state.dob !== "" &
@@ -145,14 +182,17 @@ class CreatePat extends Component {
 
   render() {
     if (this.state.success) {
-      return <Redirect push to="/patientsearch" />;
+      return <Redirect push to={'/patient/' + this.state.phone} />;
     } else {      
       return (
         <main>
           <div className="MiddleTop">
-            <div className="Logout">
-              <LogoutButton />
-            </div>
+            <header>
+              <div className="Logout">
+                <ReturnButton />
+                <LogoutButton />
+              </div>
+            </header>
           </div>
           <div className="Middle">
             <h1>Enter the patient's information.</h1>
@@ -195,19 +235,33 @@ class CreatePat extends Component {
               </FormGroup>
 
               <FormGroup className="CreateFormDate">
-                <img 
-                  src={dob} 
-                  className='CreateIcon'
-                  style={{float: 'left', marginLeft: '12px', marginRight: '8px'}}
-                  alt="" 
+                <ControlLabel>
+                  <img 
+                    src={dob} 
+                    className='CreateIcon' 
+                    alt="" 
+                    style = {{marginLeft: '0px', marginRight: '10px'}}
+                  />
+                <p>DOB:</p>
+                </ControlLabel>
+                <FormControl
+                  id="dd"
+                  type="text"
+                  placeholder="DD"
+                  onChange={this.checkDate}
+                  style = {{marginLeft: '8px'}}
                 />
-                <DatePicker
-                  id="datePicker"
-                  dateFormat="DD/MM/YYYY"
-                  selected={this.state.startDate}
-                  onSelect={this.checkDate}
-                  onChange={this.dateChange}
-                  placeholderText="Date of birth (DD/MM/YYYY)"
+                <FormControl
+                  id="mm"
+                  type="text"
+                  placeholder="MM"
+                  onChange={this.checkDate}
+                />
+                <FormControl
+                  id="yyyy"
+                  type="text"
+                  placeholder="YYYY"
+                  onChange={this.checkDate}
                 />
               </FormGroup>
 
@@ -218,8 +272,12 @@ class CreatePat extends Component {
                   alt="" 
                 />
                 <div className="CreateDropdown">
-                  <Button className="CreateDropButton" id="sexButton" onClick={() => { this.dropMenu("sex") }}>Sex</Button>
-                  <div className="Hidden" id="sex" style={{height: '48px'}}>
+                  <Button className="CreateDropButton" 
+                    id="sexButton" 
+                    onClick={() => { this.dropMenu("sex") }}>
+                    Sex
+                  </Button>
+                  <div className="Hidden" id="sex" ref={this.setWrapperRef} style={{height: '48px'}}>
                     <li onClick={() => { 
                       this.setState({sex: 'M'})
                       document.getElementById("sexButton").style.color = '#000000';
@@ -244,10 +302,11 @@ class CreatePat extends Component {
                 />
                 <div className="CreateDropdown">
                   <Button className="CreateDropButton" 
-                    id="languageButton" 
-                    onClick={() => { this.dropMenu("language") }}>Language
+                    id="languageButton"
+                    onClick={() => { this.dropMenu("language") }}>
+                    Language
                   </Button>
-                  <div className="Hidden" id="language" style={{height: '72px'}}>
+                  <div className="Hidden" id="language" ref={this.setWrapperRef} style={{height: '72px'}}>
                     <li onClick={() => { 
                       this.setState({language: 'eng'})
                       document.getElementById("languageButton").style.color = '#000000';
@@ -273,7 +332,7 @@ class CreatePat extends Component {
 
             <Button 
               className="CreateButton" 
-              disabled={!this.checkVal()}
+              disabled={!this.checkAll()}
               onClick={() => { 
                 this.createPat() 
                 this.setState({ success: true })

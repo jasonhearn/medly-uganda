@@ -396,11 +396,15 @@ td {
   font-weight: 400;
 }
 @media (min-width: 700px) { 
-  .CreateDropButton, .CreateForm input, .CreateFormDate input {
+  .CreateDropButton, .CreateForm input {
     width: 281px;
     height: 18px;
     font-size: 0.9em;
   } 
+}
+
+.CreateDropButton {
+  cursor: pointer;
 }
 
 .CreateForm input:invalid, .CreateFormDate input:invalid, .CreateFormPhone input:invalid {
@@ -408,27 +412,34 @@ td {
 }
 
 .CreateFormPhone input {
-  width: 196px;
-  margin-left: 5px;
+  width: 189px;
+  margin-left: 9px;
 }
-.CreateFormPhone p {
+.CreateFormDate input {
+  width: 49px;
+  margin-right: 0px;
+}
+.CreateFormPhone p, .CreateFormDate p {
   display: inline-block;
+  margin-left: 3px;
   line-height: 0;
   font-size: 0.6em;
 }
 @media (min-width: 700px) { 
   .CreateFormPhone input {
-    width: 241px;
+    width: 231px;
     height: 18px;
     font-size: 0.9em;
+    margin-left: 12px;
   } 
-  .CreateFormPhone p {
+  .CreateFormDate input {
+    width: 63px;
+    height: 18px;
     font-size: 0.9em;
   }
-}
-
-.CreateFormDate input {
-  margin-left: 0px;
+  .CreateFormPhone p, .CreateFormDate p {
+    font-size: 0.9em;
+  }
 }
 
 .CreateDropButton {
