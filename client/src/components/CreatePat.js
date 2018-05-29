@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import { Redirect } from "react-router-dom"
-import DatePicker from 'react-datepicker';
-import moment from 'moment';
 import Logos from "./Logos"
 import LogoutButton from './LogoutButton'
 import ReturnButton from './ReturnButton'
@@ -27,7 +25,8 @@ class CreatePat extends Component {
     this.state = { 
       success: false,
       phone: "",
-      name: "",
+      surname: "",
+      firstName: "",
       dob: "",
       sex: "",
       language: ""
@@ -56,7 +55,7 @@ class CreatePat extends Component {
     if (!this.wrapperSex.contains(event.target) && !this.wrapperLang.contains(event.target)) {
       var sexStatus = document.getElementById("sex").getAttribute("class")
       var langStatus = document.getElementById("language").getAttribute("class")
-      if (sexStatus != "Hidden" | langStatus != "Hidden") {
+      if (sexStatus !== "Hidden" | langStatus !== "Hidden") {
         document.getElementById("sex").setAttribute("class","Hidden")
         document.getElementById("language").setAttribute("class","Hidden")
       } 
@@ -64,6 +63,12 @@ class CreatePat extends Component {
   }
 
   handleChange(e) {
+    function toTitleCase(str) {
+        return str.replace(/\w\S*/g, function(txt){
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
+    }
+
     const name = e.target.name;
     var value = e.target.value;
 
@@ -73,10 +78,20 @@ class CreatePat extends Component {
       console.log(value)
     }
 
-    if (name === "name") {
-      if (value.split(" ").length < 2 | value.split(" ")[1] === "") {
+    if (name === "firstName") {
+      if (value.length < 2) {
         e.target.setCustomValidity("Invalid field.");
       } else {
+        value = toTitleCase(value)
+        e.target.setCustomValidity("");
+      }
+    }
+
+    if (name === "surname") {
+      if (value.length < 2) {
+        e.target.setCustomValidity("Invalid field.");
+      } else {
+        value = value.toUpperCase()
         e.target.setCustomValidity("");
       }
     }
@@ -95,23 +110,26 @@ class CreatePat extends Component {
   checkDate(e) {
     const id = e.target.id;
     var value  = e.target.value;
-    var regEx;
+    var regEx, expLen;
 
-    if (id == "dd") {
-      regEx = /([0-2]\d{1}|3[0-1])/
-    } else if (id == "mm") {
+    if (id === "dd") {
+      regEx  = /([0-2]\d{1}|3[0-1])/
+      expLen = 2 
+    } else if (id === "mm") {
       regEx = /(0\d{1}|1[0-2])/
+      expLen = 2
     } else {
       regEx = /(19|20)\d{2}/
+      expLen = 4
     }
-    if(!value.match(regEx)) {
+    if(!value.match(regEx) || !(value.length === expLen)) {
       e.target.setCustomValidity("Invalid field.");
     } else {
       e.target.setCustomValidity("");
     }
-    if (document.getElementById("dd").value.length == 2 &
-        document.getElementById("mm").value.length == 2 &
-        document.getElementById("yyyy").value.length == 4 &
+    if (document.getElementById("dd").value.length === 2 &
+        document.getElementById("mm").value.length === 2 &
+        document.getElementById("yyyy").value.length === 4 &
         document.getElementById("dd").checkValidity() &
         document.getElementById("mm").checkValidity() &
         document.getElementById("yyyy").checkValidity()) {
@@ -151,7 +169,8 @@ class CreatePat extends Component {
     var registered_by = localStorage.getItem('username')
 
     var contObj = {
-      name: this.state.name,
+      surname: this.state.surname,
+      firstName: this.state.firstName,
       phone: this.state.phone,
       DOB: this.state.dob,
       sex: this.state.sex,
@@ -176,6 +195,9 @@ class CreatePat extends Component {
       .then(res => {
         if (res.status === 200) {
           this.setState({ success: true })
+        } else if (res.status === 400) {
+          this.setState({ success: true }) // Here, contact exists. For testing, we will just proceed to patient's page.
+                                           // In future, we can have a pop-up that says "Patient already exists. You have been taken to their existing file."
         }
       })
   }
@@ -198,20 +220,28 @@ class CreatePat extends Component {
             <h1>Enter the patient's information.</h1>
             
             <div className="CreateBlock">
-              <FormGroup className="CreateForm">
+              <FormGroup className="CreateFormName">
                 <ControlLabel>
                   <img 
                     src={username} 
                     className='CreateIcon' 
                     alt="" 
+                    style = {{marginLeft: '0px'}}
                   />
                 </ControlLabel>
                 <FormControl
-                  autoFocus
-                  name="name"
+                  id="surname"
+                  name="surname"
                   type="text"
-                  id="usernameForm"
-                  placeholder="Name"
+                  placeholder="Surname"
+                  onChange={this.handleChange}
+                  style = {{marginLeft: '10px'}}
+                />
+                <FormControl
+                  id="firstName"
+                  name="firstName"
+                  type="text"
+                  placeholder="First name"
                   onChange={this.handleChange}
                 />
               </FormGroup>
@@ -334,8 +364,7 @@ class CreatePat extends Component {
               className="CreateButton" 
               disabled={!this.checkAll()}
               onClick={() => { 
-                this.createPat() 
-                this.setState({ success: true })
+                this.createPat()
               }}
             >
               OK

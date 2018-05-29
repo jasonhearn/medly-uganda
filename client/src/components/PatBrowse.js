@@ -41,7 +41,7 @@ class BrowseHead extends Component {
 	                	autoFocus
 	                	id="search"
 	                	type="text"
-	                	placeholder="Search by last name or phone number"
+	                	placeholder="Search by surname or phone number"
 	                	onChange={ ()=>{ this.filtTable() } }
 	              		/>
 	            	</FormGroup>
@@ -112,14 +112,14 @@ class BrowseBody extends Component {
 			rows.push(
 			<tr key={-1}>
 				<th onClick={ ()=>{ this.sortTable(0) } } width='30%'>
-					Family name
+					Surname
 					<img src={sort} 
 						className='SortIcon' 
 						alt=""
 					/>
 				</th>
 				<th onClick={ ()=>{ this.sortTable(1) } } width='25%'>
-					Given name
+					First name
 					<img src={sort} 
 						className='SortIcon' 
 						alt="" 
@@ -140,10 +140,10 @@ class BrowseBody extends Component {
 						<tr key={i+1}>
 							<td>
 								<Link to={'/patient/'+vals.phone} className="Link">
-									{vals.name.split(' ')[vals.name.split(' ').length-1].toUpperCase()}
+									{vals.surname}
 								</Link>
 							</td>
-							<td>{vals.name.split(' ').slice(0,-1).join(" ")}</td>
+							<td>{vals.firstName}</td>
 							<td>{vals.sex}</td>
 							<td>{age}</td>
 							<td>{phone}</td>
@@ -184,7 +184,18 @@ class PatBrowse extends Component {
 
 		fetch(url,request)
 			.then(res => res.json())
-			.then(data => this.setState({ data : data }))
+			.then(data => {
+					data = data.sort(function(a, b){
+				    var keyA = a.surname,
+				        keyB = b.surname;
+				    // Compare the 2 names
+				    if (keyA < keyB) return -1;
+				    if (keyA > keyB) return 1;
+				    return 0;
+				});
+				this.setState({ data : data })
+			}
+		);
 	}
 
 	render() {

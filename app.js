@@ -18,6 +18,9 @@ var bcrypt = require('bcrypt');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'client/build')));
+
 // Setup body and cookie parser
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -28,25 +31,30 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Load local routes
 var index = require('./routes/index');
 var users = require('./routes/users');
-var runs = require('./routes/runs');
+var runs  = require('./routes/runs');
+var runs2 = require('./routes/runs2');
+var runs3 = require('./routes/runs3');
 var contacts = require('./routes/contacts');
 
 // Set routing for local entries
 app.use('/', index);
 app.use('/users', users);
 app.use('/runs', runs);
+app.use('/runs2', runs2);
+app.use('/runs3', runs3);
 app.use('/contacts', contacts);
 
 // Load secure variables from environment (must run "source app-env")
-var db_type = process.env.DB_TYPE;
-var db_user = process.env.DB_USER;
-var db_pass = process.env.DB_PASS;
-var db_server = process.env.DB_SERVER;
-var db_port = process.env.DB_PORT;
-var db_name = process.env.DB_NAME;
-var jwt_init = process.env.JWT_INIT;
-var textit_token = process.env.TEXTIT_TOKEN;
-var salt_rounds = parseInt(process.env.SALT_ROUNDS);
+var db_type        = process.env.DB_TYPE;
+var db_user        = process.env.DB_USER;
+var db_pass        = process.env.DB_PASS;
+var db_server      = process.env.DB_SERVER;
+var db_port        = process.env.DB_PORT;
+var db_name        = process.env.DB_NAME;
+var jwt_init       = process.env.JWT_INIT;
+var rapidpro_token = process.env.RAPIDPRO_TOKEN;
+var rapidpro_url   = process.env.RAPIDPRO_URL
+var salt_rounds    = parseInt(process.env.SALT_ROUNDS);
 
 // Connect to MongoDB
 var url = db_type+'://'+db_user+':'+db_pass+'@'+db_server+':'+db_port+'/'+db_name;
@@ -89,7 +97,6 @@ app.post("/auth", function(req, res) {
     var user;
     for (idx in results) {
       user = results[idx]
-      console.log(user)
       checkName = bcrypt.compareSync(username, user['username'])
       checkPass = bcrypt.compareSync(password, user['password'])
       if (checkName & checkPass) {
@@ -114,7 +121,7 @@ app.get("/secret", passport.authenticate('jwt', { session: false }), function(re
 
 // Define query headers
 var headers = {
-  'Authorization': textit_token,
+  'Authorization': rapidpro_token,
   'Cache-Control': 'no-cache'
 }
 
@@ -149,21 +156,9 @@ app.get("/getContact", passport.authenticate('jwt', { session: false }), functio
   });
 });
 
-// app.get("/contByPhone", passport.authenticate('jwt', { session: false }), function(req, res){
-//   var options = {
-//     url: 'https://api.textit.in/api/v2/contacts.json?urn=tel:' + req.query.phone,
-//     headers: headers
-//   }
-//   request(options, function (error, response, body) {
-//     if (!error && response.statusCode == 200) {
-//       res.send(body)
-//     }
-//   })
-// });
-
 app.get("/runsByPhone", passport.authenticate('jwt', { session: false }), function(req, res){
   var options = {
-    url: 'https://api.textit.in/api/v2/contacts.json?urn=tel:' + req.query.phone,
+    url: rapidpro_url + '/contacts.json?urn=tel:' + req.query.phone,
     headers: headers
   }
   request(options, function (error, response, body) {
@@ -171,7 +166,7 @@ app.get("/runsByPhone", passport.authenticate('jwt', { session: false }), functi
     if (!error && response.statusCode == 200) {
       console.log('BODY:' + body)
       var options = {
-        url: 'https://api.textit.in/api/v2/runs.json?contact=' + req.query.contact + '&after=' + req.query.after,
+        url: rapidpro_url + '/runs.json?contact=' + req.query.contact + '&after=' + req.query.after,
         headers: headers
       }
       request(options, function (error, response, body) {
@@ -188,12 +183,11 @@ app.get('/getNotes', passport.authenticate('jwt', { session: false }), function(
   var query = {}; query['phone'] = req.query.phone;
   db.collection('notes').find(query).toArray(function(err, results) {
     data = results[0]
-    console.log(data)
     if (!data) {
-      console.log('No match')
+      console.log('No match in getNotes')
       res.json({Message: 'No notes found'})
     } else {
-      console.log('Match found')
+      console.log('Match found in getNotes')
       res.json(data['notes'])
     }
   });
@@ -241,7 +235,7 @@ app.post('/saveNote', passport.authenticate('jwt', { session: false }), function
         query, 
         { $set: upd }, 
         (err, result) => {
-        res.send('Saved notes to database')
+          res.send('Saved notes to database')
       });
     }
   });
@@ -252,7 +246,8 @@ app.post('/createPat', passport.authenticate('jwt', { session: false }), functio
   // Define parameters of note to be added (incl. author and timestamp)
   add = {}; 
   add['phone'] = req.body.phone; 
-  add['name'] = req.body.name; 
+  add['surname'] = req.body.surname;
+  add['firstName'] = req.body.firstName; 
   add['DOB'] = req.body.DOB;
   add['sex'] = req.body.sex; 
   add['language'] = req.body.language;
@@ -266,17 +261,20 @@ app.post('/createPat', passport.authenticate('jwt', { session: false }), functio
   var contact;
   db.collection('contacts').find(query).toArray(function(err, results) {
     contact = results[0]
+    console.log(results)
 
     // If no contact exists at provided phone number, create contact
     if (!contact) {
       db.collection('contacts').save(
         add, 
-        (err, result) => {
+        (error, result) => {
+          console.log(res)
         res.send('Saved new contact to database')
       })
 
     // If contact already exists, return error statement
     } else {
+      res.status(400);
       res.send('Contact exists')
     }
   });
@@ -289,12 +287,11 @@ app.post('/createClin', passport.authenticate('jwt', { session: false }), functi
   add['username']   = bcrypt.hashSync(req.body.username, salt_rounds);
   add['password']   = bcrypt.hashSync(req.body.password, salt_rounds); 
   add['created_on'] = req.body.created_on;
-  console.log(add)
 
   // Query by hashed username
   var query = {}; query['username'] = add['username'];
 
-  // Search to see if any notes exist for patient
+  // Search to see if any clinician exists with provided username
   var contact;
   db.collection('contacts').find(query).toArray(function(err, results) {
     contact = results[0]
@@ -304,12 +301,12 @@ app.post('/createClin', passport.authenticate('jwt', { session: false }), functi
       db.collection('users').save(
         add, 
         (err, result) => {
-        res.send('Saved new contact to database')
+          res.send('Saved new contact to database')
       })
 
     // If notes do exist, just update
     } else {
-      res.send('Contact already associated with provided username')
+      err.send('Contact already associated with provided username')
     }
   });
 });

@@ -100,9 +100,9 @@ router.get('/', function(req, res, next) {
 	            ],
 	            "values": {
 	                "fainted": {
-	                    "category": "Yes",
+	                    "category": "No",
 	                    "node": "5b3d7cc5-a9ac-42d1-ac11-bed4a637e4b6",
-	                    "value": "1",
+	                    "value": "2",
 	                    "time": "2018-01-25T20:53:12.991293Z"
 	                },
 	                "breath_seated": {
@@ -124,27 +124,27 @@ router.get('/', function(req, res, next) {
 	                    "time": "2018-01-25T20:52:53.313763Z"
 	                },
 	                "swollen": {
-	                    "category": "Yes",
+	                    "category": "No",
 	                    "node": "6c4088b8-276b-4593-9f30-b33d036c9788",
-	                    "value": "1",
+	                    "value": "2",
 	                    "time": "2018-01-25T20:54:13.811927Z"
 	                },
 	                "tired": {
-	                    "category": "No",
+	                    "category": "Yes",
 	                    "node": "a80d6878-e644-4154-8832-b62d05e2dc1b",
-	                    "value": "2",
+	                    "value": "1",
 	                    "time": "2018-01-25T20:55:17.399456Z"
 	                },
-	                "heart_beat": {
+	                "breath_night": {
 	                    "category": "No",
 	                    "node": "a80d6878-e644-4154-8832-b62d05e2dc1b",
 	                    "value": "2",
 	                    "time": "2018-01-25T20:55:17.399456Z"
 	                },
 	                "status": {
-	                    "category": "Critical",
+	                    "category": "Tired",
 	                    "node": "a80d6878-e644-4154-8832-b62d05e2dc1b",
-	                    "value": "Critical",
+	                    "value": "Tired",
 	                    "time": "2018-01-25T20:55:17.399456Z"
 	                }
 	            },
@@ -402,9 +402,9 @@ router.get('/', function(req, res, next) {
 	                    "time": "2018-01-25T20:52:20.448327Z"
 	                },
 	                "chest_pain": {
-	                    "category": "Yes",
+	                    "category": "No",
 	                    "node": "283ce3a6-e2df-4b17-92e9-f85cc32683b2",
-	                    "value": "1",
+	                    "value": "2",
 	                    "time": "2018-01-25T20:53:45.364679Z"
 	                },
 	                "lightheaded": {
@@ -414,15 +414,15 @@ router.get('/', function(req, res, next) {
 	                    "time": "2018-01-25T20:52:53.313763Z"
 	                },
 	                "swollen": {
-	                    "category": "No",
+	                    "category": "Yes",
 	                    "node": "6c4088b8-276b-4593-9f30-b33d036c9788",
-	                    "value": "2",
+	                    "value": "1",
 	                    "time": "2018-01-25T20:54:13.811927Z"
 	                },
 	                "tired": {
-	                    "category": "Yes",
+	                    "category": "No",
 	                    "node": "a80d6878-e644-4154-8832-b62d05e2dc1b",
-	                    "value": "1",
+	                    "value": "2",
 	                    "time": "2018-01-25T20:55:17.399456Z"
 	                },
 	                "heart_beat": {
@@ -432,9 +432,9 @@ router.get('/', function(req, res, next) {
 	                    "time": "2018-01-25T20:55:17.399456Z"
 	                },
 	                "status": {
-	                    "category": "Urgent",
+	                    "category": "Fluid",
 	                    "node": "a80d6878-e644-4154-8832-b62d05e2dc1b",
-	                    "value": "Urgent",
+	                    "value": "Fluid",
 	                    "time": "2018-01-25T20:55:17.399456Z"
 	                }
 	            },
@@ -698,9 +698,9 @@ router.get('/', function(req, res, next) {
 	                    "time": "2018-01-25T20:53:45.364679Z"
 	                },
 	                "lightheaded": {
-	                    "category": "No",
+	                    "category": "Yes",
 	                    "node": "63e4bc24-c4d3-4383-90a7-a31c3e621e05",
-	                    "value": "2",
+	                    "value": "1",
 	                    "time": "2018-01-25T20:52:53.313763Z"
 	                },
 	                "swollen": {
@@ -715,16 +715,16 @@ router.get('/', function(req, res, next) {
 	                    "value": "1",
 	                    "time": "2018-01-25T20:55:17.399456Z"
 	                },
-	                "breath_night": {
+	                "heart_beat": {
 	                    "category": "No",
 	                    "node": "a80d6878-e644-4154-8832-b62d05e2dc1b",
 	                    "value": "2",
 	                    "time": "2018-01-25T20:55:17.399456Z"
 	                },
 	                "status": {
-	                    "category": "Tired",
+	                    "category": "Urgent",
 	                    "node": "a80d6878-e644-4154-8832-b62d05e2dc1b",
-	                    "value": "Tired",
+	                    "value": "Urgent",
 	                    "time": "2018-01-25T20:55:17.399456Z"
 	                }
 	            },
@@ -1121,9 +1121,9 @@ router.get('/', function(req, res, next) {
 	                    "time": "2018-01-25T20:53:12.991293Z"
 	                },
 	                "breath_seated": {
-	                    "category": "Yes",
+	                    "category": "No",
 	                    "node": "c768a732-2ef6-4cce-a14b-0045ad9cc53d",
-	                    "value": "1",
+	                    "value": "2",
 	                    "time": "2018-01-25T20:52:20.448327Z"
 	                },
 	                "chest_pain": {
@@ -1150,16 +1150,16 @@ router.get('/', function(req, res, next) {
 	                    "value": "2",
 	                    "time": "2018-01-25T20:55:17.399456Z"
 	                },
-	                "heart_beat": {
+	                "breath_night": {
 	                    "category": "Yes",
 	                    "node": "a80d6878-e644-4154-8832-b62d05e2dc1b",
-	                    "value": "1",
+	                    "value": "2",
 	                    "time": "2018-01-25T20:55:17.399456Z"
 	                },
 	                "status": {
-	                    "category": "Urgent",
+	                    "category": "Fluid",
 	                    "node": "a80d6878-e644-4154-8832-b62d05e2dc1b",
-	                    "value": "Urgent",
+	                    "value": "Fluid",
 	                    "time": "2018-01-25T20:55:17.399456Z"
 	                }
 	            },
@@ -1550,9 +1550,9 @@ router.get('/', function(req, res, next) {
 	            ],
 	            "values": {
 	                "fainted": {
-	                    "category": "Yes",
+	                    "category": "No",
 	                    "node": "5b3d7cc5-a9ac-42d1-ac11-bed4a637e4b6",
-	                    "value": "1",
+	                    "value": "2",
 	                    "time": "2018-01-25T20:53:12.991293Z"
 	                },
 	                "breath_seated": {
@@ -1562,9 +1562,9 @@ router.get('/', function(req, res, next) {
 	                    "time": "2018-01-25T20:52:20.448327Z"
 	                },
 	                "chest_pain": {
-	                    "category": "No",
+	                    "category": "Yes",
 	                    "node": "283ce3a6-e2df-4b17-92e9-f85cc32683b2",
-	                    "value": "2",
+	                    "value": "1",
 	                    "time": "2018-01-25T20:53:45.364679Z"
 	                },
 	                "lightheaded": {
@@ -1592,9 +1592,9 @@ router.get('/', function(req, res, next) {
 	                    "time": "2018-01-25T20:55:17.399456Z"
 	                },
 	                "status": {
-	                    "category": "Critical",
+	                    "category": "Urgent with fluid",
 	                    "node": "a80d6878-e644-4154-8832-b62d05e2dc1b",
-	                    "value": "Critical",
+	                    "value": "Urgent with fluid",
 	                    "time": "2018-01-25T20:55:17.399456Z"
 	                }
 	            },

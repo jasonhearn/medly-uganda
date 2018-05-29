@@ -165,7 +165,7 @@ td {
 
 .SortIcon {
   height: 10px;
-  margin-left: 3px;
+  margin-left: 12px;
   margin-bottom: -2px;
 }
 @media (min-width: 700px) {
@@ -358,15 +358,13 @@ td {
   font-weight: 700;
 }
 
-.MainForm input {
+.MainForm input, .MainFormPhone input {
   padding-left: 8px;
   padding-top: 3px;
   padding-bottom: 2px;
   margin-left: 10px;
   margin-right: 10px;
   margin-bottom: 9px;
-
-  width: 200px;
 
   border: 1px solid #000000;
   border-radius: 20px;
@@ -375,8 +373,20 @@ td {
   font-family: inherit;
   font-weight: 400;
 }
+.MainForm input {
+  width: 200px;
+}
+.MainFormPhone input {
+  width: 145px;
+}
 
-.CreateDropButton, .CreateForm input, .CreateFormDate input, .CreateFormPhone input {
+.MainFormPhone p {
+  display: inline-block;
+  margin-left: 3px;
+  line-height: 0;
+}
+
+.CreateDropButton, .CreateForm input, .CreateFormName input, .CreateFormDate input, .CreateFormPhone input {
   padding-left: 8px;
   padding-top: 3px;
   padding-bottom: 2px;
@@ -399,7 +409,7 @@ td {
   .CreateDropButton, .CreateForm input {
     width: 281px;
     height: 18px;
-    font-size: 0.9em;
+    font-size: 0.8em;
   } 
 }
 
@@ -407,10 +417,14 @@ td {
   cursor: pointer;
 }
 
-.CreateForm input:invalid, .CreateFormDate input:invalid, .CreateFormPhone input:invalid {
+.CreateForm input:invalid, .CreateFormName input:invalid, .CreateFormDate input:invalid, .CreateFormPhone input:invalid {
   border: 1px solid #FF1D00;
 }
 
+.CreateFormName input {
+  width: 102px;
+  margin-right: 0px;
+}
 .CreateFormPhone input {
   width: 189px;
   margin-left: 9px;
@@ -426,16 +440,21 @@ td {
   font-size: 0.6em;
 }
 @media (min-width: 700px) { 
+  .CreateFormName input {
+    width: 130px;
+    height: 18px;
+    font-size: 0.8em;
+  }
   .CreateFormPhone input {
     width: 231px;
     height: 18px;
-    font-size: 0.9em;
+    font-size: 0.8em;
     margin-left: 12px;
   } 
   .CreateFormDate input {
     width: 63px;
     height: 18px;
-    font-size: 0.9em;
+    font-size: 0.8em;
   }
   .CreateFormPhone p, .CreateFormDate p {
     font-size: 0.9em;

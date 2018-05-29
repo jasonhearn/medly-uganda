@@ -47,7 +47,8 @@ class Patient extends Component {
 				var contact;
 				for (var i=0; i<data.length; i++) {
 					contact = {
-						name: data[i].name,
+						surname: data[i].surname,
+						firstName: data[i].firstName,
 						phone: data[i].phone,
 					}
 					contacts.push(contact)
@@ -65,8 +66,8 @@ class Patient extends Component {
 			.then(res => res.json())
   			.then(data => {
   				var ind_dict = {
-	  				fname: data[0].name.split(' ').slice(0,-1).join(" "),
-					lname: data[0].name.split(' ')[data[0].name.split(' ').length-1].toUpperCase(),
+	  				firstName: data[0].firstName,
+					surname: data[0].surname,
 					DOB : data[0].DOB,
 					sex : data[0].sex,
 					phone : data[0].phone,
@@ -108,33 +109,47 @@ class Patient extends Component {
 			// var url_runs = '/runsByPhone?phone=' + phone_query + '&after=' + after;
 
 			// This will eventually be replaced by actual API call once data is available
-			var url_runs = '/runs';
+			if (this.state.individ.surname.substr(0,3) === 'WAS') {
+				this.setState({
+					runs: {},
+					completed: true
+				})
+			} else {
+				var url_runs;
+				if (this.state.individ.surname === 'KIRABO') {
+					url_runs = '/runs2';
+				} else if (this.state.individ.surname === 'BAKABULINDI') {
+					url_runs = '/runs3'
+				} else {
+					url_runs = '/runs';
+				}
 
-			fetch(url_runs) //, request)
-				.then(res => res.json())
-				.then(data => {
-					var tmp_val = {}
-					for (var i = 0; i < Object.keys(data.results).length; i++) {
-						// Continue in loop if data is not from main USSD flow or if flow was not completed
-						if (data.results[i].flow.uuid !== flow || data.results[i].exit_type !== "completed") {
-							continue
-						}
+				fetch(url_runs) //, request)
+					.then(res => res.json())
+					.then(data => {
+						var tmp_val = {}
+						for (var i = 0; i < Object.keys(data.results).length; i++) {
+							// Continue in loop if data is not from main USSD flow or if flow was not completed
+							if (data.results[i].flow.uuid !== flow || data.results[i].exit_type !== "completed") {
+								continue
+							}
 
-						// For main USSD flow results, add value to running object
-						var tmp_dict = data.results[i].values
-						var var_keys = Object.keys(tmp_dict)
-						tmp_val[i] = {}
-						tmp_val[i]['date'] = data.results[i].exited_on.substr(2,8)
-						for (var j = 0; j < var_keys.length; j++) {
-							tmp_val[i][var_keys[j]] = tmp_dict[var_keys[j]]['category']
+							// For main USSD flow results, add value to running object
+							var tmp_dict = data.results[i].values
+							var var_keys = Object.keys(tmp_dict)
+							tmp_val[i] = {}
+							tmp_val[i]['date'] = data.results[i].exited_on.substr(2,8)
+							for (var j = 0; j < var_keys.length; j++) {
+								tmp_val[i][var_keys[j]] = tmp_dict[var_keys[j]]['category']
+							}
 						}
-					}
-					this.setState({ 
-						runs : tmp_val,
+						this.setState({ 
+							runs : tmp_val,
 						completed: true // Set flag noting that run fetch has been completed, for case where tmp_val is updated but still empty (i.e. no symptoms reported)
 					})
 				}
 			)
+			}
 		}
 	}
 

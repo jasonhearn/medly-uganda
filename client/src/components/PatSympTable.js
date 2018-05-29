@@ -7,11 +7,12 @@ import '../styles/symptoms.css'
 class HeadBlock extends Component {
 	render() {
 		var text;
+		console.log(this.props.text)
 		if (this.props.className === "SympBlock") {
 			text = this.props.text;
 		} else {
 			// if (this.props.text === this.props.today) {
-			if (this.props.text === '18-02-14') {
+			if (this.props.text === '18-05-28') {
 				text = 'TODAY';
 			} else {
 				var dd = this.props.text.substr(6,2)
@@ -25,6 +26,8 @@ class HeadBlock extends Component {
 				}
 			}
 		}
+
+		console.log(text)
 
 		return(
 			<div className={this.props.className}>{text}</div>

@@ -73,7 +73,7 @@ class PatSearch extends Component {
       .then(data => {
         var phone_list = []
         for (var i=0; i<data.length; i++) {
-          phone_list[i] = '+'+data[i].phone
+          phone_list[i] = data[i].phone
         }
         this.setState({ 
           phoneList : phone_list,
@@ -87,7 +87,16 @@ class PatSearch extends Component {
 
   handleChange(e) {
     var val = e.target.value.replace(" ", "")
-    if (val >= 7) {
+    if (val.substr(0,4) === "+256") { 
+      // Do nothing
+    } else if (val.substr(0,3) === "256") {
+      val = "+" + val
+    } else {
+      val = "+256" + val
+    }
+
+    if (val.length >= 13) {
+      console.log(val)
       this.setState({ phone: val },
         () => {this.validateField(this.state.phone) });
     } else {
@@ -112,13 +121,6 @@ class PatSearch extends Component {
   validateField(phone) { 
     var phoneValid = this.state.phoneValid
     var formError = this.state.formError
-    console.log(phone.length)
-
-    // Add area code if not already present
-    if (phone.length === 9) {
-      var area = "+256"
-      phone = area + phone
-    }
     
     // Check for match in phone list
     phoneValid = this.state.phoneList.indexOf(phone) > -1
@@ -155,14 +157,16 @@ class PatSearch extends Component {
             <div className="LoginBlock">
               <form>
                 <FormGroup 
-                  className="MainForm"
+                  className="MainFormPhone"
                 >
                   <ControlLabel>
                     <img 
                       src={phone} 
                       className='Icon' 
                       alt="" 
+                      style = {{marginRight: '10px'}}
                     />
+                    <p>+256</p>
                   </ControlLabel>
                   <FormControl
                     autoFocus

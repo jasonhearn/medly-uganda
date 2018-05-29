@@ -24,7 +24,7 @@ export default function requireAuth(Component) {
 
 		    if (token !== 'undefined' && token !== null) {
 		    	fetch('/secret', request)
-			        .then(res => this.setState({status: res.status}))
+			        .then(res => this.setState({ status: res.status }))
 		    }
 		}
 

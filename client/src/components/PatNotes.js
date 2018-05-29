@@ -29,7 +29,7 @@ class DateBlock extends Component {
 	render() {
 		var date;
 		// if (this.props.text === this.props.today) {
-		if (this.props.date === '18-02-14') {
+		if (this.props.date === '18-05-28') {
 			date = 'TODAY';
 		} else {
 			var dd = this.props.date.substr(6,2)

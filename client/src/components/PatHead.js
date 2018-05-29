@@ -8,10 +8,21 @@ import '../styles/main.css';
 class ChangePt extends Component {
 	render() {
 		var dropList = [];
-		var contact, searchText;
-		const contacts = this.props.contacts;
+		var contact, contacts, searchText;
+		const contacts_unordered = this.props.contacts;
+
+		contacts = contacts_unordered.sort(function(a, b){
+		    var keyA = a.surname,
+		        keyB = b.surname;
+		    // Compare the 2 names
+		    if (keyA < keyB) return -1;
+		    if (keyA > keyB) return 1;
+		    return 0;
+		});
+
+		console.log(this.props.contacts)
 		for (var i=0; i<Object.keys(contacts).length; i++) {
-			contact = contacts[i].name.split(' ')[contacts[i].name.split(' ').length-1].toUpperCase() + ', ' + contacts[i].name.split(' ')[0][0] + '.'
+			contact = contacts[i].surname + ', ' + contacts[i].firstName.substr(0,1) + '.'
 			dropList.push(
 				<li key={i}>
 					<Link to={'/patient/'+contacts[i].phone} className="Sublist">
@@ -89,7 +100,7 @@ class PatHead extends Component {
 				  	  <LogoutButton />
 			        </div>
 				  <div className="HeadName">
-				  	<h1> {this.props.individ.lname}, {this.props.individ.fname} </h1>
+				  	<h1> {this.props.individ.surname}, {this.props.individ.firstName} </h1>
 				  </div>
 				  <DemoHeader individ={this.props.individ} />
 				</header>
