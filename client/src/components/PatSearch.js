@@ -30,7 +30,7 @@ class ErrorMessage extends Component {
 class NewClinicianButton extends Component {
   render() {
     return(
-      <Link to={'/createclinician'}>
+      <Link to={'/adduser'}>
         <Button 
           className="ChangePtButton" 
           type="submit" 
@@ -191,9 +191,9 @@ class PatSearch extends Component {
 
             <ErrorMessage failed={this.state.failed} />
 
-            <h2>Patient not in the system? <Link to='/createpatient' className='Link'>Add a new patient</Link>.</h2>
+            <h2>Patient not in the system? <Link to='/addpatient' className='Link'>Add a new patient</Link>.</h2>
 
-            <h2>Don't know the phone number? <Link to='/patientbrowse' className='Link'>Browse your patients</Link>.</h2>
+            <h2>Don't know the phone number? <Link to='/browse' className='Link'>Browse your patients</Link>.</h2>
             
             <Logos />
 

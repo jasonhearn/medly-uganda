@@ -95,11 +95,11 @@ class Patient extends Component {
 
 			// // SET AUTHENTICATION CREDENTIALS
 			// var token = localStorage.getItem('token');
-		 //    var request = {
+		 	//    var request = {
 			// 		headers: {
 			// 			'Authorization': 'Bearer '+token
 			// 		}
-		 //    }
+		 	//    }
 
 			// GET RUNS
 			// var phone = this.props.match.params.phone

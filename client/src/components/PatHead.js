@@ -33,7 +33,7 @@ class ChangePt extends Component {
 		searchText = 'Browse patients'
 		dropList.push(
 			<li key="last'">
-				<Link to={'/patientbrowse'} className="Sublist">
+				<Link to={'/browse'} className="Sublist">
 					{searchText}
 				</Link>
 			</li>

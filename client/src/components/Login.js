@@ -107,7 +107,7 @@ class Login extends Component {
 
   render() {
     if (this.state.success) {
-      return <Redirect push to="/patientsearch" />;
+      return <Redirect push to="/search" />;
     } else {
 
       localStorage.clear();

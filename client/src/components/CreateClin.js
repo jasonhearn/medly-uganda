@@ -71,7 +71,7 @@ class CreateClin extends Component {
 
   render() {
     if (this.state.success) {
-      return <Redirect push to="/patientsearch" />;
+      return <Redirect push to="/search" />;
     } else {      
       return (
         <main>
