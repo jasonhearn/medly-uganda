@@ -20,9 +20,8 @@ class ChangePt extends Component {
 		    return 0;
 		});
 
-		console.log(this.props.contacts)
 		for (var i=0; i<Object.keys(contacts).length; i++) {
-			contact = contacts[i].surname + ', ' + contacts[i].firstName.substr(0,1) + '.'
+			contact = contacts[i].surname + ', ' + contacts[i].firstname.substr(0,1) + '.'
 			dropList.push(
 				<li key={i}>
 					<Link to={'/patient/'+contacts[i].phone} className="Sublist">
@@ -73,7 +72,7 @@ class DemoHeader extends Component {
 
 		}
 
-		var age = moment(this.props.individ.DOB, "YYYY-MM-DD").fromNow();
+		var age = moment(this.props.individ.dob, "YYYY-MM-DD").fromNow();
 		age = age.split(" ")[0]
 
 		// Get width and output header depending on value
@@ -100,7 +99,7 @@ class PatHead extends Component {
 				  	  <LogoutButton />
 			        </div>
 				  <div className="HeadName">
-				  	<h1> {this.props.individ.surname}, {this.props.individ.firstName} </h1>
+				  	<h1> {this.props.individ.surname}, {this.props.individ.firstname} </h1>
 				  </div>
 				  <DemoHeader individ={this.props.individ} />
 				</header>

@@ -133,7 +133,7 @@ class BrowseBody extends Component {
 			
 			for (var i=0; i<Object.keys(this.props.values).length; i++) {
 				const vals = this.props.values[i]
-				var age = moment(vals.DOB, "YYYY-MM-DD").fromNow();
+				var age = moment(vals.dob, "YYYY-MM-DD").fromNow();
 				age = age.split(" ")[0]
 				var phone = vals.phone.substr(4)
 					rows.push(
@@ -143,7 +143,7 @@ class BrowseBody extends Component {
 									{vals.surname}
 								</Link>
 							</td>
-							<td>{vals.firstName}</td>
+							<td>{vals.firstname}</td>
 							<td>{vals.sex}</td>
 							<td>{age}</td>
 							<td>{phone}</td>
@@ -200,7 +200,6 @@ class PatBrowse extends Component {
 
 	render() {
 		if (!!this.state.data) {
-			console.log(this.state.data)
 			return (
 				<main>
 					<div className="MiddleTop">

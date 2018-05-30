@@ -7,7 +7,6 @@ import '../styles/symptoms.css'
 class HeadBlock extends Component {
 	render() {
 		var text;
-		console.log(this.props.text)
 		if (this.props.className === "SympBlock") {
 			text = this.props.text;
 		} else {
@@ -26,8 +25,6 @@ class HeadBlock extends Component {
 				}
 			}
 		}
-
-		console.log(text)
 
 		return(
 			<div className={this.props.className}>{text}</div>

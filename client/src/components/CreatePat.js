@@ -6,7 +6,7 @@ import LogoutButton from './LogoutButton'
 import ReturnButton from './ReturnButton'
 import username from "../pictures/username.png"
 import phone from "../pictures/phone.png"
-import dob from "../pictures/dob.png"
+import DOB from "../pictures/dob.png"
 import sex from "../pictures/sex.png"
 import language from "../pictures/language.png"
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
@@ -26,7 +26,7 @@ class CreatePat extends Component {
       success: false,
       phone: "",
       surname: "",
-      firstName: "",
+      firstname: "",
       dob: "",
       sex: "",
       language: ""
@@ -75,10 +75,9 @@ class CreatePat extends Component {
     if (name === "phone") {
       var area = "+256"
       value = area + value.replace(/\s/g, '')
-      console.log(value)
     }
 
-    if (name === "firstName") {
+    if (name === "firstname") {
       if (value.length < 2) {
         e.target.setCustomValidity("Invalid field.");
       } else {
@@ -134,7 +133,6 @@ class CreatePat extends Component {
         document.getElementById("mm").checkValidity() &
         document.getElementById("yyyy").checkValidity()) {
       var date = document.getElementById("yyyy").value+"-"+document.getElementById("mm").value+"-"+document.getElementById("dd").value
-      console.log(date)
       this.setState({ dob: date })
     }
   }
@@ -160,7 +158,6 @@ class CreatePat extends Component {
   }
 
   updVal(id,varName) {
-    console.log(this.state[varName])
     document.getElementById(id).setAttribute("value", this.state[varName]);
   }
 
@@ -170,9 +167,9 @@ class CreatePat extends Component {
 
     var contObj = {
       surname: this.state.surname,
-      firstName: this.state.firstName,
+      firstname: this.state.firstname,
       phone: this.state.phone,
-      DOB: this.state.dob,
+      dob: this.state.dob,
       sex: this.state.sex,
       language: this.state.language,
       registered_on: registered_on,
@@ -238,8 +235,8 @@ class CreatePat extends Component {
                   style = {{marginLeft: '10px'}}
                 />
                 <FormControl
-                  id="firstName"
-                  name="firstName"
+                  id="firstname"
+                  name="firstname"
                   type="text"
                   placeholder="First name"
                   onChange={this.handleChange}
@@ -267,7 +264,7 @@ class CreatePat extends Component {
               <FormGroup className="CreateFormDate">
                 <ControlLabel>
                   <img 
-                    src={dob} 
+                    src={DOB} 
                     className='CreateIcon' 
                     alt="" 
                     style = {{marginLeft: '0px', marginRight: '10px'}}

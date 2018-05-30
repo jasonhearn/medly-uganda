@@ -96,7 +96,6 @@ class PatSearch extends Component {
     }
 
     if (val.length >= 13) {
-      console.log(val)
       this.setState({ phone: val },
         () => {this.validateField(this.state.phone) });
     } else {

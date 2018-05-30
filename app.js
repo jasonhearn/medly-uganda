@@ -5,21 +5,26 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var app = express();
 var _ = require("lodash");
 var jwt    = require('jsonwebtoken');
 var passport = require("passport");
 var passportJWT = require("passport-jwt");
 var request = require('request');
-var MongoClient = require('mongodb').MongoClient
 var bcrypt = require('bcrypt');
+var compression = require('compression');
+var helmet = require('helmet');
+var pgp = require('pg-promise')();
+
+// Define express app
+var app = express();
+
+// Use compression and helment middleware for protection in production
+app.use(compression());
+app.use(helmet());
 
 // Setup view engine
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-
-// Serve static files from the React app
-app.use(express.static(path.join(__dirname, 'client/build')));
 
 // Setup body and cookie parser
 app.use(logger('dev'));
@@ -30,21 +35,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Load local routes
 var index = require('./routes/index');
-var users = require('./routes/users');
 var runs  = require('./routes/runs');
 var runs2 = require('./routes/runs2');
 var runs3 = require('./routes/runs3');
-var contacts = require('./routes/contacts');
 
 // Set routing for local entries
 app.use('/', index);
-app.use('/users', users);
 app.use('/runs', runs);
 app.use('/runs2', runs2);
 app.use('/runs3', runs3);
-app.use('/contacts', contacts);
 
-// Load secure variables from environment (must run "source app-env")
+// Load secure variables from environment (must run "source app-env" in console before running)
 var db_type        = process.env.DB_TYPE;
 var db_user        = process.env.DB_USER;
 var db_pass        = process.env.DB_PASS;
@@ -53,16 +54,12 @@ var db_port        = process.env.DB_PORT;
 var db_name        = process.env.DB_NAME;
 var jwt_init       = process.env.JWT_INIT;
 var rapidpro_token = process.env.RAPIDPRO_TOKEN;
-var rapidpro_url   = process.env.RAPIDPRO_URL
+var rapidpro_url   = process.env.RAPIDPRO_URL;
 var salt_rounds    = parseInt(process.env.SALT_ROUNDS);
 
-// Connect to MongoDB
-var url = db_type+'://'+db_user+':'+db_pass+'@'+db_server+':'+db_port+'/'+db_name;
-var db;
-MongoClient.connect(url, (err, client) => {
-  if (err) return console.log(err)
-  db = client.db(db_name)
-})
+// Connect to PostgreSQL database
+var url = db_type+'://'+db_user+':'+db_pass+'@'+db_server+':'+db_port+'/'+db_name
+var db = pgp(url)
 
 // Set parameters for authentication strategy 
 var ExtractJwt = passportJWT.ExtractJwt;
@@ -76,240 +73,365 @@ jwtOptions.secretOrKey = jwt_init;
 
 // Set JWT strategy to take payload as input
 var strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
-  var query = {}; query['username'] = jwt_payload.username;
-  var user = db.collection('users').find(query)
-  if (user) {
-    next(null, user);
-  } else {
-    next(null, false);
-  }
+
+  db.any('SELECT * FROM users WHERE username = ${username}', {
+    username: jwt_payload.username
+  })
+
+    .then(function (results) {
+      next(null, results);
+    })
+
+    .catch(function (error) {
+      next(null, false);
+    }
+  )
 });
+
 passport.use(strategy);
 
-// Return token with username and password from body
+// Check if user is authorized given their username and password
 app.post("/auth", function(req, res) {
   var username = req.body.username;
   var password = req.body.password;
-  var query = {};
-  var user;
-  db.collection('users').find(query).toArray(function(err, results) {
-    var success = false
-    var user;
-    for (idx in results) {
-      user = results[idx]
-      checkName = bcrypt.compareSync(username, user['username'])
-      checkPass = bcrypt.compareSync(password, user['password'])
-      if (checkName & checkPass) {
-        success = true
-        break
+
+  // Query for all users
+  db.any('SELECT * FROM users')
+    
+    // If query successful, check if username and password are in database.
+    .then(function (results) {
+      var success = false
+      var user;
+      for (idx in results) {
+        user = results[idx]
+        checkName = (username === user.username)
+        checkPass = bcrypt.compareSync(password, user.password)
+        if (checkName & checkPass) {
+          success = true
+          break
+        }
       }
-    }
-    if (!success) {
+
+      // If not in database, return 400 error
+      if (!success) {
+        res.status(400).json({message: "Unsuccessful verification"});
+
+      // If in database, return token to be stored in LocalStorage
+      } else {
+        var payload = {username: user.username};
+        var token = jwt.sign(payload, jwtOptions.secretOrKey);
+        res.json({message: "ok", token: token});
+      }
+    })
+    
+
+    // If query unsuccessful, return error
+    .catch(function (error) {
       res.status(401).json({message: "Unsuccessful verification"});
-    } else {
-      var payload = {username: user.username};
-      var token = jwt.sign(payload, jwtOptions.secretOrKey);
-      res.json({message: "ok", token: token});
-    }
-  })
-});
+    })
+  }
+)
 
 // Setup request to check credentials
 app.get("/secret", passport.authenticate('jwt', { session: false }), function(req, res){
   res.json("ok");
 });
 
-// Define query headers
+// Define RapidPro query headers
 var headers = {
   'Authorization': rapidpro_token,
   'Cache-Control': 'no-cache'
 }
 
-// Get all contacts from MongoDB
+// Get all contacts from PostgreSQL
 app.get("/getAllContacts", passport.authenticate('jwt', { session: false }), function(req, res) {
-  var query = {};
-  db.collection('contacts').find().toArray(function(err, results) {
-    if (!results) {
-      console.log('No match')
-      res.json({Message: 'No notes found'})
-    } else {
-      console.log('Match found')
-      res.json(results)
-    }
-  });
+
+  // Query for all contacts
+  db.any('SELECT * FROM contacts')
+
+    // If query successful, check if contacts are returned
+    .then(function (results) {
+
+      // If no contacts are found, return error
+      if (results.length === 0) {
+        res.status(400).json({Message: 'No contacts found.'})
+
+      // If contacts are found, return list of contacts
+      } else {
+        res.status(200).json(results)
+      }
+    })
+
+    // If query successful, return error
+    .catch(function (error) {
+      res.status(401).json({message: "No contacts found."});
+    })
 });
 
-// Get contact by phone number from MongoDB
+// Get contact by phone number from PostgreSQL
 app.get("/getContact", passport.authenticate('jwt', { session: false }), function(req, res) {
-  var query = {}; query['phone'] = req.query.phone
-  db.collection('contacts').find(query).toArray(function(err, results) {
-    var contact = results[0] 
-    console.log(contact)
-    if (!results) {
-      console.log('No match')
-      res.json({Message: 'No notes found'})
-    } else {
-      console.log('Match found')
-      console.log(results)
-      res.json(results)
-    }
-  });
-});
 
+  // Search for contacts matching queried phone number
+  db.any('SELECT * FROM contacts WHERE phone = ${phone}', {
+    phone: req.query.phone
+  })
+
+    // If query successful, check whether there is a match
+    .then(function (results) {
+
+      // If no match is found, return error
+      if (results.length === 0) {
+        res.status(400).json({Message: 'No match found for queried phone number'})
+
+      // If match is found, return contact information
+      } else {
+        res.status(200).json(results)
+      }
+    })
+
+    // If query successful, return error
+    .catch(function (error) {
+      res.status(401).json({Message: 'No match found for queried phone number'})
+    })
+
+  });
+
+// Use phone number to query RapidPro for symptom data
 app.get("/runsByPhone", passport.authenticate('jwt', { session: false }), function(req, res){
+  
+  // Set option for RapidPro call
   var options = {
     url: rapidpro_url + '/contacts.json?urn=tel:' + req.query.phone,
     headers: headers
   }
+
+  // Call RapidPro API
   request(options, function (error, response, body) {
-    console.log(body)
+
+    // If call successful, return symptom data
     if (!error && response.statusCode == 200) {
-      console.log('BODY:' + body)
       var options = {
         url: rapidpro_url + '/runs.json?contact=' + req.query.contact + '&after=' + req.query.after,
         headers: headers
       }
       request(options, function (error, response, body) {
         if (!error && response.statusCode == 200) {
-          res.send(body)
+          res.status(200).send(body)
         }
       })
+
+    // If call unsuccessful, return error
+    } else {
+      res.status(401).send('No symptom data found.')
     }
   });
 });
 
-// Create GET request to update notes in MongoDB
+// Create GET request to update notes in PostgreSQL
 app.get('/getNotes', passport.authenticate('jwt', { session: false }), function(req, res){
-  var query = {}; query['phone'] = req.query.phone;
-  db.collection('notes').find(query).toArray(function(err, results) {
-    data = results[0]
-    if (!data) {
-      console.log('No match in getNotes')
-      res.json({Message: 'No notes found'})
-    } else {
-      console.log('Match found in getNotes')
-      res.json(data['notes'])
-    }
-  });
+  
+  // Search for notes matching queried phone number
+  db.any('SELECT * FROM notes WHERE phone = ${phone}', {
+    phone: req.query.phone
+  })
+
+    // If query successful, check whether note were found.
+    .then(function (results) {
+      
+      // If no notes found, return error
+      if (results.length === 0) {
+        res.status(400).json({Message: 'No notes found'})
+
+      // If note found, return notes
+      } else {
+        res.status(200).json(results)
+      }
+    })
+
+    // If query unsuccessful, return error
+    .catch(function (error) {
+      res.status(401).json({Message: 'No notes found'})
+    })
 });
 
-// Create POST request to update notes in MongoDB
+// Create POST request to update notes in PostgreSQL
 app.post('/saveNote', passport.authenticate('jwt', { session: false }), function(req, res){
-  var phone = req.body.phone; date = req.body.date; 
-
-  // Define parameters of note to be added (incl. author and timestamp)
-  add = {}; 
-  add['note'] = req.body.note; 
-  add['author'] = req.body.author; 
-  add['timestamp'] = req.body.timestamp
-
-  // Query by phone number
-  var query = {}; query['phone'] = phone;
-
-  // Define note to be added as a sub-field of notes
-  var upd = {}; 
-  upd['notes.'+date] = add
 
   // Search to see if any notes exist for patient
-  var notes;
-  db.collection('notes').find(query).toArray(function(err, results) {
-    notes = results[0]
+  db.any('SELECT * FROM notes WHERE phone = ${phone} AND date = ${date}', {
+    phone: req.body.phone,
+    date: req.body.date
+  })
 
-    // If no notes exist, first add initializer and then update with note
-    if (!notes) {
-      var init = {}, first_note = {}; 
-      first_note[date] = add
-      init['phone'] = phone
-      init['notes'] = first_note
-      db.collection('notes').save(init)
-      db.collection('notes').update(
-        query,
-        { $set: upd }, 
-        (err, result) => {
-        res.send('Saved notes to database')
-      })
+    // If query successful, check whether note exists for given day and phone
+    .then(function (results) {
+      
+      // If note doesn't exist for given day and phone, simply insert
+      if (results.length === 0) {
+        db.none('INSERT INTO notes VALUES (${phone},${date},${note},${author},${timestamp})', {
+          phone: req.body.phone,
+          date: req.body.date,
+          note: req.body.note,
+          author: req.body.author,
+          timestamp: req.body.timestamp
+        })
 
-    // If notes do exist, just update
-    } else {
-      db.collection('notes').update(
-        query, 
-        { $set: upd }, 
-        (err, result) => {
-          res.send('Saved notes to database')
-      });
-    }
-  });
-});
+          // If inserted, send confirmation
+          .then(() => {
+            res.status(200).send('Saved notes to database')
+          })
 
-// Create POST request to create new patient in MongoDB
+          // If not inserted, send error
+          .catch(error => {
+            console.log(error)
+            res.status(400).send('Notes not saved to database')
+          });
+
+      // If note does exist, only update
+      } else {
+
+        // If empty string, delete note
+        if (req.body.note === "") {
+          db.none('DELETE FROM notes WHERE phone = ${phone} AND date = ${date}',{
+            phone: req.body.phone,
+            date: req.body.date
+          })
+            
+            // If delete successful, send confirmation
+            .then(() => {
+              res.status(200).send('Deleted note from database')
+            })
+
+            // If delete unsuccessful, send error
+            .catch(error => {
+              console.log(error)
+              res.status(400).send('Note not deleted to database')
+            });
+
+        // If not empty, save update
+        } else {
+          db.none('UPDATE notes SET note = ${note}, author = ${author}, timestamp = ${timestamp} WHERE phone = ${phone} AND date = ${date}', {
+            note: req.body.note,
+            author: req.body.author,
+            timestamp: req.body.timestamp,
+            phone: req.body.phone,
+            date: req.body.date
+          })
+            
+            // If update successful, send confirmation
+            .then(() => {
+              res.status(200).send('Saved notes to database')
+            })
+
+            // If updated unsuccessful, send error
+            .catch(error => {
+              console.log(error)
+              res.status(400).send('Notes not saved to database')
+            });
+          }
+        }
+      }
+    )
+
+    // If query unsuccessful, return error
+    .catch(function (error) {
+      res.status(401).send('Notes not saved to database')
+    })
+  }
+);
+
+// Create POST request to create new patient in PostgreSQL
 app.post('/createPat', passport.authenticate('jwt', { session: false }), function(req, res){
-  // Define parameters of note to be added (incl. author and timestamp)
-  add = {}; 
-  add['phone'] = req.body.phone; 
-  add['surname'] = req.body.surname;
-  add['firstName'] = req.body.firstName; 
-  add['DOB'] = req.body.DOB;
-  add['sex'] = req.body.sex; 
-  add['language'] = req.body.language;
-  add['registered_on'] = req.body.registered_on;
-  add['registered_by'] = req.body.registered_by;
+  
+  // Search to see if a contact exists with the provided phone number
+  db.any('SELECT * FROM contacts WHERE phone = ${phone}', {
+    phone: req.body.phone,
+  })
 
-  // Query by phone number
-  var query = {}; query['phone'] = req.body.phone;
+    // If query successful, check where contact already exists with phone number
+    .then(function (results) {
 
-  // Search to see if any notes exist for patient
-  var contact;
-  db.collection('contacts').find(query).toArray(function(err, results) {
-    contact = results[0]
-    console.log(results)
+      // If no contact exists with number, add
+      if (results.length === 0) {
+        db.none('INSERT INTO contacts VALUES (${phone},${surname},${firstname},${language},${sex},${dob},${registered_on},${registered_by})', {
+          phone: req.body.phone,
+          surname: req.body.surname,
+          firstname: req.body.firstname,
+          language: req.body.language,
+          sex: req.body.sex,
+          dob: req.body.dob,
+          registered_on: req.body.registered_on,
+          registered_by: req.body.registered_by
+        })
 
-    // If no contact exists at provided phone number, create contact
-    if (!contact) {
-      db.collection('contacts').save(
-        add, 
-        (error, result) => {
-          console.log(res)
-        res.send('Saved new contact to database')
-      })
+          // If add successful, send confirmation
+          .then(() => {
+            res.status(200).send('Saved contact to database')
+          })
 
-    // If contact already exists, return error statement
-    } else {
-      res.status(400);
-      res.send('Contact exists')
-    }
-  });
-});
+          // If add unsuccessful, send error
+          .catch(error => {
+            console.log(error)
+            res.status(400).send('Contact not saved to database')
+          });
 
-// Create POST request to create new clinician in MongoDB
+      // If contact exists with number, send error
+      } else {
+        res.status(400).send('Contact exists with provided phone number.');
+      }
+    })
+
+    // If query unsuccessful, send error
+    .catch(function (error) {
+      console.log(error)
+      res.status(401).send('Notes not saved to database')
+    });
+  }
+);
+
+// Create POST request to create new clinician in PostgreSQL
 app.post('/createClin', passport.authenticate('jwt', { session: false }), function(req, res){
-  // Define parameters of note to be added (incl. author and timestamp)
-  add = {}; 
-  add['username']   = bcrypt.hashSync(req.body.username, salt_rounds);
-  add['password']   = bcrypt.hashSync(req.body.password, salt_rounds); 
-  add['created_on'] = req.body.created_on;
 
-  // Query by hashed username
-  var query = {}; query['username'] = add['username'];
+  // Search to see if a user exists with the provided username
+  db.any('SELECT * FROM users WHERE username = ${username}', {
+    username: req.body.username
+  })
 
-  // Search to see if any clinician exists with provided username
-  var contact;
-  db.collection('contacts').find(query).toArray(function(err, results) {
-    contact = results[0]
+    // If query successful, check wither user exists with provided username
+    .then(function (results) {
 
-    // If no user exists with provided username, create user
-    if (!contact) {
-      db.collection('users').save(
-        add, 
-        (err, result) => {
-          res.send('Saved new contact to database')
-      })
+      // If no user exists with username, add
+      if (results.length === 0) {
+        db.none('INSERT INTO users VALUES (${username},${password},${created_on})', {
+          username: req.body.username,
+          password: bcrypt.hashSync(req.body.password, salt_rounds),
+          created_on: req.body.created_on
+        })
 
-    // If notes do exist, just update
-    } else {
-      err.send('Contact already associated with provided username')
-    }
-  });
-});
+          // If add successful, send confirmation
+          .then(() => {
+            res.status(200).send('Saved user to database')
+          })
+
+          // If add unsuccesful, send error
+          .catch(error => {
+            console.log(error)
+            res.status(400).send('User not saved to database')
+          });
+
+      // If user exists with username, return error
+      } else {
+        res.status(400).send('User exists with provided username.');
+      }
+    })
+
+    // If query unsuccessful, return error
+    .catch(function (error) {
+      console.log(error)
+      res.status(401).send('User not saved to database')
+    });
+  }
+);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

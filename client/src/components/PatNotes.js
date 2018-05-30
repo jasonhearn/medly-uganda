@@ -90,9 +90,9 @@ class SuccessLogo extends Component {
 class NoteBlock extends Component {
 	constructor(props) { 
 		super(props)
-		if (!!this.props.note) {
+		if (this.props.note !== "") {
 			this.state = { 
-				note: this.props.note.note
+				note: this.props.note
 			}
 		} else {
 			this.state = { 
@@ -167,7 +167,18 @@ class NoteBlock extends Component {
 class GridRow extends Component {
 	render() {
 		var date = this.props.runs['date']
-		var note = this.props.notes[date]
+		var notes = this.props.notes
+		var note;
+
+		for (var idx=0; idx < notes.length; idx++) {
+			if (notes[idx].date === date) {
+				note = notes[idx].note
+				break
+			} else {
+				note = ""
+			}
+		}
+
 		return(
 			<div className="GridRow">
 				<DateBlock date={date} today={this.props.today} />

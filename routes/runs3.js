@@ -1562,9 +1562,9 @@ router.get('/', function(req, res, next) {
 	                    "time": "2018-01-25T20:52:20.448327Z"
 	                },
 	                "chest_pain": {
-	                    "category": "Yes",
+	                    "category": "No",
 	                    "node": "283ce3a6-e2df-4b17-92e9-f85cc32683b2",
-	                    "value": "1",
+	                    "value": "2",
 	                    "time": "2018-01-25T20:53:45.364679Z"
 	                },
 	                "lightheaded": {
@@ -1574,9 +1574,9 @@ router.get('/', function(req, res, next) {
 	                    "time": "2018-01-25T20:52:53.313763Z"
 	                },
 	                "swollen": {
-	                    "category": "Yes",
+	                    "category": "No",
 	                    "node": "6c4088b8-276b-4593-9f30-b33d036c9788",
-	                    "value": "1",
+	                    "value": "2",
 	                    "time": "2018-01-25T20:54:13.811927Z"
 	                },
 	                "tired": {
@@ -1585,16 +1585,16 @@ router.get('/', function(req, res, next) {
 	                    "value": "2",
 	                    "time": "2018-01-25T20:55:17.399456Z"
 	                },
-	                "heart_beat": {
+	                "breath_night": {
 	                    "category": "No",
 	                    "node": "a80d6878-e644-4154-8832-b62d05e2dc1b",
 	                    "value": "2",
 	                    "time": "2018-01-25T20:55:17.399456Z"
 	                },
 	                "status": {
-	                    "category": "Urgent with fluid",
+	                    "category": "Normal",
 	                    "node": "a80d6878-e644-4154-8832-b62d05e2dc1b",
-	                    "value": "Urgent with fluid",
+	                    "value": "Normal",
 	                    "time": "2018-01-25T20:55:17.399456Z"
 	                }
 	            },

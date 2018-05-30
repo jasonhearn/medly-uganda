@@ -60,7 +60,6 @@ class CreateClin extends Component {
       },
       body: payload
     }
-    console.log(request)
 
     fetch('/createClin', request)
       .then(res => {

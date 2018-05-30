@@ -29,6 +29,7 @@ class Patient extends Component {
 	}
 
 	componentDidMount() {
+
 		// SET AUTHENTICATION CREDENTIALS
 		var token = localStorage.getItem('token');
 	    var request = {
@@ -48,7 +49,7 @@ class Patient extends Component {
 				for (var i=0; i<data.length; i++) {
 					contact = {
 						surname: data[i].surname,
-						firstName: data[i].firstName,
+						firstname: data[i].firstname,
 						phone: data[i].phone,
 					}
 					contacts.push(contact)
@@ -66,14 +67,14 @@ class Patient extends Component {
 			.then(res => res.json())
   			.then(data => {
   				var ind_dict = {
-	  				firstName: data[0].firstName,
+	  				firstname: data[0].firstname,
 					surname: data[0].surname,
-					DOB : data[0].DOB,
+					dob : data[0].dob,
 					sex : data[0].sex,
 					phone : data[0].phone,
 					lang : data[0].language,
 					registered_on : data[0].registered_on+"T23:59:00.000"
-  				} 
+  				}
   				this.setState({individ: ind_dict})
 			}
 		);
@@ -92,24 +93,24 @@ class Patient extends Component {
 	componentDidUpdate(prevProps,prevState) {
 		if (prevState.individ !== this.state.individ) {
 
-			// SET AUTHENTICATION CREDENTIALS
+			// // SET AUTHENTICATION CREDENTIALS
 			// var token = localStorage.getItem('token');
-		 // 	var request = {
-			// 	headers: {
-			// 		'Authorization': 'Bearer '+token
-			// 	}
-		 // 	}
+		 //    var request = {
+			// 		headers: {
+			// 			'Authorization': 'Bearer '+token
+			// 		}
+		 //    }
 
 			// GET RUNS
 			// var phone = this.props.match.params.phone
 			// var phone_query = '%2B' + phone.substr(1)
-			// var contact = "6c45471e-829d-4f8a-b948-78f7d988ebfc" //this.state.individ.uuid // Unique patient identifier;
-			// var after = "2018-01-15T23:59:00.000" // this.state.individ.registered_on // Date after which runs are returned
+			// var contact = this.state.individ.uuid // Unique patient identifier;
+			// var after = "2018-01-15T23:59:00.000" // this.state.individ.registered_on.substr(0,10)+"T23:59:00.000" // Date after which runs are returned
 			var flow = "fe72849f-7d3f-41a4-b677-cef7c24ecf16" // Unique flow identifier
 			// var url_runs = '/runsByPhone?phone=' + phone_query + '&after=' + after;
 
 			// This will eventually be replaced by actual API call once data is available
-			if (this.state.individ.surname.substr(0,3) === 'WAS') {
+			if (this.state.individ.surname.substr(0,1) === 'W') {
 				this.setState({
 					runs: {},
 					completed: true
@@ -145,7 +146,7 @@ class Patient extends Component {
 						}
 						this.setState({ 
 							runs : tmp_val,
-						completed: true // Set flag noting that run fetch has been completed, for case where tmp_val is updated but still empty (i.e. no symptoms reported)
+							completed: true // Set flag noting that run fetch has been completed, for case where tmp_val is updated but still empty (i.e. no symptoms reported)
 					})
 				}
 			)
@@ -154,7 +155,7 @@ class Patient extends Component {
 	}
 
 	render() {
-		if (!this.isEmpty(this.state.contacts) && !this.isEmpty(this.state.runs) && !this.isEmpty(this.state.individ) && !this.isEmpty(this.state.notes)) {
+		if (!this.isEmpty(this.state.contacts) && !this.isEmpty(this.state.runs) && !this.isEmpty(this.state.individ)) {
 			return (
 				<div className="MiddleTop">
 					<PatHead individ={this.state.individ} contacts={this.state.contacts}/>
@@ -164,7 +165,7 @@ class Patient extends Component {
 					<Logos />
 				</div>
 			);
-		} else if (this.state.completed && !this.isEmpty(this.state.contacts) && !this.isEmpty(this.state.individ) && !this.isEmpty(this.state.notes)) {
+		} else if (this.state.completed && !this.isEmpty(this.state.contacts) && !this.isEmpty(this.state.individ)) {
 			return (
 				<div className="MiddleTop">
 					<PatHead individ={this.state.individ} contacts={this.state.contacts}/>
