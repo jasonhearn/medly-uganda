@@ -126,7 +126,7 @@ class NoteBlock extends Component {
 	      body: payload
 	    }
 
-	    fetch('/saveNote', request)
+	    fetch('/api/saveNote', request)
 	    	.then(res => {
 	    		if (res.status === 200) {
 	    			this.setState({ saved: true })

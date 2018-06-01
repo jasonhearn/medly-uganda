@@ -173,7 +173,7 @@ class PatBrowse extends Component {
 	componentDidMount() {
 		// var group = 'Patients'
 		// var url = '/contByGroup?group=' + group
-		var url = '/getAllContacts'
+		var url = '/api/getAllContacts'
 		var token = localStorage.getItem('token');
 
 	    var request = {

@@ -39,7 +39,7 @@ class Patient extends Component {
 	    }
 
 		// GET CONTACTS
-		var url_cont = '/getAllContacts'
+		var url_cont = '/api/getAllContacts'
 
 		fetch(url_cont,request)
 			.then(res => res.json())
@@ -61,7 +61,7 @@ class Patient extends Component {
 		// GET INDIVIDUAL INFO
 		var phone = this.props.match.params.phone
 		var phone_query = '%2B' + phone.substr(1)
-		var url_ind = '/getContact?phone=' + phone_query
+		var url_ind = '/api/getContact?phone=' + phone_query
 
 		fetch(url_ind,request)
 			.then(res => res.json())
@@ -80,7 +80,7 @@ class Patient extends Component {
 		);
 
   		// GET NOTES
-	    var url_notes = '/getNotes?phone=' + phone_query
+	    var url_notes = '/api/getNotes?phone=' + phone_query
 
 	    fetch(url_notes, request)
 	    	.then(res => res.json())
@@ -118,11 +118,11 @@ class Patient extends Component {
 			} else {
 				var url_runs;
 				if (this.state.individ.surname === 'KIRABO') {
-					url_runs = '/runs2';
+					url_runs = '/api/runs2';
 				} else if (this.state.individ.surname === 'BAKABULINDI') {
-					url_runs = '/runs3'
+					url_runs = '/api/runs3'
 				} else {
-					url_runs = '/runs';
+					url_runs = '/api/runs';
 				}
 
 				fetch(url_runs) //, request)

@@ -60,7 +60,7 @@ class PatSearch extends Component {
   }
 
   componentDidMount() {
-    var url = '/getAllContacts'
+    var url = '/api/getAllContacts'
     var token = localStorage.getItem('token');
     var request = {
       headers: {

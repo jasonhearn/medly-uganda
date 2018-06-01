@@ -61,7 +61,7 @@ class CreateClin extends Component {
       body: payload
     }
 
-    fetch('/createClin', request)
+    fetch('/api/createClin', request)
       .then(res => {
         if (res.status === 200) {
           this.setState({ success: true })

@@ -18,9 +18,12 @@ var pgp = require('pg-promise')();
 // Define express app
 var app = express();
 
-// Use compression and helment middleware for protection in production
+// Use compression and helmet middleware for protection in production
 app.use(compression());
 app.use(helmet());
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 // Setup view engine
 app.set('views', path.join(__dirname, 'views'));
@@ -41,9 +44,10 @@ var runs3 = require('./routes/runs3');
 
 // Set routing for local entries
 app.use('/', index);
-app.use('/runs', runs);
-app.use('/runs2', runs2);
-app.use('/runs3', runs3);
+app.use('/api/runs', runs);
+app.use('/api/runs2', runs2);
+app.use('/api/runs3', runs3);
+
 
 // Load secure variables from environment (must run "source app-env" in console before running)
 var db_type        = process.env.DB_TYPE;
@@ -87,7 +91,6 @@ var strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
     }
   )
 });
-
 passport.use(strategy);
 
 // Check if user is authorized given their username and password
@@ -124,7 +127,6 @@ app.post("/auth", function(req, res) {
       }
     })
     
-
     // If query unsuccessful, return error
     .catch(function (error) {
       res.status(401).json({message: "Unsuccessful verification"});
@@ -144,7 +146,7 @@ var headers = {
 }
 
 // Get all contacts from PostgreSQL
-app.get("/getAllContacts", passport.authenticate('jwt', { session: false }), function(req, res) {
+app.get("/api/getAllContacts", passport.authenticate('jwt', { session: false }), function(req, res) {
 
   // Query for all contacts
   db.any('SELECT * FROM contacts')
@@ -169,7 +171,7 @@ app.get("/getAllContacts", passport.authenticate('jwt', { session: false }), fun
 });
 
 // Get contact by phone number from PostgreSQL
-app.get("/getContact", passport.authenticate('jwt', { session: false }), function(req, res) {
+app.get("/api/getContact", passport.authenticate('jwt', { session: false }), function(req, res) {
 
   // Search for contacts matching queried phone number
   db.any('SELECT * FROM contacts WHERE phone = ${phone}', {
@@ -197,7 +199,7 @@ app.get("/getContact", passport.authenticate('jwt', { session: false }), functio
   });
 
 // Use phone number to query RapidPro for symptom data
-app.get("/runsByPhone", passport.authenticate('jwt', { session: false }), function(req, res){
+app.get("/api/runsByPhone", passport.authenticate('jwt', { session: false }), function(req, res){
   
   // Set option for RapidPro call
   var options = {
@@ -228,7 +230,7 @@ app.get("/runsByPhone", passport.authenticate('jwt', { session: false }), functi
 });
 
 // Create GET request to update notes in PostgreSQL
-app.get('/getNotes', passport.authenticate('jwt', { session: false }), function(req, res){
+app.get('/api/getNotes', passport.authenticate('jwt', { session: false }), function(req, res){
   
   // Search for notes matching queried phone number
   db.any('SELECT * FROM notes WHERE phone = ${phone}', {
@@ -255,7 +257,7 @@ app.get('/getNotes', passport.authenticate('jwt', { session: false }), function(
 });
 
 // Create POST request to update notes in PostgreSQL
-app.post('/saveNote', passport.authenticate('jwt', { session: false }), function(req, res){
+app.post('/api/saveNote', passport.authenticate('jwt', { session: false }), function(req, res){
 
   // Search to see if any notes exist for patient
   db.any('SELECT * FROM notes WHERE phone = ${phone} AND date = ${date}', {
@@ -341,7 +343,7 @@ app.post('/saveNote', passport.authenticate('jwt', { session: false }), function
 );
 
 // Create POST request to create new patient in PostgreSQL
-app.post('/createPat', passport.authenticate('jwt', { session: false }), function(req, res){
+app.post('/api/createPat', passport.authenticate('jwt', { session: false }), function(req, res){
   
   // Search to see if a contact exists with the provided phone number
   db.any('SELECT * FROM contacts WHERE phone = ${phone}', {
@@ -390,7 +392,7 @@ app.post('/createPat', passport.authenticate('jwt', { session: false }), functio
 );
 
 // Create POST request to create new clinician in PostgreSQL
-app.post('/createClin', passport.authenticate('jwt', { session: false }), function(req, res){
+app.post('/api/createClin', passport.authenticate('jwt', { session: false }), function(req, res){
 
   // Search to see if a user exists with the provided username
   db.any('SELECT * FROM users WHERE username = ${username}', {
