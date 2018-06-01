@@ -146,7 +146,7 @@ class BrowseBody extends Component {
 							<td>{vals.firstname}</td>
 							<td>{vals.sex}</td>
 							<td>{age}</td>
-							<td>{phone}</td>
+							<td>0{phone.substr(0,3)}-{phone.substr(3,6)}</td>
 						</tr>
 					);
 			}

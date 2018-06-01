@@ -89,7 +89,7 @@ class DemoHeader extends Component {
 			);
 		} else {
 			return (
-				<h2> <b>Age:</b> {age} | <b>Sex:</b> {this.props.individ.sex} | <b>Lang.:</b> {language} | <b>Ph.:</b> <a href={phone_click}>0{this.props.individ.phone.substr(4,3)}-{this.props.individ.phone.substr(7,6)}</a> </h2>
+				<h2> <b>Age:</b> {age} | <b>Sex:</b> {this.props.individ.sex} | <b>Lang.:</b> {language} | <b>Ph.:</b> <a href={phone_click} className="Link">0{this.props.individ.phone.substr(4,3)}-{this.props.individ.phone.substr(7,6)}</a> </h2>
 			);
 		}
 	}
