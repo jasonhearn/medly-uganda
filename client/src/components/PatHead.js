@@ -74,16 +74,22 @@ class DemoHeader extends Component {
 
 		var age = moment(this.props.individ.dob, "YYYY-MM-DD").fromNow();
 		age = age.split(" ")[0]
+		var phone_click = 'tel:'+this.props.individ.phone
+		console.log(phone_click)
 
 		// Get width and output header depending on value
 		var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 		if (width >= 700) {
 			return (
-				<h2> <b>Age:</b> {age} | <b>Sex:</b> {this.props.individ.sex} | <b>Language:</b> {language} | <b>Phone:</b> {this.props.individ.phone.substr(4,3)} {this.props.individ.phone.substr(7,6)} </h2>
+				<h2> <b>Age:</b> {age} | <b>Sex:</b> {this.props.individ.sex} | <b>Language:</b> {language} | <b>Phone:</b> 0{this.props.individ.phone.substr(4,3)}-{this.props.individ.phone.substr(7,6)}</h2>
+			);
+		} else if (width < 700 && width >= 480) {
+			return (
+				<h2> <b>Age:</b> {age} | <b>Sex:</b> {this.props.individ.sex} | <b>Language:</b> {language} | <b>Phone:</b> 0{this.props.individ.phone.substr(4,3)}-{this.props.individ.phone.substr(7,6)}</h2>
 			);
 		} else {
 			return (
-				<h2> <b>Age:</b> {age} | <b>Sex:</b> {this.props.individ.sex} | <b>Lang.:</b> {language} | <b>Ph.:</b> {this.props.individ.phone.substr(4,3)} {this.props.individ.phone.substr(7,6)} </h2>
+				<h2> <b>Age:</b> {age} | <b>Sex:</b> {this.props.individ.sex} | <b>Lang.:</b> {language} | <b>Ph.:</b> <a href={phone_click}>0{this.props.individ.phone.substr(4,3)}-{this.props.individ.phone.substr(7,6)}</a> </h2>
 			);
 		}
 	}
