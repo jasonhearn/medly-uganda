@@ -188,7 +188,7 @@ class CreatePat extends Component {
       body: payload
     }
 
-    fetch('/createPat', request)
+    fetch('/api/createPat', request)
       .then(res => {
         if (res.status === 200) {
           this.setState({ success: true })
