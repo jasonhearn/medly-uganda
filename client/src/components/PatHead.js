@@ -75,7 +75,6 @@ class DemoHeader extends Component {
 		var age = moment(this.props.individ.dob, "YYYY-MM-DD").fromNow();
 		age = age.split(" ")[0]
 		var phone_click = 'tel:'+this.props.individ.phone
-		console.log(phone_click)
 
 		// Get width and output header depending on value
 		var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;

@@ -113,7 +113,6 @@ class CreateClin extends Component {
                   />
                 </ControlLabel>
                 <FormControl
-                  autoFocus
                   name="password"
                   type="password"
                   placeholder="Password"
@@ -130,7 +129,6 @@ class CreateClin extends Component {
                   />
                 </ControlLabel>
                 <FormControl
-                  autoFocus
                   name="password2"
                   type="password"
                   placeholder="Confirm password"

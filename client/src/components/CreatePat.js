@@ -227,6 +227,7 @@ class CreatePat extends Component {
                   />
                 </ControlLabel>
                 <FormControl
+                  autoFocus
                   id="surname"
                   name="surname"
                   type="text"
