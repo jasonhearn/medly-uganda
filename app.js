@@ -25,7 +25,7 @@ app.use(helmet());
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
 app.get('/*', function(req, res){
-  res.sendfile(__dirname + 'client/build/index.html');
+  res.sendfile(__dirname + '/client/build/index.html');
 });
 
 // Setup view engine
