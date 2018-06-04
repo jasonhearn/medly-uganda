@@ -24,7 +24,7 @@ class ChangePt extends Component {
 			contact = contacts[i].surname + ', ' + contacts[i].firstname.substr(0,1) + '.'
 			dropList.push(
 				<li key={i}>
-					<Link to={'/patient/'+contacts[i].phone} className="Sublist">
+					<Link to={'/main/patient/'+contacts[i].phone} className="Sublist">
 						{contact}
 					</Link>
 				</li>
@@ -33,7 +33,7 @@ class ChangePt extends Component {
 		searchText = 'Browse patients'
 		dropList.push(
 			<li key="last'">
-				<Link to={'/browse'} className="Sublist">
+				<Link to={'/main/browse'} className="Sublist">
 					{searchText}
 				</Link>
 			</li>

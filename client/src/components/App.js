@@ -12,11 +12,11 @@ const App = () => (
   <main>
     <Switch>
       	<Route exact path='/' component={Login} />
-		<Route path='/search' component={requireAuth(PatSearch)} />
-		<Route path='/adduser' component={requireAuth(CreateClin)} />
-		<Route path='/addpatient' component={requireAuth(CreatePat)} />
-		<Route path='/browse' component={requireAuth(PatBrowse)} />
-		<Route path='/patient/:phone' component={requireAuth(Patient)} />
+		<Route path='/main/search' component={requireAuth(PatSearch)} />
+		<Route path='/main/adduser' component={requireAuth(CreateClin)} />
+		<Route path='/main/addpatient' component={requireAuth(CreatePat)} />
+		<Route path='/main/browse' component={requireAuth(PatBrowse)} />
+		<Route path='/main/patient/:phone' component={requireAuth(Patient)} />
     </Switch>
   </main>
 )

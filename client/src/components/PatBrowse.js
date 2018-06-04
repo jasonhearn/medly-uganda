@@ -139,7 +139,7 @@ class BrowseBody extends Component {
 					rows.push(
 						<tr key={i+1}>
 							<td>
-								<Link to={'/patient/'+vals.phone} className="Link">
+								<Link to={'/main/patient/'+vals.phone} className="Link">
 									{vals.surname}
 								</Link>
 							</td>

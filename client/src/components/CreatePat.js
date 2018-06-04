@@ -201,7 +201,7 @@ class CreatePat extends Component {
 
   render() {
     if (this.state.success) {
-      return <Redirect push to={'/patient/' + this.state.phone} />;
+      return <Redirect push to={'/main/patient/' + this.state.phone} />;
     } else {      
       return (
         <main>

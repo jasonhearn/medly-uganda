@@ -6,7 +6,7 @@ import '../styles/main.css';
 class ReturnButton extends Component {
   render() {
     return(
-      <Link to={'/search'}>
+      <Link to={'/main/search'}>
         <Button 
           className="ChangePtButton" 
           type="submit" 

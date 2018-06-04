@@ -30,7 +30,7 @@ class ErrorMessage extends Component {
 class NewClinicianButton extends Component {
   render() {
     return(
-      <Link to={'/adduser'}>
+      <Link to={'/main/adduser'}>
         <Button 
           className="ChangePtButton" 
           type="submit" 
@@ -137,7 +137,7 @@ class PatSearch extends Component {
 
   render() {
     if (this.state.success) {
-      return <Redirect push to={'/patient/' + this.state.phone} />;
+      return <Redirect push to={'/main/patient/' + this.state.phone} />;
     } else {
       return (
         <main>
@@ -180,7 +180,7 @@ class PatSearch extends Component {
 
             </div>
 
-            <Link to={'/patient/' + this.state.phone}>
+            <Link to={'/main/patient/' + this.state.phone}>
               <Button className="HorizButton" 
                 type="submit" 
                 disabled={!this.state.phoneValid}
@@ -191,9 +191,9 @@ class PatSearch extends Component {
 
             <ErrorMessage failed={this.state.failed} />
 
-            <h2>Patient not in the system? <Link to='/addpatient' className='Link'>Add a new patient</Link>.</h2>
+            <h2>Patient not in the system? <Link to='/main/addpatient' className='Link'>Add a new patient</Link>.</h2>
 
-            <h2>Don't know the phone number? <Link to='/browse' className='Link'>Browse your patients</Link>.</h2>
+            <h2>Don't know the phone number? <Link to='/main/browse' className='Link'>Browse your patients</Link>.</h2>
             
             <Logos />
 
