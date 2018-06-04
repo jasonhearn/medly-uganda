@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Loader from './Loader'
 import PatHead from './PatHead'
 import PatSympTable from './PatSympTable'
 import PatNotes from './PatNotes'
@@ -177,8 +178,8 @@ class Patient extends Component {
 			);
 		} else {
 			return(
-				<div className="Middle"></div>
-			)	
+				<Loader />
+			);	
 		}
 	}
 }

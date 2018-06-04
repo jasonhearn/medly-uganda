@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { FormGroup, FormControl } from "react-bootstrap";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
+import Loader from './Loader'
 import LogoutButton from './LogoutButton'
 import ReturnButton from './ReturnButton'
 import Logos from './Logos'
@@ -199,7 +200,7 @@ class PatBrowse extends Component {
 	}
 
 	render() {
-		if (!!this.state.data) {
+		if (Object.keys(this.state.data).length !== 0) {
 			return (
 				<main>
 					<div className="MiddleTop">
@@ -215,7 +216,7 @@ class PatBrowse extends Component {
 			);
 		} else {
 			return(
-				<div className='Middle'> </div>
+				<Loader />
 			);
 		}
 	}
