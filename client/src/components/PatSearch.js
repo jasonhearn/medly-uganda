@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import { Link, Redirect } from "react-router-dom"
+import Loader from './Loader'
 import Logos from "./Logos"
 import LogoutButton from './LogoutButton'
 import phone from "../pictures/phone.png"
@@ -139,7 +140,8 @@ class PatSearch extends Component {
     if (this.state.success) {
       return <Redirect push to={'/main/patient/' + this.state.phone} />;
     } else {
-      return (
+      if (this.state.phoneList.length !== 0) {
+        return (
         <main>
           <div className="MiddleTop">
             <header>
@@ -199,7 +201,12 @@ class PatSearch extends Component {
 
           </div>
         </main>
-      );
+        );
+      } else {
+        return(
+          <Loader />
+        );
+      }
     }
   }
 }
