@@ -132,8 +132,8 @@ td {
 .Loading {
   position: fixed;
   z-index: 999;
-  height: 2em;
-  width: 2em;
+  height: 5em;
+  width: 5em;
   overflow: show;
   margin: auto;
   top: 0;
