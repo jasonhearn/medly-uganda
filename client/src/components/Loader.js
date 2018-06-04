@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { RingLoader } from 'react-spinners';
+import { BounceLoader } from 'react-spinners';
 
 class Loader extends Component {
 	render() {
 		return(
 			<div className='Loading'> 
-				<RingLoader
+				<BounceLoader
 		          color={'#484848'} 
 		          loading={true} 
 		        />
