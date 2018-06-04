@@ -24,6 +24,9 @@ app.use(helmet());
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
+app.get('/*', function(req, res){
+  res.sendfile(__dirname + 'client/build/index.html');
+});
 
 // Setup view engine
 app.set('views', path.join(__dirname, 'views'));
@@ -437,7 +440,7 @@ app.post('/api/createClin', passport.authenticate('jwt', { session: false }), fu
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  res.sendFile(path.join(__dirname + 'client/build/index.html'));
+  var err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
