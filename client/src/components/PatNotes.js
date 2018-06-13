@@ -127,6 +127,11 @@ class NoteBlock extends Component {
 	    				failed: true
 	    			})
 	    		}
+	    	}).catch(function() {
+	    		this.setState({ 
+    				saved: false,
+    				failed: true
+    			})
 	    	})
 	}
 
