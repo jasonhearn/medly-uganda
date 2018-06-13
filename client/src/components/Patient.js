@@ -156,7 +156,7 @@ class Patient extends Component {
 	}
 
 	render() {
-		if (!this.isEmpty(this.state.contacts) && !this.isEmpty(this.state.runs) && !this.isEmpty(this.state.individ)) {
+		if (!this.isEmpty(this.state.contacts) && !this.isEmpty(this.state.runs) && !this.isEmpty(this.state.individ) && !this.isEmpty(this.state.notes)) {
 			return (
 				<div className="MiddleTop">
 					<PatHead individ={this.state.individ} contacts={this.state.contacts}/>
