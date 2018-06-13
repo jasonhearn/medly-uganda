@@ -1,29 +1,10 @@
 import React, { Component } from 'react';
 import calcToday from './calcToday'
 import success from "../pictures/success.png"
+import failed from "../pictures/failed.png"
 import '../styles/main.css';
 import '../styles/patient.css';
 var dateFormat = require('dateformat')
-
-class SavedMessage extends Component {
-  render() {
-    if (this.props.saved) {
-      return(
-        <div className='Success'>
-          <img 
-            src={success} 
-            className='ErrorIcon' 
-            alt="" 
-          />
-          All notes saved to database
-        </div>
-      );
-    } else {
-      return(
-        <div> </div>
-    )}
-  }
-}
 
 class DateBlock extends Component {
 	render() {
@@ -78,6 +59,12 @@ class SuccessLogo extends Component {
 					<img className="SuccessLogo" src={success} alt="" />
 				</div>
 			);
+		} else if (this.props.failed) {
+			return(
+				<div className="Success">
+					<img className="SuccessLogo" src={failed} alt="" />
+				</div>
+			);
 		} else {
 			return(
 				<div></div>
@@ -112,6 +99,7 @@ class NoteBlock extends Component {
 			timestamp: timestamp,
 			author: author,
 			saved: false,
+			failed: false
 		};
 
 		var payload = JSON.stringify(noteObj)
@@ -129,7 +117,15 @@ class NoteBlock extends Component {
 	    fetch('/api/saveNote', request)
 	    	.then(res => {
 	    		if (res.status === 200) {
-	    			this.setState({ saved: true })
+	    			this.setState({ 
+	    				saved: true,
+	    				failed: false
+	    			})
+	    		} else {
+	    			this.setState({ 
+	    				saved: false,
+	    				failed: true
+	    			})
 	    		}
 	    	})
 	}
@@ -142,6 +138,8 @@ class NoteBlock extends Component {
 
 		if (this.state.saved) {
 			noteStyle = "SavedNoteBlock"		
+		} else if (this.state.failed) {
+			noteStyle = "FailedNoteBlock"
 		} else {
 			noteStyle = "NoteBlock"
 		}
@@ -158,7 +156,7 @@ class NoteBlock extends Component {
               	  }}
                 >
             	</textarea>
-        		<SuccessLogo saved={this.state.saved} />
+        		<SuccessLogo saved={this.state.saved} failed={this.state.failed} />
 			</div>
 		);
 	}
@@ -194,7 +192,8 @@ class PatNotes extends Component {
 		super(props)
 		this.state = { 
 			notes: this.props.notes,
-			saved: false
+			saved: false,
+			failed: false
 		}
 	}
 
@@ -211,7 +210,6 @@ class PatNotes extends Component {
 			<div className="TableBlock">
 				<h1>CLINICIAN NOTES</h1>
 				<div className="Table"> {rows} </div>
-	            <SavedMessage saved={this.state.saved}/>
 			</div>
 		);
 	}

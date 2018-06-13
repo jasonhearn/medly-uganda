@@ -161,7 +161,7 @@
   } 
 }
 
-.SavedNoteBlock {
+.SavedNoteBlock, .FailedNoteBlock {
   position: relative;
   display: flex;
   justify-content: center;
@@ -170,19 +170,24 @@
   
   height: 39px;
 
-  border: 2px solid #91D150;
-
   text-align: center;
   font-size: 0.5em;
   color: #000000;
   font-weight: 700;
 } 
-
 @media (min-width: 700px) {
-  .SavedNoteBlock {
+  .SavedNoteBlock, .FailedNoteBlock {
     height: 47px;
     font-size: 0.7em;
   } 
+}
+
+.SavedNoteBlock {
+  border: 2px solid #91D150;
+}
+
+.FailedNoteBlock {
+  border: 2px solid #FF1D00;
 }
 
 .DateBlock {
@@ -212,7 +217,7 @@
   }
 }
 
-.NoteBlock, .SavedNoteBlock {
+.NoteBlock, .SavedNoteBlock, .FailedNoteBlock {
   width: 85%;
 }
 
@@ -232,7 +237,7 @@
   font-weight: 400;
 }
 
-.SavedNoteBlock textarea {
+.SavedNoteBlock textarea, .FailedNoteBlock textarea {
   padding-left: 8px;
   padding-top: 3px;
   padding-bottom: 2px;
