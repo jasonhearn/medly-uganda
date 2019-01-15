@@ -94,65 +94,47 @@ class Patient extends Component {
 	componentDidUpdate(prevProps,prevState) {
 		if (prevState.individ !== this.state.individ) {
 
-			// // SET AUTHENTICATION CREDENTIALS
-			// var token = localStorage.getItem('token');
-		 	//    var request = {
-			// 		headers: {
-			// 			'Authorization': 'Bearer '+token
-			// 		}
-		 	//    }
+			// SET AUTHENTICATION CREDENTIALS
+			var token = localStorage.getItem('token');
+	 	    var request = {
+				headers: {
+					'Authorization': 'Bearer '+token
+				}
+	 	    }
 
 			// GET RUNS
-			// var phone = this.props.match.params.phone
-			// var phone_query = '%2B' + phone.substr(1)
-			// var contact = this.state.individ.uuid // Unique patient identifier;
-			// var after = "2018-01-15T23:59:00.000" // this.state.individ.registered_on.substr(0,10)+"T23:59:00.000" // Date after which runs are returned
-			var flow = "fe72849f-7d3f-41a4-b677-cef7c24ecf16" // Unique flow identifier
-			// var url_runs = '/runsByPhone?phone=' + phone_query + '&after=' + after;
+			var phone = this.props.match.params.phone
+			var phone_query = '%2B' + phone.substr(1)
+			var contact = this.state.individ.uuid // Unique patient identifier;
+			var after = this.state.individ.registered_on.substr(0,10)+"T23:59:00.000" // Date after which runs are returned
+			var flow = "d986b131-8d47-4f0d-a4c9-f1a168c16ee4" // Unique flow identifier
+			var url_runs = '/runsByPhone?contact=' + contact + '&after=' + after;
 
-			// This will eventually be replaced by actual API call once data is available
-			if (this.state.individ.surname.substr(0,1) === 'W') {
-				this.setState({
-					runs: {},
-					completed: true
-				})
-			} else {
-				var url_runs;
-				if (this.state.individ.surname === 'KIRABO') {
-					url_runs = '/api/runs2';
-				} else if (this.state.individ.surname === 'BAKABULINDI') {
-					url_runs = '/api/runs3'
-				} else {
-					url_runs = '/api/runs';
-				}
-
-				fetch(url_runs) //, request)
-					.then(res => res.json())
-					.then(data => {
-						var tmp_val = {}
-						for (var i = 0; i < Object.keys(data.results).length; i++) {
-							// Continue in loop if data is not from main USSD flow or if flow was not completed
-							if (data.results[i].flow.uuid !== flow || data.results[i].exit_type !== "completed") {
-								continue
-							}
-
-							// For main USSD flow results, add value to running object
-							var tmp_dict = data.results[i].values
-							var var_keys = Object.keys(tmp_dict)
-							tmp_val[i] = {}
-							tmp_val[i]['date'] = data.results[i].exited_on.substr(2,8)
-							for (var j = 0; j < var_keys.length; j++) {
-								tmp_val[i][var_keys[j]] = tmp_dict[var_keys[j]]['category']
-							}
+			fetch(url_runs, request)
+				.then(res => res.json())
+				.then(data => {
+					var tmp_val = {}
+					for (var i = 0; i < Object.keys(data.results).length; i++) {
+						// Continue in loop if data is not from main USSD flow or if flow was not completed
+						if (data.results[i].flow.uuid !== flow || data.results[i].exit_type !== "completed") {
+							continue
 						}
-						this.setState({ 
-							runs : tmp_val,
-							completed: true // Set flag noting that run fetch has been completed, for case where tmp_val is updated but still empty (i.e. no symptoms reported)
-					})
-				}
-			)
+
+						// For main USSD flow results, add value to running object
+						var tmp_dict = data.results[i].values
+						var var_keys = Object.keys(tmp_dict)
+						tmp_val[i] = {}
+						tmp_val[i]['date'] = data.results[i].exited_on.substr(2,8)
+						for (var j = 0; j < var_keys.length; j++) {
+							tmp_val[i][var_keys[j]] = tmp_dict[var_keys[j]]['category']
+						}
+					}
+					this.setState({ 
+						runs : tmp_val,
+						completed: true // Set flag noting that run fetch has been completed, for case where tmp_val is updated but still empty (i.e. no symptoms reported)
+				})
 			}
-		}
+		)
 	}
 
 	render() {
