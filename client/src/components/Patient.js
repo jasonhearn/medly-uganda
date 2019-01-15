@@ -132,9 +132,10 @@ class Patient extends Component {
 					this.setState({ 
 						runs : tmp_val,
 						completed: true // Set flag noting that run fetch has been completed, for case where tmp_val is updated but still empty (i.e. no symptoms reported)
-				})
-			}
-		)
+					})
+				}
+			)
+		}
 	}
 
 	render() {
