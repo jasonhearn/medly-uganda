@@ -201,9 +201,8 @@ app.get("/api/getContact", passport.authenticate('jwt', { session: false }), fun
   });
 
 // Use phone number to query RapidPro for symptom data
-app.get("/api/runsByPhone", 
-  passport.authenticate('jwt', { session: false }),
-  function(req,res,next) {
+// First, we define middleware to get UUID and then, symptom data
+function getUUID(req,res,next) {
     var options = {
       url: rapidpro_url + '/contacts.json?urn=tel%3A' + req.body.urn,
       headers: headers
@@ -218,8 +217,9 @@ app.get("/api/runsByPhone",
         res.status(401).send('No contact found with sent phone number.')
       }
     })
-  },
-  function(req,res,next) {
+  }
+
+function getSymptoms(req,res) {
     var options = {
       url: rapidpro_url + '/runs.json?contact=' + res.locals.uuid,
       headers: headers
@@ -232,7 +232,8 @@ app.get("/api/runsByPhone",
       }
     })
   }
-);
+
+app.get("/api/runsByPhone", passport.authenticate('jwt', { session: false }), getUUID, getSymptoms);
 
 // Create GET request to update notes in PostgreSQL
 app.get('/api/getNotes', passport.authenticate('jwt', { session: false }), function(req, res){
