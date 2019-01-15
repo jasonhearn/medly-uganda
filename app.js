@@ -51,7 +51,6 @@ app.use('/api/runs', runs);
 app.use('/api/runs2', runs2);
 app.use('/api/runs3', runs3);
 
-
 // Load secure variables from environment (must run "source app-env" in console before running)
 var db_type        = process.env.DB_TYPE;
 var db_user        = process.env.DB_USER;
@@ -212,6 +211,9 @@ app.get("/api/runsByPhone",
     request(options, function (error, response, body) {
       if (!error && response.statusCode == 200) {
         res.locals.uuid = body.results[0].uuid
+        console.log(body)
+        console.log(res.locals.uuid)
+        next()
       } else {
         res.status(401).send('No contact found with sent phone number.')
       }
