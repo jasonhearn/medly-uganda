@@ -202,35 +202,35 @@ app.get("/api/getContact", passport.authenticate('jwt', { session: false }), fun
   });
 
 // Use phone number to query RapidPro for symptom data
-app.get("/api/runsByPhone", passport.authenticate('jwt', { session: false }), function(req, res){
-  
-  // Set option for RapidPro call
-  var options = {
-    url: rapidpro_url + '/contacts.json?urn=' + req.query.urn,
-    headers: headers
-  }
-
-  // Call RapidPro API
-  request(options, function (error, response, body) {
-
-    // If call successful, return symptom data
-    if (!error && response.statusCode == 200) {
-      var options = {
-        url: rapidpro_url + '/runs.json?contact=' + body.results[0].uuid + '&after=' + req.query.after,
-        headers: headers
-      }
-      request(options, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-          res.status(200).send(body)
-        }
-      })
-
-    // If call unsuccessful, return error
-    } else {
-      res.status(401).send('No symptom data found.')
+app.get("/api/runsByPhone", 
+  passport.authenticate('jwt', { session: false }),
+  function(req,res,next) {
+    var options = {
+      url: rapidpro_url + '/contacts.json?urn=' + req.query.urn,
+      headers: headers
     }
-  });
-});
+    request(options, function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+        res.locals.uuid = body.results[0].uuid
+      } else {
+        res.status(401).send('No contact found with sent phone number.')
+      }
+    })
+  },
+  function(req,res,next) {
+    var options = {
+      url: rapidpro_url + '/runs.json?contact=' + res.locals.uuid + '&after=' + req.query.after,
+      headers: headers
+    }
+    request(options, function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+        res.status(200).send(body)
+      } else {
+        res.status(401).send('No symptoms found with UUID.')
+      }
+    })
+  }
+);
 
 // Create GET request to update notes in PostgreSQL
 app.get('/api/getNotes', passport.authenticate('jwt', { session: false }), function(req, res){
