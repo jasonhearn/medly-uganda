@@ -206,7 +206,7 @@ app.get("/api/runsByPhone",
   passport.authenticate('jwt', { session: false }),
   function(req,res,next) {
     var options = {
-      url: rapidpro_url + '/contacts.json?urn=' + req.query.urn,
+      url: rapidpro_url + '/contacts.json?urn=tel%3A' + req.body.urn,
       headers: headers
     }
     request(options, function (error, response, body) {
@@ -219,7 +219,7 @@ app.get("/api/runsByPhone",
   },
   function(req,res,next) {
     var options = {
-      url: rapidpro_url + '/runs.json?contact=' + res.locals.uuid + '&after=' + req.query.after,
+      url: rapidpro_url + '/runs.json?contact=' + res.locals.uuid,
       headers: headers
     }
     request(options, function (error, response, body) {
