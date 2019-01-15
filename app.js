@@ -105,6 +105,7 @@ app.post("/auth", function(req, res) {
     
     // If query successful, check if username and password are in database.
     .then(function (results) {
+      console.log('Success!')
       var success = false
       var user;
       for (idx in results) {
@@ -209,6 +210,8 @@ function getUUID(req,res,next) {
     }
     request(options, function (error, response, body) {
       if (!error && response.statusCode == 200) {
+        console.log(response)
+        console.log(body)
         res.locals.uuid = body.results[0].uuid
         console.log(body)
         console.log(res.locals.uuid)

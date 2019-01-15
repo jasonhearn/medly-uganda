@@ -105,9 +105,9 @@ class Patient extends Component {
 			// GET RUNS
 			var phone = this.props.match.params.phone
 			var phone_query = '%2B' + phone.substr(1)
-			var after = this.state.individ.registered_on.substr(0,10)+"T23:59:00.000" // Date after which runs are returned
+			// var after = this.state.individ.registered_on.substr(0,10)+"T23:59:00.000" // Date after which runs are returned
 			var flow = "d986b131-8d47-4f0d-a4c9-f1a168c16ee4" // Unique flow identifier
-			var url_runs = '/api/runsByPhone?urn=' + phone_query + '&after=' + after;
+			var url_runs = '/api/runsByPhone?urn=' + phone_query + '&flow=' + flow;
 
 			fetch(url_runs, request)
 				.then(res => res.json())
