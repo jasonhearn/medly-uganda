@@ -210,11 +210,8 @@ function getUUID(req,res,next) {
     }
     request(options, function (error, response, body) {
       if (!error && response.statusCode == 200) {
-        console.log(response)
-        console.log(body)
-        res.locals.uuid = body.results[0].uuid
-        console.log(body)
-        console.log(res.locals.uuid)
+        System.out.println(response)
+        res.locals.uuid = response.results[0].uuid
         next()
       } else {
         res.status(401).send('No contact found with sent phone number.')
