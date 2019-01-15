@@ -210,7 +210,7 @@ function getUUID(req,res,next) {
     }
     request(options, function (error, response, body) {
       if (!error && response.statusCode == 200) {
-        System.out.println(response)
+        console.log(response)
         res.locals.uuid = response.results[0].uuid
         next()
       } else {
