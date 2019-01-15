@@ -206,7 +206,7 @@ app.get("/api/runsByPhone", passport.authenticate('jwt', { session: false }), fu
   
   // Set option for RapidPro call
   var options = {
-    url: rapidpro_url + '/contacts.json?urn=tel:' + req.query.phone,
+    url: rapidpro_url + '/contacts.json?urn=' + req.query.urn,
     headers: headers
   }
 
@@ -216,7 +216,7 @@ app.get("/api/runsByPhone", passport.authenticate('jwt', { session: false }), fu
     // If call successful, return symptom data
     if (!error && response.statusCode == 200) {
       var options = {
-        url: rapidpro_url + '/runs.json?contact=' + req.query.contact + '&after=' + req.query.after,
+        url: rapidpro_url + '/runs.json?contact=' + body.results[0].uuid + '&after=' + req.query.after,
         headers: headers
       }
       request(options, function (error, response, body) {
